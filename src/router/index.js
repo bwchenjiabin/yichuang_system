@@ -1,0 +1,80 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+Vue.use(Router)
+
+
+
+export default new Router({
+  mode:'history',
+  routes: [
+
+    {
+      path:'/',
+      component: resolve => require(['@/pages/Login/Login'], resolve)     //默认登录页
+    },
+    {
+      path:'/Home',
+      component: resolve => require(['@/pages/Home/Home'], resolve)    //首页   店铺概况
+    },
+    {
+      path:'/content',
+      component: resolve => require(['@/pages/content/content'], resolve)    //我的课程
+    },
+    {
+      path:'/preview',
+      component: resolve => require(['@/pages/preview/preview'], resolve)    //店铺预览
+    },
+    {
+      path:'/Set',
+      component: resolve => require(['@/pages/Set/Set'], resolve)    //店铺设置
+    },
+    {
+      path:'/rotary',
+      component: resolve => require(['@/pages/rotary/rotary'], resolve),     //轮播图
+    },
+    {
+      path:'/classify',
+      component: resolve => require(['@/pages/classify/classify'], resolve)    //内容分类
+    },
+    {
+      path:'/Vip',
+      component: resolve => require(['@/pages/Vip/Vip'], resolve)    //店铺会员
+    },
+    {
+      path:'/feedback',
+      component: resolve => require(['@/pages/feedback/feedback'], resolve)   //用户反馈
+    },
+    {
+      path:'/User',
+      component: resolve => require(['@/pages/User/User'], resolve)    //用户
+    },
+    {
+      path:'/Blacklist',
+      component: resolve => require(['@/pages/Blacklist/Blacklist'], resolve)    //黑名单
+    },
+    {
+      path:'/Order',
+      component:resolve => require(['@/pages/Order/Order'], resolve)   //店铺预览
+    },
+    {
+      path:'/addImgText',
+      component:resolve => require(['@/pages/addImgText/addImgText'], resolve)   //店铺预览
+    },
+    {
+      path:'/addrotary',
+      component:resolve => require(['@/pages/addrotary/addrotary'], resolve)   //新增轮播
+    },
+    {
+      path:'/addSort',
+      component:resolve => require(['@/pages/addSort/addSort'], resolve) // 新增分类
+    },
+    {
+      path:'/rotary/addrotary',
+      component:resolve => require(['@/pages/addrotary/addrotary.vue'], resolve)   //新增轮播
+    },
+    {
+      path:'/editrotary:id',
+      component:resolve => require(['@/pages/editrotary/editrotary.vue'], resolve)   //修改轮播
+    },
+  ]
+})

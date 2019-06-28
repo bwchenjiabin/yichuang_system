@@ -1,0 +1,302 @@
+<template>
+        <div class="box">
+                <el-container>
+                    <el-header>
+                        <Header></Header>
+                    </el-header>
+                    <el-container>
+                        <el-aside width="200px">
+                            <sidebar></sidebar>
+                        </el-aside>
+                        <addrotary v-show="isShows"></addrotary>
+                        <el-main v-show="isShow">
+                            <div class="title">
+                                <h4>轮播图</h4><br><br>
+                                <div class="cont">
+                                    <i class="el-icon-warning"></i>
+                                    <p>轮播图将在移动端首页顶部显示。最多设置5个轮播图，可对轮播图进行排序。</p>
+                                </div>
+                                 <el-button type="primary" style="float: right;margin-right: 100px;" @click="switchs">新增轮播</el-button>
+                            </div>
+                          <el-table
+                              ref="multipleTable"
+                              :data="list.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                              
+                              tooltip-effect="dark"
+                              style="width: 100%"
+                              :header-cell-style="{background:'#f5f5f5',color:'#000'}"
+                              @selection-change="changeFun">
+                              <el-table-column
+                              type="selection"
+                              width="55">
+                              </el-table-column>
+                              <el-table-column
+                              label="轮播缩略图"
+                              width="250">
+                              <template slot-scope="scope">
+                                  <img :src="scope.row.img" alt="" style="width: 50px;height: 50px">
+                              </template>
+                              </el-table-column>
+                              <el-table-column
+                              prop="name"
+                              label="轮播图名称"
+                              width="250">
+                              </el-table-column>
+                              <el-table-column
+                              prop="url"
+                              label="跳转链接"
+                              show-overflow-tooltip>
+                              </el-table-column>
+                              <el-table-column
+                              prop="zt"
+                              label="状态"
+                              show-overflow-tooltip>
+                              </el-table-column>
+                              <el-table-column
+                              fixed="right"
+                              label="操作"
+                              width="200">
+                              <template slot-scope="scope">
+                                
+                                <el-button  type="text" size="small" @click="Clicksort()">排序</el-button>
+                               <el-button type="text" size="small" @click="handleClicks(scope.row.id)">编辑</el-button>
+                                <el-button size="small" type="text"  @click.native.prevent="handleClick(scope.row)">删除</el-button> 
+                              </template>
+                            </el-table-column>
+                          </el-table><br>
+
+                          <!-- 分页 -->
+                          <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="current_change"
+                            :current-page="currentPage"
+                            :page-size="pagesize" 
+                            background
+                            layout="total, prev, pager, next"
+                            :total="this.list.length">
+                          </el-pagination>
+
+
+                          <br><br>
+                          <el-button @click="getdatadel">删除</el-button><br>
+                            <div class="sort">
+                              移动到第
+                                <input type="number" v-model="sort">
+                                位<br><br>
+                              <el-button @click="Clicknone()">取 消</el-button>
+                              <el-button type="primary" @click="Clickthen()">确 定</el-button>
+                            </div>
+                        </el-main>
+                    </el-container>
+                </el-container>
+                   <!-- 删除提示 -->
+                   <el-dialog title="提示" :visible.sync="delVisible" width="300px" center style="z-index: 999">
+                                            
+                      <div class="del-dialog-cnt">确定要删除该条轮播图吗？</div>
+
+                      <span slot="footer" class="dialog-footer">
+
+                        <el-button @click="delVisible = false">取 消</el-button>
+
+                        <el-button type="primary" @click="deleteRow()" >确 定</el-button>
+
+                    </span>
+
+                  </el-dialog>
+        </div>    
+    </template>
+    <script>
+import sidebar from '@/components/sidebar/sidebar.vue'
+import Header from '@/components/Header/Header.vue'
+import addrotary from '@/components/addrotary/addrotary.vue'
+    export default {
+        data(){
+            return{
+          isShow:true,
+          isShows:false,
+          delVisible:false,
+          tableData: [{
+                  id:'1',
+            date: '../../../static/img/微信图片_20190611141523.jpg',
+            name: '王打死',
+            address: '课程详情',
+            zt:'显示'
+          }, {
+                  id:'2',
+            date: '../../../static/img/微信图片_20190611141523.jpg',
+            name: '王单方事故',
+            address: '课程详情',
+            zt:'显示'
+          }, {
+                  id:'3',
+            date: '../../../static/img/微信图片_20190611141523.jpg',
+            name: '王电饭锅虎',
+            address: '课程详情',
+            zt:'显示'
+          }, {
+                  id:'4',
+            date: '../../../static/img/微信图片_20190611141523.jpg',
+            name: '溃疡',
+            address: '课程详情',
+            zt:'显示'
+          }],
+          checkBoxData: [],    //多选框选择的值
+          ada:[],
+          currentPage: 1,
+          pagesize:2,
+          userList: [],
+          number:[], //多选框的值
+          userid:'', //单条删除的值
+          list:[],
+          sort:'',
+                }
+            },
+        created () {
+      this.getdata();
+      },
+        methods:{
+        changeFun(val) {
+            this.checkBoxData = val;
+        },
+          //切换新增页面
+      switchs(){
+        this.isShow = false;
+        this.isShows = true;
+      },
+      // 获取当行内容
+      handleClicks(id) {
+          this.$router.push({
+            path:`/editrotary/${id}`
+          })
+      },
+      Clicksort(row) {
+          $('.sort').css('display','block');
+      },
+      Clicknone(row) {
+          $('.sort').css('display','none');
+      },
+      Clickthen(row) {
+          $('.sort').css('display','none');
+      },
+      // deleteRow(index, rows) {
+      //   rows.splice(index, 1);
+      // },
+      //多选值
+      changeFun(val) {
+      let aa
+      this.checkBoxData = val;
+      for (let i = 0; i < this.checkBoxData.length; i++) {
+        this.number.push(this.checkBoxData[i].id)
+        // aa = this.number.join(",")
+        // new Set(aa);
+        // this.number1 = aa
+        }
+      },
+      //删除单条
+      // dell(){
+      //   console.log(this.msg.id)
+      //   this.delVisible = false;
+      // },
+      // 分页
+      handleSizeChange(size) {
+        this.pagesize = size;
+        console.log(this.pagesize)  //每页下拉显示数据
+      },
+      current_change:function(currentPage){
+        this.currentPage = currentPage
+      },
+      deleteRow(){
+//  this.$axios.get("/api/delPackTotalMade.do",{
+//     params:{
+//         delarr:this.delarr
+//  }
+
+// }).then(res=>{
+//  if(res.data=="包装删除成功"){
+//    this.getPackData();
+//    this.$message.success('删除成功')
+// }
+// }).catch(error=>{
+//   console.log(error);
+//  this.$message.error('包装删除失败')
+// })
+console.log(this.userid)
+this.delVisible = false;
+        },
+      // 展示
+      getdata () {
+      let url = "http://192.168.0.102:8081/rollimage/selectAll"
+      let params = {
+          owner:"1"
+      }
+      this.$axios({
+        url,
+        params
+      }).then(res => {
+         this.list = res.data
+         console.log(this.list)
+        })
+    },
+        // 单条删除
+    handleClick(row) {
+      this.delVisible = true;
+        // console.log(row.businessId);
+        this.userid = row.id
+      //   let url = "http://192.168.0.106:8081/business/immigrant"
+      // let params = {
+      //   businessId:this.userid
+      // }
+      // this.$axios({
+      //   url,
+      //   params
+      // }).then(res => {
+      //    console.log(res)
+      //   })
+      },
+    // 多条删除
+    getdatadel () {
+      console.log(this.number)
+      let url = "http://192.168.0.106:8081/business/immigrant2"
+      let params = {
+        businessId:this.number
+      }
+      this.$axios({
+        url,
+        params
+      }).then(res => {
+         console.log(res)
+        })
+    },
+      },
+        components:{
+            sidebar,
+            Header,
+            addrotary,
+        },
+    }
+    </script>
+    <style scoped>
+ .box{background: #f5f5f5;}
+ h3{display: inline;}
+ .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
+ .title{width: 95%;height: 100px;background: #fff;padding: 30px;}.cont{margin-top: 10px;margin-left: 40px;color: rgba(153, 153, 153, 1);font-size: 14px;text-align: left;font-family: SourceHanSansSC-regular;width: 70%;float: left;}
+ .cont p{display: inline;}.del-dialog-cnt{text-align: center;}
+
+  .box{background: #f5f5f5;}
+  .course{font-size:18px;font-family:PingFangSC-Medium;font-weight:700;color:rgba(51,51,51,1);}
+ .imgText{font-size:18px;font-family:PingFangSC-Medium;font-weight:500;color:rgba(153,153,153,1);}
+ .title{padding: 20px;}
+ .cont li{width: 300px;height: 200px;background:#F4F4F4 100%;float: left;margin-right: 20px;text-align: center;display: flex;justify-content: center;align-items: center;}
+ .bq{width: 60px;height: 24px;line-height: 20px;border-radius: 1px;text-align: center;border: 1px solid rgba(0, 101, 255, 1);color: #0065FF;font-size: 14px;margin-left: 10px;}
+ .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
+ .title{width: auto;display: block}.title span{margin-left: 10px;}
+  .avatar-uploader-icon {font-size: 28px;color: #8c939d;width: 275px;height: 132px;line-height: 132px;text-align: center;background:rgba(251,251,251,1);border: 1px dashed #d9d9d9;margin-left: 70px;}
+ .avatar-uploader-icon:hover{border-color: #409EFF;}.avatar {width: 178px;height: 178px;display: block;}
+  .name{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);margin-right: 15px;}
+ .number{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
+ .text{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);display: inline;}
+ .Choice ul li{background:rgba(255,255,255,1);border:1px solid rgba(238,238,238,1);height:15px;padding: 20px;}
+ .radio{margin-left: 125px;}
+ .sort{text-align: center;margin-top: 30px; display: none;}
+ .sort input{width:50px;height:25px;background:rgba(251,251,251,1);border:1px solid rgba(238,238,238,1); }
+</style>
