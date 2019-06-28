@@ -9,12 +9,13 @@
             </div>
             <span class="phone">176****0684</span>
             <span class="bq">标准版</span>
-            <div class="quit">退出登录</div>
+            <div class="quit" @click="getdata()">退出登录</div>
         </div>
        
     </div>   
 </template>
     <script>
+import qs from 'qs';
     export default {
         data(){
             return{
@@ -24,7 +25,22 @@
         created () {
       },
         methods:{
-    
+        getdata() {
+    //   let params = {
+    //     accountId:this.input,
+    //     accountPwd:this.input2
+    //   };
+      this.$axios({
+           method: 'get',
+            url: 'http://192.168.0.111:8081/acc/logout',
+            // data:qs.stringify(params)
+        }).then(res => {
+        console.log(res);
+          this.$router.push({
+            path: `/`
+        });
+      });
+    },
         }
     }
     </script>

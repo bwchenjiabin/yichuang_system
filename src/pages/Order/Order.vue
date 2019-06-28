@@ -33,7 +33,7 @@
                                     
                                     <el-table
                                             ref="multipleTable"
-                                            :data="tableData"
+                                            :data="list"
                                             tooltip-effect="dark"
                                             order: string
                                             style="width: 100%"
@@ -47,23 +47,23 @@
                                             label="商品"
                                             width="250">
                                             <template slot-scope="scope" >
-                                                <i class="img-box"><img :src="scope.row.date" alt=""></i>
-                                                 <span class="name">{{scope.row.name}}</span>
-                                                 <span class="money">￥{{scope.row.consumption}}</span>
+                                                <i class="img-box"><img :src="scope.row.lesson.img" alt=""></i>
+                                                 <span class="name">{{scope.row.lesson.lessonName}}</span><br>
+                                                 <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
                                             </template>
                                             </el-table-column>
                                             <el-table-column
-                                            prop="name"
+                                            prop="businessUser.businessName"
                                             label="买家"
                                             width="250">
                                             </el-table-column>
                                             <el-table-column
-                                            prop="address"
+                                            prop="payTime"
                                             label="交易时间"
                                             show-overflow-tooltip>
                                             </el-table-column>
                                             <el-table-column
-                                            prop="zt"
+                                            prop="orderStatus"
                                             label="订单状态"
                                             show-overflow-tooltip>
                                             </el-table-column>
@@ -72,7 +72,7 @@
                                             label="总价格"
                                             show-overflow-tooltip>
                                             <template slot-scope="scope" >
-                                              ￥{{scope.row.consumption}}
+                                              ￥{{scope.row.lesson.lessonPriceNow}}
                                           </template>
                                             </el-table-column>
                                             <el-table-column
@@ -186,8 +186,8 @@ import Header from '@/components/Header/Header.vue'
         url,
         params
       }).then(res => {
-         this.list = res.data.date
-         console.log(res.data.date)
+         this.list = res.data
+         console.log(this.list)
         })
     },
       open() {
