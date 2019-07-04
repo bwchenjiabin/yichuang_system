@@ -30,7 +30,7 @@
               <ul>
                 <li>
                   {{node.name}}
-                  <div class="icons"><i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;<i class="el-icon-delete"></i></div>
+                  <div class="icons"><i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;<i class="el-icon-delete" delsections(node.id)></i></div>
                 </li>
               </ul>
             </div>
@@ -136,6 +136,7 @@ import {chaptsectioner} from 'api/userAjax';
 import {section} from 'api/userAjax';
 import {editsection} from 'api/userAjax';
 import {editvideosection} from 'api/userAjax';
+import {delsection} from 'api/userAjax';
 export default {
   data() {
     return {
@@ -157,6 +158,7 @@ export default {
       date1:[],
       date2:[],
       date3:[],
+      delsectionID:'',
     editorOption: {
         modules: {
           toolbar: [
@@ -230,6 +232,15 @@ export default {
             // this.delVisiblee = false;
       })  
         },
+    //删除节
+      delsections(val){
+        this.delsectionID = val
+          delsection(this.delsectionID).then(res => {
+            this.getdata()
+            // this.delVisiblee = false;
+      })  
+        },
+        
 
     // 弹窗
     Popup(val) {

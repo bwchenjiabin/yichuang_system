@@ -409,9 +409,9 @@ const updateLesson = (lessonid,lessonName,img,lessonDetail,status,lessonVip,less
 }
 
 //删除节
-const delsection = (lessonId) => {
+const delsection = (secionId) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/lesson/selectLessonById',{lessonId}).then(res => {
+    ajax.get('/lesson/selectLessonById',{secionId}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
