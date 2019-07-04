@@ -19,7 +19,7 @@
                     <i class="el-icon-warning"></i>
                     <p>轮播图将在移动端首页顶部显示。最多设置5个轮播图，可对轮播图进行排序。</p>
                 </div><br><br><br><br>
-                <el-button type="primary">保存</el-button>&nbsp;&nbsp;&nbsp;<el-button plain>取消</el-button>
+                <el-button type="primary" @click="getdata()">保存</el-button>&nbsp;&nbsp;&nbsp;<el-button plain>取消</el-button>
                 </div>
             </div>
         </el-main>
@@ -27,7 +27,7 @@
             <el-dialog title="选择分类配图" :visible.sync="delVisible" width="600px" center style="z-index: 999">     
                 <div class="del-dialog-cnt"> 
                     <ul>
-                  <li v-for="(item,index) in tableData" :key="index" >
+                  <li v-for="(item,index) in tableData" :key="index" @click="aa(item.id)">
                       <span class="Order">{{item.id}}</span>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">
                           <img :src="item.img" alt="" :class = "active == index ? 'addclass' : '' " @click='dowm(index)' class="imga">
@@ -37,12 +37,13 @@
                 </div>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="delVisible = false">取 消</el-button>
-                    <el-button type="primary" >确 定</el-button>
+                    <el-button type="primary" @click="delVisible = false">确 定</el-button>
                 </span>
             </el-dialog>
         </div>    
     </template>
     <script>
+import {addclass} from 'api/userAjax';
     export default {
       name:'classify',
         data(){
@@ -63,12 +64,22 @@
             img: '../../../static/img/微信图片_20190620142459.png',
             id: '4',
           }],
-       active : -1
-                }
-                },
+       active : -1,
+       imgid:'',
+              }
+            },
         created () {
       },
         methods:{
+    // 新增分类
+      getdata () {
+        addclass(this.input,"1",this.imgid).then(res => {
+            console.log(res);
+      })
+      // console.log(this.input)
+      // console.log(this.imgid)
+    },
+        
     // 刷新页面
         switchss(){
         this.$router.go(0)
@@ -79,6 +90,9 @@
       },
         dowm(index){
         this.active = index
+      },
+      aa(val){
+        this.imgid = val
       }
         },
     }

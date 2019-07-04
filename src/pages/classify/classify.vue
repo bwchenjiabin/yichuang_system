@@ -12,11 +12,11 @@
                         <el-main v-show="addclas">
                             <h4>内容分类</h4><br><br>
                             <el-button type="primary" style="float:right;margin-right:100px" @click="addclass">新增分类</el-button>
-                              <el-table  ref="test" :data="tableData" tooltip-effect="dark" style="width: 100%"  @selection-change="selsChange">
-                                <el-table-column type="selection" label="" width="55">
-                                </el-table-column>
-                                <el-table-column label="全选"  width="120" > 
-                                    <template slot-scope="scope">{{ scope.row.date }}</template>
+                              <el-table  ref="test" :data="tableData" tooltip-effect="dark" style="width: 100%">
+                                <!-- <el-table-column type="selection" label="" width="55">
+                                </el-table-column> -->
+                                <el-table-column label=""  width="120" > 
+                                    <template slot-scope="scope">{{ scope.row.kindName }}</template>
                                 </el-table-column>
                                 <el-table-column  prop="" label="" width="120" >
                                 </el-table-column>
@@ -24,13 +24,13 @@
                                 </el-table-column>
                                 <el-table-column fixed="right" label="操作" width="200">
                                         <template slot-scope="scope">
-                                          <el-button type="text" size="small">修改</el-button>
+                                          <el-button type="text" size="small" @click="modify(scope.row)">修改</el-button>
                                           <el-button type="text" size="small" @click="deleteRow(scope.row)">删除</el-button>
                                         </template>
                                 </el-table-column>
                             </el-table>
                             <div style="margin-top: 20px">
-                                 <el-button @click="del" >全部删除</el-button>
+                                 <!-- <el-button @click="del" >全部删除</el-button> -->
                             </div>
                         </el-main>
                     </el-container>
@@ -65,52 +65,85 @@
                     </span>
 
                   </el-dialog>
+
+
+                  <!-- 修改弹窗 -->
+                <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left">                                
+              <div class="del-dialog-cnt">
+                <el-input
+                  v-model="value"
+                  :placeholder="modifyName"
+                  clearable>
+                </el-input>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                  <el-button type="primary" @click="modifyclass()">确 定</el-button>
+
+              </span>
+
+          </el-dialog>
         </div>    
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
 import addSort from '@/components/addSort/addSort.vue'
+import {classe} from 'api/userAjax';
+import {delclass} from 'api/userAjax';
+import {modifys} from 'api/userAjax';
     export default {
       name:'classify',
         data(){
             return{
           addclas:true,
           addSort:false,
-         Delprompt:false,    //删除提示
-         Delete:false,    //删除提示
-   tableData: [{
-          id:1,
-          date: '运营工作',
-
-        }, {
-          id:2,
-          date: '运营工作',
-
-        }, {
-          id:3,
-          date: '运营工作',
-
-        }],
-        checkBoxData: [],//选中的值显示
-        userid:[],
+          Delprompt:false,    //删除提示
+          Delete:false,    //删除提示
+          tableData: [],
+          userid:[],
+          input:''  ,//修改分类名字3
+          delVisible:false, // 内容分类弹窗修改
+          modifyName:'', // 修改名称
+          modifyid:'', // 修改的id
+          value:''
                 }
             },
         created () {
-          // this.getdata();
+          this.getdata();
       },
         methods:{
+        
+
+
       //新增分类
       addclass(){
         this.addclas = false;
         this.addSort = true;
       },
 
- 
+      //修改
+      modify(row){
+        this.delVisible = true;
+        this.modifyName = row.kindName
+        this.modifyid = row.kindId
+      },
+      //修改
+      modifyclass(){
+        this.delVisible = false
+       modifys(this.modifyid,this.value).then(res => {
+         this.$message.success(res.data)
+         this.$message.error(res.msg)
+
+            console.log(res);
+      })
+        console.log(this.modifyid)
+        console.log(this.value)
+        this.getdata();
+      },
+
       //展开删除提示
       del(){
         this.Delprompt = true;
-  
       },
       //删除选中数据
       dele(){
@@ -121,30 +154,13 @@ import addSort from '@/components/addSort/addSort.vue'
       this.tableData.splice(item.date - 1,1);
         }
       },
-      //多选选中的值
-      selsChange(val) {
-           let aa=[];
-      this.checkBoxData = val;
-      for (let i = 0; i < this.checkBoxData.length; i++) {
-        aa.push(this.checkBoxData[i].id)
-        new Set(aa);
-      this.number = aa;
-        // console.log(this.number)
-      }
-    },
+
       // 展示
       getdata () {
-      let url = "http://192.168.0.106:8081/business/select"
-      let params = {
-          ex2:"1"
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-        //  this.list = res.data.date
-         console.log(res)
-        })
+        classe("1").then(res => {
+          this.tableData = res.data
+            // console.log(res.data);
+      })
     },
       //    deleteRow() {
       //   rows.splice(index, 1);
@@ -156,34 +172,9 @@ import addSort from '@/components/addSort/addSort.vue'
       },
     // 单条删除
     handleClicks() {
-      console.log(this.userid)
-      this.Delete = false;
-        // this.userid = row.businessId
-        let url = "http://192.168.0.106:8081/business/immigrant"
-      let params = {
-        businessId:this.userid
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-        //  this.list = res.data.date
-         console.log(res)
-        })
-      },
-          // 多条删除
-    getdatadel () {
-      console.log(this.number)
-      let url = "http://192.168.0.106:8081/business/immigrant2"
-      let params = {
-        businessId:this.number
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-         console.log(res)
-        })
+        delclass(this.userid).then(res => {
+            console.log(res);
+      })
     },
         },
             components:{

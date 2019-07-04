@@ -79,8 +79,8 @@
                                             fixed="right"
                                             label="操作"
                                             width="200">
-                                            <template slot-scope=""  >
-                                              <el-button type="text" size="small" @click="open">查看详情</el-button>
+                                            <template slot-scope="scope"  >
+                                              <el-button type="text" size="small" @click="open(scope.row)">查看详情</el-button>
                                             </template>
                                           </el-table-column>
                                          
@@ -95,12 +95,12 @@
                 <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left">
                                             
               <div class="del-dialog-cnt"><ul>
-                  <li v-for="(item,index) in details" :key="index">
-                      <span class="Order">订单编号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{item.number}}</span><br><br>
-                      <span class="Order">支付订单号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{item.Order}}</span><br><br>
-                      <span class="Order">支付流水号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{item.Pipeline}}</span><br><br>
-                      <span class="Order">创建时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{item.build}}</span><br><br>
-                      <span class="Order">成交时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{item.Deal}}</span><br><br>
+                  <li >
+                      <span class="Order">订单编号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.orderNumber}}</span><br><br>
+                      <span class="Order">支付订单号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.escrowTradeNo}}</span><br><br>
+                      <!-- <span class="Order">支付流水号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.orderNumber}}</span><br><br> -->
+                      <span class="Order">创建时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.payTime}}</span><br><br>
+                      <span class="Order">成交时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.payEndTime}}</span><br><br>
                      
                   </li></ul></div>
               <span slot="footer" class="dialog-footer">
@@ -115,6 +115,8 @@
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
+import {order} from 'api/userAjax';
+import {orderdeteils} from 'api/userAjax';
     export default {
         data(){
             return{
@@ -162,14 +164,15 @@ import Header from '@/components/Header/Header.vue'
             consumption:'100'
           }],
           details: [{
-            number: '49876524789645163418541541',
-            Order:'298765789244555',
-            Pipeline: '4978784456484654548',
-            build : '2019-02-25',
-            Deal:'2018-02-03'
+            // number: '49876524789645163418541541',
+            // Order:'298765789244555',
+            // Pipeline: '4978784456484654548',
+            // build : '2019-02-25',
+            // Deal:'2018-02-03'
           }],
             delVisible:false,
-            list:[] 
+            list:[],
+            ordernum:[]
                 }
             },
         created () {
@@ -178,20 +181,23 @@ import Header from '@/components/Header/Header.vue'
         methods:{
       // 展示
       getdata () {
-      let url = "http://192.168.0.111:8081/order/select"
-      let params = {
-          ex2:"1"
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-         this.list = res.data
-         console.log(this.list)
-        })
+        order("1").then(res => {
+           this.list = res.data
+          //  console.log(this.list)
+      })
+    },   
+      getdatad () {
+        orderdeteils(this.ordernum).then(res => {
+           console.log(res.data)
+           this.details = res.data
+      })
     },
-      open() {
-              this.delVisible = true;      
+      open(row) {
+        // this.getdatad();
+        this.ordernum = row.orderNumber
+        this.delVisible = true;      
+        this.getdatad();
+        console.log(this.ordernum)
             },
       Close() {
             this.delVisible = false;

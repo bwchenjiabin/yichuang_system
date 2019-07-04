@@ -1,28 +1,19 @@
 export default {
   state: {
       // 用户id
-    user_id: 1,
-    // 商户id
-    owner: 1
+      ex2: 2,
   },
   getters: {
-    user_id: state => state.user_id,
-    owner: state => state.owner
+    ex2: state => state.ex2
   },
   mutations: {
-    'SET_USER_ID' (state, payload) {
-      state.user_id = payload
-    },
-    'SET_OWNER' (state, payload) {
-      state.owner = payload
+    'SET_EX2' (state, payload) {
+      state.ex2 = payload
     }
   },
   actions: {
-    setUserId ({commit}, payload) {
-      commit("SET_USER_ID", payload)
-    },
-    setOwner ({commit}, payload) {
-      commit("SET_OWNER", payload)
-    },
+    setEx2 ({commit}, payload) {
+      commit("SET_EX2", payload)
+    }
   }
 }

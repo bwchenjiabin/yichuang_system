@@ -23,124 +23,136 @@
                                 <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p><br><br>
 
                                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess"
+                               :headers="headerMsg"
                                   :before-upload="beforeAvatarUpload">
-                                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                  <img v-if="imageUrl" :src="'http://192.168.0.107:8081'+imageUrl" class="avatar">
                                   <i v-else class="el-icon-plus avatar-uploader-icon update"></i>
                                </el-upload><br><br>
                                <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                <el-radio v-model="radios" label="1" @change="radioq">跳转到</el-radio> <el-button plain @click="Popup" :disabled="disabled">重新选择</el-button><br><br><br>
                                <el-radio v-model="radios" label="2" class="radio" @change="radioq">无跳转</el-radio><br><br><br>
-                               <el-button type="primary" @click="keep">保存</el-button>
+                               <el-button type="primary" @click="updatar()">保存</el-button>
                                 </div>
                             </div>
                         </el-main>
                            </el-container>
             </el-container>
 
-                    <!-- 弹窗 -->
-            <el-dialog title="" :visible.sync="delVisible" width="550px" center style="z-index: 999">     
-                <div class="del-dialog-cnt">      
-                    <div class="tab">
-                       <el-tabs v-model="activeName">
-                        <el-tab-pane label="课程" name="courser">
-                            <el-tabs :tab-position="tabPosition" style="height:300px;overflow:auto;position:relative" v-model="courser">
-                                <el-tab-pane label="图文" name="imgText">
-                                  <el-table
-                                    @current-change="handleCurrentChange"
-                                    @cell-click="handle"
-                                    ref="singleTable"
-                                    :data="tableData"
-                                    highlight-current-row
-                                    style="width: 100%">
-                                    <el-table-column
-                                    type="index"
-                                    width="50">
-                                    </el-table-column>
-                                    <el-table-column
-                                    property="name"
-                                    label="名称"
-                                    width="120">
-                                    </el-table-column>
-                                    <el-table-column
-                                    property="date"
-                                    label="创建时间"
-                                    width="120">
-                                    </el-table-column>
-                                </el-table>
-                                </el-tab-pane>
-                                <el-tab-pane label="音频" name="audio">
+         <!-- 弹窗 -->
+    <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999">
+      <div class="del-dialog-cnt">
+        <div class="tab">
+          <el-tabs v-model="activeName">
+            <el-tab-pane label="课程" name="courser">
+              <el-tabs
+                :tab-position="tabPosition"
+                style="height:300px;overflow:auto;position:relative"
+                v-model="courser"
+              >
+                <el-tab-pane label="图文" name="imgText">
+                  <el-table
+                    @current-change="handleCurrentChange"
+                    ref="singleTable"
+                    :data="tableData"
+                    highlight-current-row
+                    style="width: 100%"
+                  >
+                    <el-table-column type="index" width="50"></el-table-column>
+                    <el-table-column property="lessonName" label="名称" width="120"></el-table-column>
+                    <el-table-column property="upperoffTime" label="创建时间" width="120"></el-table-column>
+                  </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="音频" name="audio">
+                  <el-table
+                    @current-change="handleCurrentChange"
+                    ref="singleTable"
+                    :data="tableData1"
+                    highlight-current-row
+                    style="width: 100%"
+                  >
+                    <el-table-column type="index" width="50"></el-table-column>
+                    <el-table-column property="lessonName" label="名称" width="120"></el-table-column>
+                    <el-table-column property="upperoffTime" label="创建时间" width="120"></el-table-column>
+                  </el-table>
+                </el-tab-pane>
 
-                                     <el-table
-                                    @current-change="handleCurrentChange"
-                                    @cell-click="handle"
-                                    ref="singleTable"
-                                    :data="tableData1"
-                                    highlight-current-row
-                                    style="width: 100%">
-                                    <el-table-column
-                                    type="index"
-                                    width="50">
-                                    </el-table-column>
-                                    <el-table-column
-                                    property="name"
-                                    label="名称"
-                                    width="120">
-                                    </el-table-column>
-                                    <el-table-column
-                                    property="date"
-                                    label="创建时间"
-                                    width="120">
-                                    </el-table-column>
-                                </el-table>
+                <el-tab-pane label="视频" name="video">
+                  <el-table
+                    @current-change="handleCurrentChange"
+                    ref="singleTable"
+                    :data="tableData2"
+                    highlight-current-row
+                    style="width: 100%"
+                  >
+                    <el-table-column type="index" width="50"></el-table-column>
+                    <el-table-column property="lessonName" label="名称" width="120"></el-table-column>
+                    <el-table-column property="upperoffTime" label="创建时间" width="120"></el-table-column>
+                  </el-table>
+                </el-tab-pane>
+              </el-tabs>
+            </el-tab-pane><br><br>
 
-                                </el-tab-pane> 
-                                <el-tab-pane label="视频" name="video">
 
-                                <el-table
-                                    @current-change="handleCurrentChange"
-                                    @cell-click="handle"
-                                    ref="singleTable"
-                                    :data="tableData2"
-                                    highlight-current-row
-                                    style="width: 100%">
-                                    <el-table-column
-                                    type="index"
-                                    width="50">
-                                    </el-table-column>
-                                    <el-table-column
-                                    property="name"
-                                    label="名称"
-                                    width="120">
-                                    </el-table-column>
-                                    <el-table-column
-                                    property="date"
-                                    label="创建时间"
-                                    width="120">
-                                    </el-table-column>
-                                </el-table>
-                                </el-tab-pane>
-                            </el-tabs>
-                        </el-tab-pane>
-                        <el-tab-pane label="内容分类" name="sort">
-                            <div class="Choice">
-                                <ul>
-                                    <li v-for="(item,index) in Choice" :key="index"><el-radio v-model="radio2" :label="item.id">{{item.class}}</el-radio><br></li>
-                                </ul>
-                            </div>
-                        </el-tab-pane>
-                        </el-tabs>
-                    </div>
-                </div>
-                <span slot="footer" class="dialog-footer"> 
-                    <el-button @click="delVisible = false">取 消</el-button>
-                    <el-button type="primary"  :disabled ="disab">保 存</el-button>
-                </span>
-            </el-dialog>
+             <!-- 图文分页 -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="current_change"
+            @current-page="currentPage"
+            :page-size="pagesize"
+            background
+            layout="total, prev, pager, next"
+            :total="this.twsize"
+           v-if="this.courser == 'imgText'"></el-pagination>
+
+                       <!-- 音频分页 -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="current_change1"
+            :current-page="currentPage1"
+            :page-size="pagesize"
+            background
+            layout="total, prev, pager, next"
+            :total="this.ypsize"
+          v-if="this.courser == 'audio'"></el-pagination>
+
+                       <!-- 视频分页 -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="current_change2"
+            :current-page="currentPage2"
+            :page-size="pagesize"
+            background
+            layout="total, prev, pager, next"
+            :total="this.spsize"
+          v-if="this.courser == 'video'"></el-pagination>
+            <!-- <el-tab-pane label="内容分类" name="sort">
+              <div class="Choice">
+                <ul>
+                  <li v-for="(item,index) in Choice" :key="index">
+                    <el-radio v-model="radio2" :label="item.kindId">{{item.kindName}}</el-radio>
+                    <br>
+                  </li>
+                </ul>
+              </div>
+            </el-tab-pane> -->
+          </el-tabs>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delVisible = false">取 消</el-button>
+        <el-button type="primary"  @click="delVisible = false">保 存</el-button>
+      </span>
+    </el-dialog>
         </div>    
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
+import {updatarotary} from 'api/userAjax';
+import {ImgText} from 'api/userAjax';
+import {audio} from 'api/userAjax';
+import {video} from 'api/userAjax';
+import {updataId} from 'api/userAjax';
     export default {
         data(){
             return{
@@ -155,6 +167,7 @@ import Header from '@/components/Header/Header.vue'
                 currentRow:null, 
                 disab:true,    //按钮禁用
                 disabled:false,   //按钮禁用
+                headerMsg:{'Content-Type':'multipart/form-data'},
                 Choice:[{
                   class:'餐饮行业',
                   id:'1'
@@ -163,80 +176,87 @@ import Header from '@/components/Header/Header.vue'
                   class:'运营工作',
                   id:'2'
                 }],
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '陈泳景是个弟弟',
-                }, {
-                    date: '2016-05-04',
-                    name: '陈泳景是个弟弟',
-                }, {
-                    date: '2016-05-01',
-                    name: '陈泳景是个弟弟',
-                }, {
-                    date: '2016-05-03',
-                    name: '陈泳景是个弟弟',
-                },{
-                    date: '2016-05-02',
-                    name: '陈泳景是个弟弟',
-                },{
-                    date: '2016-05-02',
-                    name: '陈泳景是个弟弟',
-                },{
-                    date: '2016-05-02',
-                    name: '陈泳景是个弟弟',
-                },],
-                tableData1: [{
-                    date: '2018-05-02',
-                    name: '李伟晨',
-                }, {
-                    date: '2017-05-04',
-                    name: '李伟晨',
-                }, {
-                    date: '2011-05-01',
-                    name: '李伟晨',
-                }, {
-                    date: '2010-05-03',
-                    name: '李伟晨',
-                }],
-                tableData2: [{
-                    date: '1998-05-02',
-                    name: '阿萨德',
-                }, {
-                    date: '1997-05-04',
-                    name: '通过大润发',
-                }, {
-                    date: '1996-05-01',
-                    name: '体育',
-                }, {
-                    date: '1958-05-03',
-                    name: '热土',
-                }],
-                Id:[]
+                tableData: [],
+                tableData1: [],
+                tableData2: [],
+                currentPage: 1,   //图文当前页
+                currentPage1: 1,  //音频当前页
+                currentPage2: 1,  //视频当前页
+                pagesize: 8,
+                twsize:'',
+                ypsize:'',
+                spsize:'',
+                Id:'',
+                number:''
                 }
         },
         created () {
-            let that = this;
-            //获取id
-            that.Id = that.$router.params.id
-            that.params.id = that.$router.params.id
-            console.log(that.Id)
+            this.getParams()
+            this.getImgText()
+            this.getaudio()
+            this.getvideo()
+            this.getdata()
+            this.keep()
       },
         methods:{
+            getdata() {
+        updataId(this.Id).then(res => {
+            console.log(res);
+            this.input = res.data.name
+            this.imageUrl = res.data.img
+            this.number = res.data.type
+            this.currentRow = res.data.lessonid
+      })
+    },
+        //获取传值    
+        getParams(){
+            var routerParams = this.$route.params.id
+            this.Id = routerParams
+        },
+           // 图文查询
+    getImgText() {
+        ImgText("1","1",this.currentPage).then(res => {
+            this.tableData = res.data.lesson;
+            this.twsize = res.data.totalLesson
+      })
+    },
+        // 音频查询
+    getaudio() {
+        audio("1","2",this.currentPage1).then(res => {
+            this.tableData1 = res.data.lesson;
+            this.ypsize = res.data.totalLesson
+      })
+    },
+        // 视频查询
+    getvideo() {
+        video("1","3",this.currentPage2).then(res => {
+            this.tableData2 = res.data.lesson;
+            this.spsize = res.data.totalLesson
+      })
+    },
     // 刷新页面
        switchss(){
         this.$router.go(0)
        },
-       keep(){
+       //编辑轮播
+       updatar(){
+      updatarotary({name:this.input,owner:'1',type:this.number,lessonid:this.currentRow,file:this.imageUrl,id:this.Id}).then(res => {
+            console.log(this.input)
+            console.log(this.number)
+            console.log(this.currentRow)
             console.log(this.imageUrl)
-
-           if (this.activeName == "courser") {
-           console.log(this.activeName);
-           console.log(this.courser);       
-           console.log(this.currentRow)
-           }else{
-           console.log(this.activeName);
-           console.log(this.radio2)
-           }
+            console.log(this.Id)
+      })
+       },
+       keep(){
+      if (this.courser == "imgText") {
+        this.number = 1;
+      }if (this.courser == "audio") {
+        this.number = 2;
+      }
+      if (this.courser == "video") {
+        this.number = 3;
+      }
         },
     radioq(val){
         let that = this
@@ -251,12 +271,33 @@ import Header from '@/components/Header/Header.vue'
             this.disab = false;
         }
     },
-    handleCurrentChange(val) {
-            this.currentRow = val;
-                    },
     handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);
     },
+
+
+    handleCurrentChange(val) {
+      this.currentRow = val.lessonid;
+    },
+        // 分页
+    handleSizeChange(size) {
+      this.pagesize = size;
+    },
+    current_change: function(currentPage) {
+      this.currentPage = currentPage;
+      this.getImgText();
+    },
+        current_change1: function(currentPage) {
+      this.currentPage1 = currentPage;
+      this.getaudio();
+    },
+        current_change2: function(currentPage) {
+      this.currentPage2 = currentPage;
+      this.getvideo();
+    },
+
+
+
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;

@@ -82,7 +82,7 @@
             <br>
             <br>
             <el-button @click="Clicknone()">取 消</el-button>
-            <el-button type="primary" @click="Clickthen()">确 定</el-button>
+            <el-button type="primary" @click="sortrota()">确 定</el-button>
           </div>
         </el-main>
       </el-container>
@@ -103,6 +103,10 @@
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import addrotary from "@/components/addrotary/addrotary.vue";
+import {rotary} from 'api/userAjax';
+import {delrotary} from 'api/userAjax';
+import {ddelrotary} from 'api/userAjax';
+import {sortrotary} from 'api/userAjax';
 export default {
   data() {
     return {
@@ -142,12 +146,12 @@ export default {
       checkBoxData: [], //多选框选择的值
       ada: [],
       currentPage: 1,
-      pagesize: 2,
+      pagesize: 5,
       userList: [],
       number: [], //多选框的值
       userid: "", //单条删除的值
       list: [],
-      sort: "",  //移动到第几位
+      sort:'',  //移动到第几位
       sortid:''  //需要排序的id
     };
   },
@@ -177,97 +181,61 @@ export default {
       $(".sort").css("display", "none");
     },
     Clickthen(row) {
-      console.log(this.sort);
-      console.log(this.sortid)
+
       $(".sort").css("display", "none");
     },
-    // deleteRow(index, rows) {
-    //   rows.splice(index, 1);
-    // },
+
+    //轮播排序
+      sortrota() {
+      $(".sort").css("display", "none");
+        sortrotary({id:this.sortid,weight:this.sort}).then(res => {
+          this.getdata();
+           this.$message.success(res.data)
+      })
+    },
+    //单条删除
+    deleteRow() {
+      this.delVisible = false;      
+        delrotary(this.userid).then(res => {
+          this.$message.success('删除成功')
+            this.getdata();
+      })
+    },
     //多选值
     changeFun(val) {
-      let aa = [];
       this.checkBoxData = val;
       for (let i = 0; i < this.checkBoxData.length; i++) {
-        aa.push(this.checkBoxData[i].id);
-        new Set(aa);
-        this.number = aa;
+        if (this.number.indexOf(this.checkBoxData[i].id) == -1) {
+          this.number.push(this.checkBoxData[i].id);
+        }
+        // new Set(aa);
       }
     },
-    //删除单条
-    // dell(){
-    //   console.log(this.msg.id)
-    //   this.delVisible = false;
-    // },
     // 分页
     handleSizeChange(size) {
       this.pagesize = size;
-      console.log(this.pagesize); //每页下拉显示数据
     },
     current_change: function(currentPage) {
       this.currentPage = currentPage;
     },
-    deleteRow() {
-      //  this.$axios.get("/api/delPackTotalMade.do",{
-      //     params:{
-      //         delarr:this.delarr
-      //  }
-
-      // }).then(res=>{
-      //  if(res.data=="包装删除成功"){
-      //    this.getPackData();
-      //    this.$message.success('删除成功')
-      // }
-      // }).catch(error=>{
-      //   console.log(error);
-      //  this.$message.error('包装删除失败')
-      // })
-      console.log(this.userid);
-      this.delVisible = false;
-    },
     // 展示
     getdata() {
-      let url = "http://192.168.0.102:8081/rollimage/selectAll";
-      let params = {
-        owner: "1"
-      };
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-        this.list = res.data;
-        console.log(this.list);
-      });
+        rotary("1").then(res => {
+            this.list = res.data;
+      })
     },
     // 单条删除
     handleClick(row) {
       this.delVisible = true;
-      // console.log(row.businessId);
       this.userid = row.id;
-      //   let url = "http://192.168.0.106:8081/business/immigrant"
-      // let params = {
-      //   businessId:this.userid
-      // }
-      // this.$axios({
-      //   url,
-      //   params
-      // }).then(res => {
-      //    console.log(res)
-      //   })
     },
     // 多条删除
     getdatadel() {
-      console.log(this.number);
-      let url = "http://192.168.0.106:8081/business/immigrant2";
-      let params = {
-        businessId: this.number
-      };
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-        console.log(res);
-      });
+      this.delVisible = false;    
+        ddelrotary(this.number).then(res => {
+          this.$message.success('删除成功')
+            this.getdata();
+      })
     }
   },
   components: {

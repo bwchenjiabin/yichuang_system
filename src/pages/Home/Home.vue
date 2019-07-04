@@ -18,7 +18,7 @@
                                     <div class="dd">
                                         <img src="../../../static/img/矢量智能对象 拷贝 2@2x.png" alt="" class="imgs">
                                         <span>总用户（人）</span><br><br>
-                                        <h3>1,700</h3>
+                                        <h3>{{this.number.peopleNumber}}</h3>
                                     </div>
                                     
                                 </li>
@@ -26,14 +26,14 @@
                                     <div class="dd">
                                         <img src="../../../static/img/矢量智能对象@2x(1).png" alt="" class="imgs">
                                         <span>今日收入（元）</span><br><br>
-                                        <h3>3,458.00</h3>
+                                        <h3>{{this.number.todaySturnover}}</h3>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="dd">
                                         <img src="../../../static/img/矢量智能对象@2x(2).png" alt="" class="imgs">
                                         <span>总收入（元）</span><br><br>
-                                        <h3>12,754.00</h3>    
+                                        <h3>{{this.number.sturnover}}</h3>    
                                     </div>                      
                                 </li>
                             </ul>
@@ -45,16 +45,24 @@
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
+import {Home} from 'api/userAjax';
     export default {
         data(){
             return{
-
+                number:[]
             }
         },
         created () {
+            this.getdata();
       },
         methods:{
-    
+        getdata() {
+        Home("1").then(res => {
+            console.log(res.data);
+            this.number = res.data
+
+      })
+    },
         },
         components:{
             sidebar,

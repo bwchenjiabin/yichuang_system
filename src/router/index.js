@@ -73,8 +73,32 @@ export default new Router({
       component:resolve => require(['@/pages/addrotary/addrotary.vue'], resolve)   //新增轮播
     },
     {
-      path:'/editrotary:id',
+      path:'/editrotary/:id',
       component:resolve => require(['@/pages/editrotary/editrotary.vue'], resolve)   //修改轮播
+    },
+    {
+      path:'/editImgText/:id',
+      component:resolve => require(['@/pages/editImgText/editImgText.vue'], resolve)   //修改图文
+    },
+    {
+      path:'/editaudio/:id',
+      component:resolve => require(['@/pages/editaudio/editaudio.vue'], resolve)   //修改音频
+    },
+    {
+      path:'/editvideo/:id',
+      component:resolve => require(['@/pages/editvideo/editvideo.vue'], resolve)   //修改视频
+    },
+    {
+      path:'/addlesson/:id',
+      component:resolve => require(['@/pages/addlesson/addlesson.vue'], resolve)   //新增图文章节
+    },
+    {
+      path:'/addvideolesson/:id',
+      component:resolve => require(['@/pages/addvideolesson/addvideolesson.vue'], resolve)   //新增章节
+    },
+    {
+      path:'/addaudiolesson/:id',
+      component:resolve => require(['@/pages/addaudiolesson/addaudiolesson.vue'], resolve)   //新增章节
     },
   ]
 })

@@ -98,6 +98,10 @@
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
+import {user} from 'api/userAjax';
+import {ssuser} from 'api/userAjax';
+import {singledel} from 'api/userAjax';
+import {deluser} from 'api/userAjax';
     export default {
         data(){
             return{
@@ -127,70 +131,67 @@ import Header from '@/components/Header/Header.vue'
                 number1:''
                 }
             },
+            // computed: {
+            //   ...mapGetters({
+            //     ex2: 'ex2'
+            //   })
+            // },
         created () {
           this.getdata();
       },
         methods:{
       // 展示
         getdata () {
-      let url = "http://192.168.0.106:8081/business/select"
-      let params = {
-          ex2:"1"
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-         this.list = res.data.date
-        //  console.log(res.data.date)
-        })
+        user("1").then(res => {
+           this.list = res.data.date
+           console.log(this.list)
+      })
     },
     // 搜索
         getdataphone () {
-      let url = "http://192.168.0.106:8081/business/selectBySearch"
-      let params = {
-          ex2:"3",
-          businessPhone:this.input,   // 手机号
-          businessStatus:this.value,          //是否会员
-          businessConsumption:this.value1,     //是否付费
-          memberEndTime:this.value2,         //会员到期时间
-      }
-      this.$axios({url,params})
-        .then(res => {
-        //  this.list = res.data.date
-         console.log(res.data.date)
-        })
+           ssuser("3",this.input,this.value,this.value1,this.value2).then(res => {
+           this.list = res.data.date
+      })        
+      // let url = "http://192.168.0.106:8081/business/selectBySearch"
+      // let params = {
+      //     ex2:"3",
+      //     businessPhone:this.input,   // 手机号
+      //     businessStatus:this.value,          //是否会员
+      //     businessConsumption:this.value1,     //是否付费
+      //     memberEndTime:this.value2,         //会员到期时间
+      // }
+      // this.$axios({url,params})
+      //   .then(res => {
+      //    console.log(res.data.date)
+      //   })
     },
     // 多条删除
     getdatadel () {
-      console.log(this.number1)
-      let url = "http://192.168.0.106:8081/business/immigrant2"
-      let params = {
-        businessId:this.number1
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-         console.log(res)
-        })
+        singledel(this.number1).then(res => {
+        // this.list = res.data.date
+        console.log(res)
+        this.getdata();
+      })  
+      // console.log(this.number1)
+      // let url = "http://192.168.0.106:8081/business/immigrant2"
+      // let params = {
+      //   businessId:this.number1
+      // }
+      // this.$axios({
+      //   url,
+      //   params
+      // }).then(res => {
+      //    console.log(res)
+      //   })
     },
 
     // 单条删除
     handleClicks(row) {
-        // console.log(row.businessId);
-        this.userid = row.businessId
-        let url = "http://192.168.0.106:8081/business/immigrant"
-      let params = {
-        businessId:this.userid
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-        //  this.list = res.data.date
-         console.log(res)
-        })
+       this.userid = row.businessId
+        deluser(this.userid).then(res => {
+        // this.list = res.data.date
+        console.log(res)
+      })  
       },
     changeFun(val) {
       let aa
@@ -201,7 +202,6 @@ import Header from '@/components/Header/Header.vue'
         new Set(aa);
         this.number1 = aa
       }
-      // console.log(this.number)
   },
     checkBox(){
       console.log(this.number)

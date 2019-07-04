@@ -1,4 +1,5 @@
 'use strict'
+// var webpack = require('webpack')
 const webpack = require('webpack')
 const path = require('path')
 const utils = require('./utils')
@@ -10,14 +11,14 @@ function resolve (dir) {
 }
 
 const createLintingRule = () => ({
-  test: /\.(js|vue)$/,
-  loader: 'eslint-loader',
-  enforce: 'pre',
-  include: [resolve('src'), resolve('test')],
-  options: {
-    formatter: require('eslint-friendly-formatter'),
-    emitWarning: !config.dev.showEslintErrorsInOverlay
-  }
+  // test: /\.(js|vue)$/,
+  // loader: 'eslint-loader',
+  // enforce: 'pre',
+  // include: [resolve('src'), resolve('test')],
+  // options: {
+  //   formatter: require('eslint-friendly-formatter'),
+  //   emitWarning: !config.dev.showEslintErrorsInOverlay
+  // }
 })
 
 module.exports = {
@@ -42,6 +43,14 @@ module.exports = {
       'common': resolve('src/common')
     }
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+   $: "jquery",
+   jQuery: "jquery",
+   jquery: "jquery",
+   "window.jQuery": "jquery"
+    })
+   ],
   module: {
     rules: [
       // ...(config.dev.useEslint ? [createLintingRule()] : []),

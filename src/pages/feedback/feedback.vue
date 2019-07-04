@@ -17,21 +17,20 @@
                             style="width: 100%"
                             :header-cell-style="{background:'#eef1f6',color:'#000'}">
                             <el-table-column
-                            prop="date"
+                            prop="businessNanme"
                             label="用户昵称"
                             width="180">
                             </el-table-column>
                             <el-table-column
-                            prop="name"
+                            prop="feedbackHead"
                             label="反馈标题"
                             width="180">
                             </el-table-column>
                             <el-table-column
-                            prop="address"
+                            prop="feedbackBody"
                             label="反馈内容">
                             </el-table-column>
                         </el-table>
-                        
                         </el-main>
                     </el-container>
                 </el-container>
@@ -40,31 +39,24 @@
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
+import {feedback} from 'api/userAjax';
+
     export default {
         data(){
             return{
-                tableData: [{
-          date: '江南',
-          name: '王小虎',
-          address: '需要付费项目太多，没有看到想要的东西之前，会有很少的用户会愿意买单'
-        }, {
-          date: '王小虎',
-          name: '王小虎',
-          address: '需要付费项目太多，没有看到想要的东西之前，会有很少的用户会愿意买单'
-        }, {
-          date: '阿萨德',
-          name: '王小虎',
-          address: '需要付费项目太多，没有看到想要的东西之前，会有很少的用户会愿意买单'
-        }, {
-          date: '换个打算',
-          name: '王小虎',
-          address: '需要付费项目太多，没有看到想要的东西之前，会有很少的用户会愿意买单'
-        }]
+                tableData: [],
                 }
                 },
         created () {
+            this.getdata();
       },
         methods:{
+        getdata() {
+        feedback("1").then(res => {
+            this.tableData = res.data;
+            // console.log(res.data)
+      })
+    },
       
         },
         components:{

@@ -2,9 +2,7 @@
   <div class="box">
     <el-main>
       <div>
-        <router-link to>
           <span class="course" @click="switchss">我的课程</span>&nbsp;&nbsp;&nbsp;
-        </router-link>/&nbsp;&nbsp;&nbsp;
         <span class="imgText">新增音频</span>
         <br>
         <br>
@@ -24,35 +22,22 @@
           <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
           <br>
           <br>
+        <el-upload
+          class="upload-demo"
+          ref="upload"
+          :action="imageUrl"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          :on-success="handleAvatarSuccess"
+          :limit="1"
+          accept=".jpg,.png,.gif"
+          :auto-upload="false">
+          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">保存</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
 
-          <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <br>
-          <br>
-
-          <span class="name">详情封面</span>
-          <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
-          <br>
-          <br>
-
-          <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="imageUrl1" :src="imageUrl1" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon update"></i>
-          </el-upload>
           <br>
           <br>
 
@@ -72,42 +57,6 @@
           <br>
           <br>
           <br>
-        </div>
-
-        <div class="title">
-          <i class="icon"></i>
-          <span>课程信息</span>
-          <br>
-        </div>
-        <div class="content">
-          <div class="cont-tit">
-            <span class="chapter">第一章</span>
-            <span>章节标题</span>
-            <el-input placeholder="请输入章节标题" v-model="input1" clearable class="inp2"></el-input>
-            <el-button plain class="btn">+添加节</el-button>
-          </div>
-          <el-button type="primary" class="btn1">添加章</el-button>
-        </div>
-        <div class="table">
-          <ul>
-            <li v-for="(item,index) in list" :key="index">
-              {{item.name}}
-              <div class="icons">
-                <i class="el-icon-edit-outline"></i>&nbsp;&nbsp;&nbsp;
-                <i class="el-icon-delete"></i>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="content">
-          <div class="cont-title">
-            <span class="chapter">第二章</span>
-            <span>章节标题</span>
-            <el-input placeholder="请输入章节标题" v-model="input2" clearable class="inp2"></el-input>
-            <el-button plain class="btn">+添加节</el-button>
-            <i class="el-icon-delete icona"></i>
-          </div>
         </div>
         <div class="title">
           <i class="icon"></i>
@@ -138,11 +87,19 @@
           <br>
           <span>获取形式</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-radio v-model="radios" label="1" @change="radioq">收费</el-radio>
-          <span class="money">￥</span>
-          <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled"></el-input>
+
+          <br>
+          <br>
+          <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <el-radio v-model="radios" label="2" @change="radioq">免费</el-radio>
+          <el-radio v-model="radio1" label="0" @change="judge">所有人免费</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-radio v-model="radio1" label="1" @change="judge">会员免费</el-radio>
           <br>
           <br>
           <br>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="money">￥</span>
+          <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled"></el-input><br><br><br>
+
           <div style="display:inline-block" class="hxj">
             <span>
               划线价
@@ -152,17 +109,8 @@
             </span>
           </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <span class="money">￥</span>
-          <el-input placeholder="0.01-50000" v-model.number="input4" :disabled="disabled"></el-input>
-          <br>
-          <br>
-          <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-radio v-model="radios" label="2" @change="radioq">免费</el-radio>
-          <el-radio v-model="radio1" label="1">所有人免费</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-radio v-model="radio1" label="2">会员免费</el-radio>
-          <br>
-          <br>
-          <br>
-          <el-button type="primary">保存</el-button>
+          <el-input placeholder="0.01-50000" v-model.number="input4" :disabled="disabled"></el-input><br><br>
+          <el-button type="submit" @click="adddata()">保存</el-button>
         </div>
       </div>
     </el-main>
@@ -173,8 +121,8 @@
         <br>
         <div class="Choice">
           <ul>
-            <li v-for="(item,index) in Choice" :key="index">
-              <el-radio v-model="radio2" :label="item.id">{{item.class}}</el-radio>
+            <li v-for="(item,index) in Choice" :key="index" @click="abv(item.kindName)">
+              <el-radio v-model="radio2" :label="item.kindId">{{item.kindName}}</el-radio>
               <br>
             </li>
           </ul>
@@ -182,92 +130,136 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisible = false">取 消</el-button>
-        <el-button type="primary">保 存</el-button>
+        <el-button type="primary" @click="delVisible = false">保 存</el-button>
       </span>
     </el-dialog>
+
+
   </div>
 </template>
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
+import {classe} from 'api/userAjax';
+import {addlesson} from 'api/userAjax';
+import {uploadImg} from 'api/userAjax';
 export default {
   data() {
     return {
+      
       input: "", // 课程名称
       input1: "", // 章节标题1
       input2: "", // 章节标题2
       input3: "", // 收费价格
       input4: "", // 划线价
-      imageUrl: "", // 课程封面
-      imageUrl1: "", // 详情封面
+      fileList: [],
+      imageUrl: "http://192.168.0.102:8081/lesson/insertLessonImg", // 上传地址
       textarea: "", // 课程简介
       radio: "1", // 上架时间
       radios: "2", // 获取形式
-      radio1: "1", // 免费
-      radio2: "1", // 选择分类
+      radio1: "0", // 免费
+      radio2: "", // 选择分类
       disabled: true, // 是否禁用
-      list: [
-        {
-          name: "1-1  导语（试读）"
-        },
-        {
-          name: "1-2  大佬教你怎样创业（试读）"
-        },
-        {
-          name: "1-3  大佬教你怎样创业（试读）"
-        }
-      ],
+      aaa:'', // 类型名字
+      lessonType:2,
+      imgurl:'',   //后台返回的路径
       delVisible: false,
+
       radio: "1",
-      Choice: [
-        {
-          class: "餐饮行业",
-          id: "1"
-        },
-        {
-          class: "运营工作",
-          id: "2"
-        }
-      ]
+      Choice: []
     };
   },
-  created() {},
+  created() {
+    this.getdata();
+  },
   methods: {
+    //类型名字获取
+    abv(val){
+        this.aaa = val
+        console.log(val)
+    },
+
     //刷新页面
     switchss() {
       this.$router.go(0);
     },
     //判断如果选择收费，输入框可以输入
     radioq(val) {
-      let that = this;
       if (val == "1") {
         this.disabled = false;
-        that.radio1 = "";
+        this.radio1 = "";
+        // this.radio1.disabled = true
       } else {
         this.disabled = true;
-        that.radio1 = "1";
+        this.radio1 = "0";
         this.input3 = "";
         this.input4 = "";
       }
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+    //判断会员免费输入框可以输入
+    judge(){
+      if (this.radio1 == "1") {
+        this.disabled = false;  
+        this.radios = "2"
+      }else{
+        this.disabled = true;
+        this.input3 = "";
+        this.input4 = "";
+        // this.radios = "1"
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+      if (this.radio1!="") {
+        this.radios = "2"
       }
-      return isJPG && isLt2M;
     },
+
+    
+        getdata () {
+      classe("1").then(res => {
+        this.Choice = res.data
+        // console.log(this.Choice)
+      })
+    },
+      adddata () {
+        // this.$refs.upload.submit();
+      addlesson(this.input,this.lessonType,this.aaa,"1",this.radio,this.textarea,this.input4,this.input3,this.radio1,this.imgurl).then(res => {
+        // this.Choice = res.data
+        console.log(res)
+      })
+        console.log(this.input)
+        console.log(this.aaa)
+        console.log(this.textarea)
+        console.log(this.input4)
+        console.log(this.input3)
+
+    },
+
+      submitUpload() {
+        this.$refs.upload.submit();
+
+      },
+      handleAvatarSuccess(response){
+        console.log(response);
+        this.imgurl=response
+      },
+      handleRemove(file, fileList) {
+        // console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
     //弹窗
     Popup() {
       this.delVisible = true;
+    },
+    onEditorBlur() {
+      //失去焦点事件
+    },
+    onEditorFocus() {
+      //获得焦点事件
+    },
+    onEditorChange() {
+      //内容改变事件
     }
   },
   components: {
@@ -351,6 +343,7 @@ export default {
   font-family: PingFangSC-Medium;
   font-weight: 700;
   color: rgba(51, 51, 51, 1);
+  cursor: pointer;
 }
 .imgText {
   font-size: 18px;
@@ -474,9 +467,7 @@ export default {
   line-height: 40px;
   display: inline-block;
 }
-.hxj {
-  margin-left: 100px;
-}
+
 .gray {
   height: 50px;
   background: rgba(251, 251, 251, 1);

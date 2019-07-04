@@ -23,6 +23,7 @@
 <script>
 
 import qs from 'qs';
+import {login} from 'api/userAjax';
 export default {
     data(){
         return{
@@ -34,28 +35,16 @@ export default {
   },
     methods:{
     getdata() {
-      let params = {
-        accountId:this.input,
-        accountPwd:this.input2
-      };
-      this.$axios({
-           method: 'post',
-            url: 'http://192.168.0.111:8081/acc/login',
-            data:qs.stringify(params)
-        }).then(res => {
+        login(this.input, this.input2).then(res => {
             if (res.data.status == "success") {
                 this.$message.success('登录成功')
                   this.$router.push({
                     path: `/Home`
                 });
             }else{
-       this.$message.error('登录失败')
+                this.$message.error('登录失败')
             }
-
       })
-    //   .catch(error=>{
-    //     console.log(error);
-    //   });
     },
 
     // getdata() {

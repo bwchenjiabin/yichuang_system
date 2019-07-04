@@ -5,9 +5,9 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import store from './store'
+import 'jquery'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import Sortable from 'sortablejs';
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = ''
 Vue.config.productionTip = false

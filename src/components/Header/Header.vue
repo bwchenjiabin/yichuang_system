@@ -16,6 +16,7 @@
 </template>
     <script>
 import qs from 'qs';
+import {tuichu} from 'api/userAjax';
     export default {
         data(){
             return{
@@ -26,20 +27,24 @@ import qs from 'qs';
       },
         methods:{
         getdata() {
-    //   let params = {
-    //     accountId:this.input,
-    //     accountPwd:this.input2
-    //   };
-      this.$axios({
-           method: 'get',
-            url: 'http://192.168.0.111:8081/acc/logout',
-            // data:qs.stringify(params)
-        }).then(res => {
-        console.log(res);
-          this.$router.push({
+
+        tuichu().then(res => {
+        this.$router.push({
             path: `/`
         });
-      });
+        this.$message.success('退出成功')
+      })
+
+
+    //   this.$axios({
+    //        method: 'get',
+    //         url: 'http://192.168.0.111:8081/acc/logout',
+    //     }).then(res => {
+    //     console.log(res);
+    //       this.$router.push({
+    //         path: `/`
+    //     });
+    //   });
     },
         }
     }

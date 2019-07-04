@@ -17,7 +17,8 @@
                                 :data="list"
                                 tooltip-effect="dark"
                                 style="width: 100%"
-                                :header-cell-style="{color:'#000'}">
+                                :header-cell-style="{color:'#000'}"
+                                @selection-change="changeFun">
                                 <el-table-column
                                 type="selection"
                                 width="55">
@@ -44,7 +45,7 @@
                                 </template>
                               </el-table-column>
                             </el-table><br><br>
-                            <el-button style="margin-left: 50px;">移出黑名单</el-button>
+                            <el-button style="margin-left: 50px;" @click="getdatadel()">移出黑名单</el-button>
                             </el-tab-pane>
                           </el-tabs>
                     </el-main>
@@ -55,6 +56,9 @@
 <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
+import {blacklist} from 'api/userAjax';
+import {delblacklist} from 'api/userAjax';
+import {ddelblacklist} from 'api/userAjax';
 export default {
     data(){
         return{
@@ -105,6 +109,9 @@ export default {
       }],
       list:[],
       userid:[],   //单条移出黑名单
+      checkBoxData:[],
+      number:[],
+      number1:''
             }
         },
     created () {
@@ -113,38 +120,69 @@ export default {
     methods:{
       // 展示
         getdata () {
-      let url = "http://192.168.0.106:8081/business/black"
-      let params = {
-          ex2:"1"
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
-         this.list = res.data.date
-        //  console.log(res.data.date)
-        })
-    },
 
+        blacklist("1").then(res => {
+         this.list = res.data.date
+        // console.log(this.list);
+      })
+      // let url = "http://192.168.0.106:8081/business/black"
+      // let params = {
+      //     ex2:"1"
+      // }
+      // this.$axios({
+      //   url,
+      //   params
+      // }).then(res => {
+      //    this.list = res.data.date
+      //   })
+    },
       // 单条删除
       handleClicks(row) {
         this.userid = row.businessId
-        let url = "http://192.168.0.106:8081/business/remove"
-      let params = {
-        businessId:this.userid
-      }
-      this.$axios({
-        url,
-        params
-      }).then(res => {
+        console.log(this.userid)
+        delblacklist(this.userid).then(res => {
         //  this.list = res.data.date
-         console.log(res)
-        })
+        console.log(res);
+      })
       },
       // 单条删除
       deleteRow(index, rows) {
         rows.splice(index, 1);
       },
+
+          // 多条删除
+    getdatadel () {
+        ddelblacklist(this.number1).then(res => {
+        // this.list = res.data.date
+        console.log(res)
+        this.getdata();
+      })  
+      
+      // console.log(this.number1)
+      // let url = "http://192.168.0.106:8081/business/immigrant2"
+      // let params = {
+      //   businessId:this.number1
+      // }
+      // this.$axios({
+      //   url,
+      //   params
+      // }).then(res => {
+      //    console.log(res)
+      //   })
+    },
+
+
+    changeFun(val) {
+      let aa
+      this.checkBoxData = val;
+      for (let i = 0; i < this.checkBoxData.length; i++) {
+        this.number.push(this.checkBoxData[i].businessId)
+        aa = this.number.join(",")
+        new Set(aa);
+        this.number1 = aa
+      }
+      // console.log(this.number)
+  },
     },
     components:{
         sidebar,
