@@ -8,6 +8,9 @@ import store from './store'
 import 'jquery'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
 import Vuex from 'vuex' //引入状态管理
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = ''

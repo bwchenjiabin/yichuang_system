@@ -3,9 +3,7 @@
             class="el-menu-vertical-demo"
              :default-openeds="openeds"  
              :default-active="$route.path"  
-             active-text-color="#1455FA"
-             
-        router>
+             active-text-color="#1455FA" router>
             <el-submenu index="1">
                 <template slot="title">
                     <i class="el-icon-s-home"></i>
@@ -77,16 +75,17 @@
     </script>
     <style scoped>
 
- .el-aside ul{    position: fixed;margin-top: 80px;    width: 200px;}
+ .el-aside ul{       width: 199px; margin-bottom: 20px;}
  .el-aside li{text-align: left;}
  .el-aside span{text-align: right;}
  .el-submenu__title{padding: 0;}
+ .el-submenu .el-menu-item{ min-width: 199px;}
     </style>
     <style>
   body > .el-container {margin-bottom: 40px;}
  .el-header, .el-footer {background-color: #fff;color: #333;text-align: center;line-height: 60px;}
  .el-header{margin-bottom: 20px;position: fixed;width: 100%;z-index: 999;}
- .el-aside {margin-left: 20px;margin-right: 20px;color: #333;text-align: center;line-height: 200px;}
+ .el-aside {margin-left: 20px;margin-right: 20px;color: #333;text-align: center;line-height: 200px;    background: #fff;    margin-top: 80px;}
  .el-main {background-color: #fff;color: #333; margin-top: 80px;}
  /* .bgd{width: 5px;height: 50px;background: blue;display: inline-block;position: absolute;top: 0px;left: 0;} */
  .el-menu-item.is-active i{width: 5px;height: 50px;background: blue;display: inline-block;position: absolute;top: 0px;left: 0;}

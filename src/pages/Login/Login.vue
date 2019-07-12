@@ -35,10 +35,11 @@ export default {
         getdata() {
         login(this.input, this.input1).then(res => {
           localStorage.setItem('ex2',res.data.date.accountid)
-          localStorage.setItem('phone',res.data.date.title)
+          localStorage.setItem('phone',res.data.date.accountTitle)
           localStorage.setItem('portrait',res.data.date.Codepath)
           console.log(res.data.date)
             if (res.data.status == "success") {
+              
                 this.$message.success('登录成功')
                   this.$router.push({
                     path: `/Home`

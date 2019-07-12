@@ -48,7 +48,7 @@
       </el-container>
     </el-container>
     <!-- 新增图文弹窗 -->
-    <el-dialog title :visible.sync="delVisible" width="600px" center style="z-index: 999">
+    <el-dialog title :visible.sync="delVisible" width="600px" height="500px" center style="z-index: 999">
       <div class="del-dialog-cnt">
         <span class="namea">标题</span>
         <el-input placeholder="请输入标题" v-model="input1" clearable maxlength="30"></el-input>
@@ -63,7 +63,7 @@
         <br>
         <br />
         <!-- 图片上传组件辅助 -->
-        <!-- <el-upload
+        <el-upload
             class="avatar-uploader"
             :action="serverUrl"
             :on-success="uploadSuccess"
@@ -79,8 +79,8 @@
             v-model="content"
             ref="myQuillEditor"
             :options="editorOption"
-        ></quill-editor> -->
-        <UE :defaultMsg="defaultMsg" :config="config" :id="ue" ref="ue"></UE>
+        ></quill-editor>
+        <!-- <UE :defaultMsg="defaultMsg" :config="config" :id="ue" ref="ue"></UE> -->
         <br />
         <br />
         <br />
@@ -93,7 +93,7 @@
       </span>
     </el-dialog>
     <!-- 编辑图文弹窗 -->
-    <el-dialog title :visible.sync="delVisiblee" width="600px" center style="z-index: 999">
+    <el-dialog title :visible.sync="delVisiblee" width="600px" height="500px" center style="z-index: 999">
       <div class="del-dialog-cnt">
         <span class="namea">标题</span>
         <el-input placeholder="请输入标题" v-model="input2" clearable maxlength="30"></el-input>
@@ -108,9 +108,8 @@
         <br />
         <br />
         <br />
-        <!-- <Editor v-model="content1"></Editor> -->
         <!-- 图片上传组件辅助-->
-        <!-- <el-upload
+        <el-upload
           class="avatar-uploader"
           :action="serverUrl1"
           :on-success="uploadSuccess1"
@@ -121,8 +120,8 @@
           :before-upload="beforeUpload1"
           accept=".jpg, .png, .gif, .bmp, .jpeg"
         ></el-upload>
-        <quill-editor class="editor" v-model="content1" ref="myQuillEditor" :options="editorOption"></quill-editor> -->
-        <UE :defaultMsg="defaultMsg1" :config="config" :id="ue1" ref="ue"></UE>
+        <quill-editor class="editor" v-model="content1" ref="myQuillEditor" :options="editorOption"></quill-editor>
+        <!-- <UE :defaultMsg="defaultMsg1" :config="config" :id="ue1" ref="ue1"></UE> -->
         <br />
         <br />
         <br />
@@ -141,6 +140,7 @@
         <div class="edit-title">
           修改章名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-input placeholder="请输入新的章名称" v-model="input3" clearable maxlength="20"></el-input>
+          <el-button type="primary" @click="editmodif()" style="margin-left:20px;">保 存</el-button>
         </div>
       </div>
     </el-dialog>
@@ -181,23 +181,25 @@ import { editsection } from "api/userAjax";
 import { delsection } from "api/userAjax";
 import { delchapter } from "api/userAjax";
 import { editsection1 } from "api/userAjax";
+import { querychapter } from "api/userAjax";
 export default {
   data() {
     return {
       defaultMsg: "",
-      defaultMsg1: "",
+      // defaultMsg1: "",
       config: {
         initialFrameWidth: null,
         initialFrameWidth: 550,
         initialFrameHeight: 400
       },
       ue: "ue",
-      ue1: "ue",
+      // ue1: "ue1",
 
       input: "", // 章名称
       input1: "", // 新增节标题
       input2: "", // 修改节标题
       input3: "", // 修改章标题
+      chapterids:'',
       delVisible: false, //新增弹窗
       delVisiblee: false, //编辑弹窗
       editmodifys: false, // 编辑章名称
@@ -277,12 +279,12 @@ export default {
       } else {
         this.checked = 0;
       }
-      section(this.chapterid, this.input1, this.defaultMsg, this.checked)
+      section(this.chapterid, this.input1, this.content, this.checked)
         .then(res => {
           this.delVisible = false;
           this.$message.success(res.data);
           this.input1 = "";
-          this.defaultMsg = "";
+          this.content = "";
           this.getdata();
         })
         .catch(err => {
@@ -341,7 +343,7 @@ export default {
         this.sectionid,
         this.chapterId,
         this.input2,
-        this.defaultMsg1,
+        this.content1,
         this.checked1
       )
         .then(res => {
@@ -363,7 +365,23 @@ export default {
     },
     // 修改章名称
     editmodify(val) {
+      this.chapterids = val
       this.editmodifys = true;
+      querychapter(this.chapterids).then(res =>{
+        this.input3 = res.data.name
+      })
+    },
+    // 确认修改章名称
+    editmodif(){
+            chapter(localStorage.getItem("ex2"),this.Id, this.input3,this.chapterids)
+        .then(res => {
+          this.editmodifys = false;
+          this.$message.success(res.data);
+          this.getdata();
+        })
+        .catch(err => {
+          this.$message.error(err);
+        });
     },
 
     Popupp(val) {
@@ -371,14 +389,14 @@ export default {
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name;
-        this.defaultMsg1 = res.data.url;
+        this.content1 = res.data.url;
         this.checked1 = res.data.extend2;
         if (this.checked1 == 1) {
           this.checked1 = true;
         } else {
           this.checked1 = false;
         }
-        console.log(this.checked1);
+        console.log(res);
       });
     },
     // 富文本图片上传前
@@ -395,6 +413,7 @@ export default {
       // 获取光标所在位置
       let length = quill.getSelection().index;
       // 插入图片  res.url为服务器返回的图片地址
+      console.log(res)
       quill.insertEmbed(
         length,
         "image",
@@ -442,6 +461,7 @@ export default {
 .box {
   background: #f5f5f5;
 }
+.avatar-uploader{display: none;}
 .title {
   padding: 20px;
 }

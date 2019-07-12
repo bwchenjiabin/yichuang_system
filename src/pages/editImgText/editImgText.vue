@@ -21,8 +21,9 @@
                                 <span class="number">{{this.input.length}}/12</span><br><br><br>
                                 <span class="name">课程封面</span>
                                 <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p><br><br>
-
-
+                                <div class="img-box">
+                                  <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
+                                </div><br>
                                     <el-upload
                                       class="upload-demo"
                                       ref="upload"
@@ -37,10 +38,7 @@
                                       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                                       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">保存</el-button>
                                       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                                    </el-upload>
-
-
-                             
+                                    </el-upload>                            
                                 <br><br>
 
 
@@ -73,23 +71,19 @@
           <span>获取形式</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-radio v-model="radios" label="2" @change="radioq">收费</el-radio><el-radio v-model="radios" label="0" @change="radioq">所有人免费</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-radio v-model="radios" label="1" @change="radioq">会员免费</el-radio>
+          <br>
+          <br>
+          <br>
 
-          <br>
-          <br>
-          <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-
-          <br>
-          <br>
-          <br>
-           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="money">￥</span>
+           &nbsp;&nbsp;现价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="money">￥</span>
           <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled"></el-input><br><br><br>
 
           <div style="display:inline-block" class="hxj">
             <span>
-              划线价
-              <span class="bt">
+              原价
+              <!-- <span class="bt">
                 <br>&nbsp;&nbsp;(必填)
-              </span>
+              </span> -->
             </span>
           </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <span class="money">￥</span>
@@ -117,6 +111,7 @@ export default {
       fileList: [],
       // imageUrl: "", // 上传地址
       imgurl:'',   //后台返回的路径
+      imgurls:'',
       textarea: "", // 课程简介
       radio: "", // 上架时间
       radios: "", // 获取形式
@@ -155,6 +150,15 @@ export default {
           this.radios = res.data.lessonVip + ""
           this.input4 = res.data.lessonPriceFormer
           this.input3 = res.data.lessonPriceNow
+          this.imgurl = res.data.img
+          console.log(res);
+        if (this.radios == "0") {
+         this.disabled = true;
+        this.input3 = "";
+        this.input4 = "";
+      }else {
+        this.disabled = false;
+      }
       })
     },
         //修改
@@ -166,7 +170,7 @@ export default {
       });
       }).catch(err => {
       this.$message.error(err)
-    })
+      })
     },
     
     //获取传值    
@@ -444,5 +448,13 @@ export default {
 }
 /deep/ .el-dialog__title {
   font-size: 16px;
+}
+.img-box {
+    width: 150px;
+    height: 150px;
+}
+.img-box img {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -27,7 +27,7 @@
               &nbsp;
               &nbsp;
               <el-input placeholder="搜索关键词" v-model="input" clearable></el-input>
-              <el-button type="info" plain>筛选</el-button>
+              <el-button type="info" plain @click="keywords()">筛选</el-button>
               <el-button
                 type="primary"
                 style="float:right;margin-right:150px;"
@@ -105,7 +105,7 @@
               &nbsp;
               &nbsp;
               <el-input placeholder="搜索关键词" v-model="input1" clearable></el-input>
-              <el-button type="info" plain @click="selectaudio()">筛选</el-button>
+              <el-button type="info" plain @click="keywords1()">筛选</el-button>
               <el-button
                 type="primary"
                 style="float:right;margin-right:150px;"
@@ -182,7 +182,7 @@
               &nbsp;
               &nbsp;
               <el-input placeholder="搜索关键词" v-model="input2" clearable></el-input>
-              <el-button type="info" plain @click="selectvideo()">筛选</el-button>
+              <el-button type="info" plain @click="keywords2()">筛选</el-button>
               <el-button
                 type="primary"
                 style="float:right;margin-right:150px;"
@@ -275,6 +275,7 @@ import { selectId } from "api/userAjax";
 import { UpperShelf } from "api/userAjax";
 import { lowerShelf } from "api/userAjax";
 import { dellesson } from "api/userAjax";
+import { keyword } from "api/userAjax";
 
 // import { quillEditor } from 'vue-quill-editor'
 export default {
@@ -299,14 +300,14 @@ export default {
       value: "", //图文状态
       value1: "", //音频状态
       value2: "", //视频状态
-      input: "",
-      input1: "",
-      input2: "",
+      input: "",   //图文关键词
+      input1: "",   //音频关键词
+      input2: "",   //视频关键词
       delVisible: false,
       currentPage: 1, //图文当前页
       currentPage1: 1, //音频当前页
       currentPage2: 1, //视频当前页
-      pagesize: 8,
+      pagesize: 5,
       userList: [],
       tableData: [],
       tableData1: [],
@@ -637,7 +638,44 @@ export default {
       }).catch(err => {
       this.$message.error(err)
     });
-    }
+    },
+  // 图文关键词搜索
+    keywords(){
+      keyword(
+        this.input,
+        localStorage.getItem("ex2"),
+        this.currentPage,
+      ).then(res => {
+        console.log(res.data.data);
+        this.$message.success(res.data.msg)
+        this.tableData = res.data.data;
+        this.twsize = res.data.data.length;
+      })
+    },
+      // 音频关键词搜索
+    keywords1(){
+      keyword(
+        this.input1,
+        localStorage.getItem("ex2"),
+        this.currentPage1,
+      ).then(res => {
+        this.$message.success(res.data.msg)
+        this.tableData1 = res.data.data;
+        this.ypsize = res.data.data.length;
+      })
+    },
+      // 视频关键词搜索
+    keywords2(){
+      keyword(
+        this.input2,
+        localStorage.getItem("ex2"),
+        this.currentPage2,
+      ).then(res => {
+        this.$message.success(res.data.msg)
+        this.tableData2 = res.data.data;
+        this.spsize = res.data.data.length;
+      })
+    },
   },
   components: {
     sidebar,

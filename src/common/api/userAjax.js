@@ -364,9 +364,9 @@ const lowerShelf = (data) => {
 }
 
 //新增章
-const chapter = (owner,lessonid,name) => {
+const chapter = (owner,lessonid,name,id) => {
   return new Promise((resolve, reject) => {
-    ajax.post('/chapter/insert',{owner,lessonid,name}).then(res => {
+    ajax.post('/chapter/insert',{owner,lessonid,name,id}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -503,6 +503,28 @@ const editchapter = (accountId,uname) => {
   })
 }
 
+//查询章
+const querychapter = (id) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/chapter/selectById',{id}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 课程关键词搜索
+const keyword = (keyword,owner,page) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/lesson/selectLike',{keyword,owner,page}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export {login}
 export {tuichu}
 export {rotary}
@@ -550,3 +572,5 @@ export {preview}
 export {editchapter}
 export {orderSearch}
 export {orderStatus}
+export {querychapter}
+export {keyword}

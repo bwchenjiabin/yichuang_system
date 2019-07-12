@@ -28,6 +28,7 @@
               <span class="chapter_name txt-cut">{{item.name}}</span>
               <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button>
               <i class="el-icon-delete icona" @click="delchapters(item.id)"></i>
+              <i class="el-icon-edit-outline icona" @click="editmodify(item.id)"></i>
             </div>
             <div class="table" v-for="(node,index2) in item.sections" :key="index2">
               <ul>
@@ -112,6 +113,16 @@
         <el-button type="primary" @click="submitUpload1(),editvideosections()">保 存</el-button>
       </span>
     </el-dialog>
+    <!-- 编辑章名称弹窗 -->
+    <el-dialog title :visible.sync="editmodifys" width="600px" center style="z-index: 999">
+      <div class="del-dialog-cnt">
+        <div class="edit-title">
+          修改章名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-input placeholder="请输入新的章名称" v-model="input3" clearable maxlength="20"></el-input>
+          <el-button type="primary" @click="editmodif()" style="margin-left:20px;">保 存</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
     <script>
@@ -125,6 +136,7 @@ import { editsection } from "api/userAjax";
 import { editvideosection } from 'api/userAjax';
 import { delsection } from 'api/userAjax';
 import { delchapter } from "api/userAjax";
+import { querychapter } from "api/userAjax";
 export default {
   data() {
     return {
@@ -139,6 +151,9 @@ export default {
       checkedss:false, // 是否试读
       checked1:false, // 是否试读
       checkedss1:false, // 是否试读
+      input3: "", // 修改章标题
+      chapterids:'', // 获取章id
+      editmodifys:false,  //修改章弹窗
       courseDetail: [],
       fileList:[],
       fileList1:[],
@@ -247,6 +262,26 @@ export default {
             this.getdata()
       })  
         },
+    // 修改章名称
+    editmodify(val) {
+      this.chapterids = val
+      this.editmodifys = true;
+      querychapter(this.chapterids).then(res =>{
+        this.input3 = res.data.name
+      })
+    },
+    // 确认修改章名称
+    editmodif(){
+            chapter(localStorage.getItem("ex2"),this.Id, this.input3,this.chapterids)
+        .then(res => {
+          this.editmodifys = false;
+          this.$message.success(res.data);
+          this.getdata();
+        })
+        .catch(err => {
+          this.$message.error(err);
+        });
+    },
 
     // 弹窗
     Popup(val) {

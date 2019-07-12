@@ -5,13 +5,11 @@
         </div> 
         <div class="info">
             <div class="photo">
-            <!-- <img :src="'http://yckt.yichuangketang.com:8081'+this.portrait" alt=""> -->
             </div>
             <span class="phone">{{this.phone}}</span>
             <span class="bq">标准版</span>
             <div class="quit" @click="getdata()">退出登录</div>
         </div>
-       
     </div>   
 </template>
     <script>
@@ -45,7 +43,7 @@ import {tuichu} from 'api/userAjax';
  .header{text-align: left;padding-left: 80px;}
  .title{color: rgba(16, 16, 16, 1);font-size: 28px;text-align: left;font-family: 方正兰亭黑-标准;width: 20%;float: left;}
  .title img{width: 130px;height: 30px;margin-top: 15px;}
- .info{width: 20%;float: right;margin-right: 30px;}
+ .info{width: 20%;float: right;margin-right: 100px;}
  .photo{width: 30px;height: 30px;margin-top: 10px; color: rgba(51, 51, 51, 1);font-size: 16px;font-family: SourceHanSansSC-regular;position: absolute;}
  .photo img{width: 100%;height: 100%;border-radius: 50%;}
  .quit{cursor:pointer; display: inline;padding-left: 15px;border-left: 1px solid #ccc;color: #0065FF;font-size: 16px}.phone{padding-right: 20px;margin-left: 40px;font-size:18px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
@@ -55,6 +53,8 @@ import {tuichu} from 'api/userAjax';
  .el-header{margin-bottom: 20px;width: 100%;position: fixed;}
  .el-aside {margin-left: 20px;margin-right: 20px;background-color: #D3DCE6;color: #333;text-align: center;line-height: 200px;}
  .el-main {background-color: #E9EEF3;color: #333;text-align: center;line-height: 160px;}
+
+
     </style>
     
     

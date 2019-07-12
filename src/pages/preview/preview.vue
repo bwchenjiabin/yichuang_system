@@ -19,9 +19,10 @@
                                 <span class="phone">{{this.name}}</span>
                             </div>
                             <div class="content">
-                                <span class="name">店铺地址</span><span class="inp">{{this.url}}</span><span class="xiu">复制</span>
+                                <span class="name">店铺地址</span><span class="inp">{{this.url}}</span><span class="xiu" v-clipboard:copy="url" v-clipboard:success="onCopy" v-clipboard:error="onError">复制</span>
                             </div>
-                         
+                            <br>
+                            <br>
                             <div>店铺内存：{{this.percentage}}/{{this.Memory}}</div> 
                         </el-main>
                     </el-container>
@@ -46,6 +47,14 @@ import {preview} from 'api/userAjax';
         this.getdata();
       },
         methods:{
+
+            
+    onCopy: function (e) {
+      this.$message.success("复制成功")
+    },
+    onError: function (e) {
+      this.$message.error("复制失败")
+    },
         // 展示
         getdata () {
         preview(localStorage.getItem('ex2')).then(res => {
