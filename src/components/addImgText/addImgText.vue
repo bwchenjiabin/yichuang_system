@@ -22,6 +22,11 @@
           <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
           <br />
           <br />
+          <div class="img-box">
+            <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
+          </div>
+          <br />
+          <br />
           <el-upload
             class="upload-demo"
             ref="upload"
@@ -42,12 +47,9 @@
               @click="submitUpload"
             >保存</el-button>
           </el-upload>
-
           <br />
           <br />
-
           <span class="name">课程简介</span>
-          <p class="text">为了保证图片完整显示，从第三方编辑器复制的内容需要手动点击“图片本地化”操作</p>
           <br />
           <br />
           <el-input
@@ -83,7 +85,7 @@
               </span>
             </span>
           </div>
-          <el-button style="margin-left:22px;" @click="Popup">选择分类</el-button>
+          <el-button style="margin-left:22px;" @click="Popup" class="sort">选择分类</el-button>
           <span
             style="font-size:16px;font-weight:400;color:rgba(153,153,153,1);margin-left:25px;"
           >选择后，可添加到相应分类</span>
@@ -91,33 +93,37 @@
           <br />
           <br />
           <span>获取形式</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-radio v-model="radios" label="1" @change="radioq">收费</el-radio>
-
+          <el-radio v-model="radios" label="2" @change="radioq">收费</el-radio>
+          <el-radio v-model="radios" label="0" @change="radioq">所有人免费</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-radio v-model="radios" label="1" @change="radioq">会员免费</el-radio>
           <br />
           <br />
-          <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <el-radio v-model="radios" label="2" @change="radioq">免费</el-radio>
-          <el-radio v-model="radio1" label="0" @change="judge">所有人免费</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-radio v-model="radio1" label="1" @change="judge">会员免费</el-radio>
           <br />
-          <br />
-          <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="money">￥</span>
-          <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled"></el-input>
+          <div style="display:inline-block" class="hxj">
+            <span>
+              现价
+              <span class="bt"><br />(必填)
+                
+              </span>
+            </span>
+          </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span
+            class="money"
+          >￥</span>
+          <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
           <br />
           <br />
           <br />
 
           <div style="display:inline-block" class="hxj">
-            <span>
-              划线价
+            <span style="line-height:42px; display: block;height: 100%;">
+              原价
               <span class="bt">
-                <br />&nbsp;&nbsp;(必填)
               </span>
             </span>
-          </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <span class="money">￥</span>
-          <el-input placeholder="0.01-50000" v-model.number="input4" :disabled="disabled"></el-input>
+          <el-input placeholder="0.01-50000" v-model="input4" :disabled="disabled" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
           <br />
           <br />
           <el-button type="submit" @click="adddata()">保存</el-button>
@@ -140,7 +146,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisible = false">取 消</el-button>
-        <el-button type="primary" @click="delVisible = false">保 存</el-button>
+        <el-button type="primary" @click="delVisible = false,assignment()">保 存</el-button>
       </span>
     </el-dialog>
   </div>
@@ -160,11 +166,10 @@ export default {
       input3: "", // 收费价格
       input4: "", // 划线价
       fileList: [],
-      imageUrl: "http://192.168.0.107:8081/lesson/insertLessonImg", // 上传地址
+      imageUrl: "http://yckt.yichuangketang.com:8081/lesson/insertLessonImg", // 上传地址
       textarea: "", // 课程简介
       radio: "1", // 上架时间
-      radios: "2", // 获取形式
-      radio1: "0", // 免费
+      radios: "0", // 获取形式
       radio2: "", // 选择分类
       disabled: true, // 是否禁用
       aaa: "", // 类型名字
@@ -183,98 +188,74 @@ export default {
     //类型名字获取
     abv(val) {
       this.aaa = val;
-      console.log(val);
+      // console.log(val);
     },
-
+    assignment() {
+      $(".sort").html(this.aaa);
+    },
     //刷新页面
     switchss() {
       this.$router.go(0);
     },
     //判断如果选择收费，输入框可以输入
     radioq(val) {
-      if (val == "1") {
-        this.disabled = false;
-        this.radio1 = "";
-        // this.radio1.disabled = true
+      let that = this;
+      if (val == "0") { 
+        that.disabled = true;
+        that.input3 = "";
+        that.input4 = "";
       } else {
-        this.disabled = true;
-        this.radio1 = "0";
-        this.input3 = "";
-        this.input4 = "";
-      }
-    },
-
-    //判断会员免费输入框可以输入
-    judge() {
-      if (this.radio1 == "1") {
-        this.disabled = false;
-        this.radios = "2";
-      } else {
-        this.disabled = true;
-        this.input3 = "";
-        this.input4 = "";
-        // this.radios = "1"
-      }
-      if (this.radio1 != "") {
-        this.radios = "2";
+        that.disabled = false;
       }
     },
     getdata() {
-      classe("1").then(res => {
+      classe(localStorage.getItem("ex2")).then(res => {
         this.Choice = res.data;
-        // console.log(this.Choice)
       });
     },
     adddata() {
-      // this.$refs.upload.submit();
-      addlesson(
-        this.input,
-        this.lessonType,
-        this.aaa,
-        "1",
-        this.radio,
-        this.textarea,
-        this.input4,
-        this.input3,
-        this.radio1,
-        this.imgurl
-      ).then(res => {
-        // this.Choice = res.data
-        console.log(res);
-      });
-      console.log(this.input);
-      console.log(this.aaa);
-      console.log(this.textarea);
-      console.log(this.input4);
-      console.log(this.input3);
+          if(this.aaa == ""){
+            this.$message.error('分类不可为空')
+            return;
+          }
+          if(this.disabled == false){
+            debugger
+            if (this.input3 == 0 || this.input4 == 0) {
+              this.$message.error('价钱不可以小于0元')
+              return;
+            }else{
+                addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imgurl)
+            .then(res => {
+              this.switchss();
+              this.$message.success(res.data);
+            })
+            .catch(err => {
+              this.$message.error(err);
+            });
+              }
+          }else{
+              addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imgurl)
+            .then(res => {
+              this.switchss();
+              this.$message.success(res.data);
+            })
+            .catch(err => {
+              this.$message.error(err);
+            });
+          }
     },
-
     submitUpload() {
       this.$refs.upload.submit();
     },
     handleAvatarSuccess(response) {
-      console.log(response);
       this.imgurl = response;
     },
-    handleRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
     //弹窗
     Popup() {
       this.delVisible = true;
     },
-    onEditorBlur() {
-      //失去焦点事件
-    },
-    onEditorFocus() {
-      //获得焦点事件
-    },
-    onEditorChange() {
-      //内容改变事件
-    }
   },
   components: {
     sidebar,
@@ -283,6 +264,8 @@ export default {
 };
 </script>
     <style scoped>
+.hxj{position: absolute;
+height: 42px;}
 .box {
   background: #f5f5f5;
   width: 1650px;
@@ -503,5 +486,13 @@ export default {
 }
 /deep/ .el-dialog__title {
   font-size: 16px;
+}
+.img-box {
+    width: 150px;
+    height: 150px;
+}
+.img-box img {
+  width: 100%;
+  height: 100%;
 }
 </style>

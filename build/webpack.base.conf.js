@@ -40,7 +40,9 @@ module.exports = {
       '@': resolve('src'),
       'utils': resolve('src/common/utils'),
       'api': resolve('src/common/api'),
-      'common': resolve('src/common')
+      'common': resolve('src/common'),
+      'img': resolve('src/assets/img'),
+      'static': resolve('static')
     }
   },
   plugins: [

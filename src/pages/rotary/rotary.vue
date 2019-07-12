@@ -33,18 +33,12 @@
             @selection-change="changeFun"
           >
             <el-table-column type="selection" width="55"></el-table-column>
-            <!-- <el-table-column label="轮播缩略图" width="250">
-              <template slot-scope="scope">
-                <img :src="scope.row.img" alt style="width: 50px;height: 50px">
-              </template>
-            </el-table-column> -->
             <el-table-column prop="name" label="名称" width="250">
                <template slot-scope="scope">
-                <img :src="scope.row.img" alt style="width: 50px;height: 50px">
+                <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt style="width: 50px;height: 50px">
                 <span class="name">{{scope.row.name}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="url" label="跳转链接" show-overflow-tooltip></el-table-column>
             <el-table-column prop="zt" label="状态" show-overflow-tooltip></el-table-column>
             <el-table-column fixed="right" label="操作" width="200">
               <template slot-scope="scope">
@@ -93,7 +87,6 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisible = false">取 消</el-button>
-
         <el-button type="primary" @click="deleteRow()">确 定</el-button>
       </span>
     </el-dialog>
@@ -113,36 +106,6 @@ export default {
       isShow: true,
       isShows: false,
       delVisible: false,
-      tableData: [
-        {
-          id: "1",
-          date: "../../../static/img/微信图片_20190611141523.jpg",
-          name: "王打死",
-          address: "课程详情",
-          zt: "显示"
-        },
-        {
-          id: "2",
-          date: "../../../static/img/微信图片_20190611141523.jpg",
-          name: "王单方事故",
-          address: "课程详情",
-          zt: "显示"
-        },
-        {
-          id: "3",
-          date: "../../../static/img/微信图片_20190611141523.jpg",
-          name: "王电饭锅虎",
-          address: "课程详情",
-          zt: "显示"
-        },
-        {
-          id: "4",
-          date: "../../../static/img/微信图片_20190611141523.jpg",
-          name: "溃疡",
-          address: "课程详情",
-          zt: "显示"
-        }
-      ],
       checkBoxData: [], //多选框选择的值
       ada: [],
       currentPage: 1,
@@ -157,11 +120,9 @@ export default {
   },
   created() {
     this.getdata();
+    console.log(localStorage.getItem('ex2'))
   },
   methods: {
-    changeFun(val) {
-      this.checkBoxData = val;
-    },
     //切换新增页面
     switchs() {
       this.isShow = false;
@@ -203,12 +164,14 @@ export default {
     },
     //多选值
     changeFun(val) {
+      let str = []
       this.checkBoxData = val;
       for (let i = 0; i < this.checkBoxData.length; i++) {
-        if (this.number.indexOf(this.checkBoxData[i].id) == -1) {
-          this.number.push(this.checkBoxData[i].id);
+        if (str.indexOf(this.checkBoxData[i].id) == -1) {
+          str.push(this.checkBoxData[i].id);
         }
-        // new Set(aa);
+       this.number = str.join(',');  
+       console.log(this.number)
       }
     },
     // 分页
@@ -220,7 +183,7 @@ export default {
     },
     // 展示
     getdata() {
-        rotary("1").then(res => {
+        rotary(localStorage.getItem('ex2')).then(res => {
             this.list = res.data;
       })
     },
@@ -232,7 +195,7 @@ export default {
     // 多条删除
     getdatadel() {
       this.delVisible = false;    
-        ddelrotary(this.number).then(res => {
+        ddelrotary({rollimageIds:this.number}).then(res => {
           this.$message.success('删除成功')
             this.getdata();
       })

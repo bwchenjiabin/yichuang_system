@@ -35,21 +35,6 @@
                         </el-main>
                     </el-container>
                 </el-container>
-                 <!-- 删除提示 -->
-                   <el-dialog title="提示" :visible.sync="Delprompt" width="300px" center style="z-index: 999">
-                                            
-                      <div class="del-dialog-cnt">确定要删除选中的轮播图吗？</div>
-
-                      <span slot="footer" class="dialog-footer">
-
-                        <el-button @click="Delprompt = false">取 消</el-button>
-
-                        <el-button type="primary" @click="dele()" >确 定</el-button>
-
-                    </span>
-
-                  </el-dialog>
-
 
                    <!-- 删除提示2 -->
                    <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999">
@@ -68,7 +53,7 @@
 
 
                   <!-- 修改弹窗 -->
-                <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left">                                
+                <el-dialog title="分类修改" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left">                                
               <div class="del-dialog-cnt">
                 <el-input
                   v-model="value"
@@ -100,7 +85,7 @@ import {modifys} from 'api/userAjax';
           Delprompt:false,    //删除提示
           Delete:false,    //删除提示
           tableData: [],
-          userid:[],
+          userid:'',
           input:''  ,//修改分类名字3
           delVisible:false, // 内容分类弹窗修改
           modifyName:'', // 修改名称
@@ -112,9 +97,6 @@ import {modifys} from 'api/userAjax';
           this.getdata();
       },
         methods:{
-        
-
-
       //新增分类
       addclass(){
         this.addclas = false;
@@ -132,12 +114,9 @@ import {modifys} from 'api/userAjax';
         this.delVisible = false
        modifys(this.modifyid,this.value).then(res => {
          this.$message.success(res.data)
-         this.$message.error(res.msg)
-
+         this.getdata();
             console.log(res);
       })
-        console.log(this.modifyid)
-        console.log(this.value)
         this.getdata();
       },
 
@@ -145,35 +124,25 @@ import {modifys} from 'api/userAjax';
       del(){
         this.Delprompt = true;
       },
-      //删除选中数据
-      dele(){
-        console.log(this.number)
-         this.Delprompt = false;
-            let len = this.tableData.length;
-      for(let item in this.$refs.test.selection){
-      this.tableData.splice(item.date - 1,1);
-        }
-      },
 
       // 展示
       getdata () {
-        classe("1").then(res => {
+        classe(localStorage.getItem('ex2')).then(res => {
           this.tableData = res.data
-            // console.log(res.data);
       })
     },
-      //    deleteRow() {
-      //   rows.splice(index, 1);
-      // },
     //单选值
       deleteRow(row){
           this.Delete = true;
-          this.userid = row.id
+          this.userid = row.kindId
       },
     // 单条删除
     handleClicks() {
+      console.log(this.userid)
         delclass(this.userid).then(res => {
-            console.log(res);
+          this.Delete = false;
+         this.$message.success(res.data)
+         this.getdata();
       })
     },
         },

@@ -367,7 +367,7 @@
       getdata () {
       let url = "http://192.168.0.106:8081/business/select"
       let params = {
-          ex2:"1"
+          ex2:localStorage.getItem('ex2')
       }
       this.$axios({
         url,

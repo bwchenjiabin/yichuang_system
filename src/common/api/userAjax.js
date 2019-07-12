@@ -2,7 +2,7 @@ import ajax from 'utils/ajax'
 //登录
 const login = (accountId, accountPwd) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/acc/login',{accountId, accountPwd}).then(res => {
+    ajax.post('/acc/login',{accountId, accountPwd}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -125,7 +125,27 @@ const user = (ex2) => {
 //搜索我的用户
 const ssuser = (ex2,businessPhone,businessStatus,businessConsumption,memberEndTime) => {
   return new Promise((resolve, reject) => {
-    ajax.get('business/selectBySearch',{ex2,businessPhone,businessStatus,businessConsumption,memberEndTime}).then(res => {
+    ajax.get('/business/selectBySearch',{ex2,businessPhone,businessStatus,businessConsumption,memberEndTime}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+//订单搜索
+const orderSearch = (ex2,orderNumber,orderStatus,payTime,payEndTime) => {
+  return new Promise((resolve, reject) => {
+    ajax.get('order/selectBySearch',{ex2,orderNumber,orderStatus,payTime,payEndTime}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+//通过状态查询订单
+const orderStatus = (ex2,orderStatus) => {
+  return new Promise((resolve, reject) => {
+    ajax.get('order/selectBySearch',{ex2,orderStatus}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -211,9 +231,9 @@ const classe = (owner) => {
 
 
 // 订单展示
-const order = (ex2) => {
+const order = (ex2,pageNum,pageSize) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/order/select',{ex2}).then(res => {
+    ajax.get('/order/select',{ex2,pageNum,pageSize}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -233,10 +253,9 @@ const orderdeteils = (orderNumber) => {
 }
 
 //单条删除内容分类
-
-const delclass = (businessId) => {
+const delclass = (kindId) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/business/immigrant',{businessId}).then(res => {
+    ajax.get('/lessonKind/deleteKind',{kindId}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -302,9 +321,9 @@ const updataId = (id) => {
 
 
 //用户反馈
-const feedback = (ex2) => {
+const feedback = (ex2,pageNum,pageSize) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/feedback/select',{ex2}).then(res => {
+    ajax.get('/feedback/select',{ex2,pageNum,pageSize}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -356,17 +375,26 @@ const chapter = (owner,lessonid,name) => {
 }
 
 //新增节
-const section = (chapterid,name,url,id) => {
+const section = (chapterid,name,url,extend2) => {
   return new Promise((resolve, reject) => {
-    ajax.post('/section/insertSectionMsg',{chapterid,name,url,id}).then(res => {
+    ajax.post('/section/insertImgAndWord',{chapterid,name,url,extend2}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
     })
   })
 }
-
 //修改图文节
+const editsection1 = (id,chapterid,name,url,extend2) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/section/updateImgAndWord',{id,chapterid,name,url,}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+//修改图文节展示
 const editsection = (sectionId) => {
   return new Promise((resolve, reject) => {
     ajax.post('/section/selectById',{sectionId}).then(res => {
@@ -409,9 +437,9 @@ const updateLesson = (lessonid,lessonName,img,lessonDetail,status,lessonVip,less
 }
 
 //删除节
-const delsection = (secionId) => {
+const delsection = (sectionId) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/lesson/selectLessonById',{secionId}).then(res => {
+    ajax.post('/section/deleteSectionFile',{sectionId}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -419,6 +447,61 @@ const delsection = (secionId) => {
   })
 }
 
+//删除章
+const delchapter = (chapterId) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/chapter/deleteChapterFile',{chapterId}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+//删除图文课
+const dellesson = (lessonid) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/lesson/deleteLesson',{lessonid}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+//店铺会员
+const vip = (accountId,memberName,memberPrice) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/account/update',{accountId,memberName,memberPrice}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+// 店铺预览
+const preview = (accountId) => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/account/getAccount',{accountId}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 修改店铺名称
+const editchapter = (accountId,uname) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/account/update',{accountId,uname}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
 
 export {login}
 export {tuichu}
@@ -459,3 +542,11 @@ export {editsection}
 export {editvideosection}
 export {updateLesson}
 export {delsection}
+export {delchapter}
+export {dellesson}
+export {vip}
+export {editsection1}
+export {preview}
+export {editchapter}
+export {orderSearch}
+export {orderStatus}

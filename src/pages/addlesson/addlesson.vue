@@ -1,153 +1,248 @@
 <template>
-        <div class="box">
-               <el-container>
-                <el-header>
-                    <Header></Header>
-                </el-header>
-                <el-container>
-                    <el-aside width="200px">
-                        <sidebar></sidebar>
-                    </el-aside>
-
-                        <el-main>
-                                <router-link to="/content"><span class="course" style="cursor: pointer;">我的课程</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-        <span class="imgText">新增课程</span>
-       <div class="title">
-          <i class="icon"></i>
-          <span>课程信息</span>
-          <br><br><br>
+  <div class="box">
+    <el-container>
+      <el-header>
+        <Header></Header>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <sidebar></sidebar>
+        </el-aside>
+        <el-main>
+          <router-link to="/content">
+            <span class="course" style="cursor: pointer;">我的课程</span>
+          </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
+          <span class="imgText">新增课程</span>
+          <div class="title">
+            <i class="icon"></i>
+            <span>课程信息</span>
+            <br />
+            <br />
+            <br />
             <el-input placeholder="请输入章节标题" v-model="input" clearable class="inp2"></el-input>
-          <el-button type="primary" class="btn1" @click="chapters()">添加章</el-button>
-
-        </div>
-        <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content" >
-            <div class="cont-title" >
+            <el-button type="primary" class="btn1" @click="chapters()">添加章</el-button>
+          </div>
+          <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content">
+            <div class="cont-title">
               <span class="chapter">第{{index1+1}}章</span>
               <span class="chapter_name txt-cut">{{item.name}}</span>
-              <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button><i class="el-icon-delete icona"></i>
+              <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button>
+              <i class="el-icon-delete icona" @click="delchapters(item.id)"></i>
+              <i class="el-icon-edit-outline icona" @click="editmodify(item.id)"></i>
+&nbsp;&nbsp;&nbsp;
             </div>
             <div class="table" v-for="(node,index2) in item.sections" :key="index2">
               <ul>
                 <li>
+                  {{index1+1}}-{{index2+1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   {{node.name}}
-                  <div class="icons"><i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;<i class="el-icon-delete"></i></div>
+                  <div class="icons">
+                    <i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;
+                    <i class="el-icon-delete" @click="delsections(node.id)"></i>
+                  </div>
                 </li>
               </ul>
             </div>
-        </div>
-        <!-- <div class="content">
-          <div class="cont-tit">
-              <span class="chapter">第一章</span><span>章节标题</span><el-input placeholder="请输入章节标题" v-model="input1" clearable class="inp2"></el-input>
-              <el-button plain class="btn">+添加节</el-button>
           </div>
-          <el-button type="primary" class="btn1">添加章</el-button>
-        </div>
-        <div class="table">
-          <ul>
-            <li v-for="(item,index) in list" :key="index">{{item.name}}<div class="icons"><i class="el-icon-edit-outline" @click="Popupp"></i>&nbsp;&nbsp;&nbsp;<i class="el-icon-delete"></i></div></li>
-          </ul>
-        </div> -->
-        <!-- <div class="content">
-          <div class="cont-title">
-              <span class="chapter">第二章</span><span>章节标题</span><el-input placeholder="请输入章节标题" v-model="input2" clearable class="inp2"></el-input>
-              <el-button plain class="btn">+添加节</el-button><i class="el-icon-delete icona"></i>
-          </div>
-        </div> -->
-                </el-main>
-                </el-container>
-            </el-container>
-   <!-- 新增图文弹窗 -->
+        </el-main>
+      </el-container>
+    </el-container>
+    <!-- 新增图文弹窗 -->
     <el-dialog title :visible.sync="delVisible" width="600px" center style="z-index: 999">
       <div class="del-dialog-cnt">
-        <span class="namea">节标题</span>
-        <el-input placeholder="请输入节标题" v-model="input1" clearable maxlength="12"></el-input>
-        <span class="number">{{this.input1.length}}/12</span>
+        <span class="namea">标题</span>
+        <el-input placeholder="请输入标题" v-model="input1" clearable maxlength="30"></el-input>
+        <span class="number">{{this.input1.length}}/30</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <el-checkbox
+          v-model="checked"
+          @change="changes"
+          value="0"
+          @click="this.value=(this.value==0)?1:0"
+        >是否试读</el-checkbox>
         <br>
-        <br>
-        <br>
+        <br />
+        <!-- 图片上传组件辅助 -->
+        <!-- <el-upload
+            class="avatar-uploader"
+            :action="serverUrl"
+            :on-success="uploadSuccess"
+            :data="{
+            chapterId:this.chapterid,
+          }"
+            :on-error="uploadError"
+            :before-upload="beforeUpload"
+            accept=".jpg, .png, .gif, .bmp, .jpeg"
+        ></el-upload>
         <quill-editor
-          v-model="content"
-          ref="myQuillEditor"
-          :options="editorOption"
-          @change="onEditorChange($event)">
-        </quill-editor>
+            class="editor"
+            v-model="content"
+            ref="myQuillEditor"
+            :options="editorOption"
+        ></quill-editor> -->
+        <UE :defaultMsg="defaultMsg" :config="config" :id="ue" ref="ue"></UE>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="sections()">保 存</el-button>
       </span>
     </el-dialog>
-
-     <!-- 编辑图文弹窗 -->
+    <!-- 编辑图文弹窗 -->
     <el-dialog title :visible.sync="delVisiblee" width="600px" center style="z-index: 999">
       <div class="del-dialog-cnt">
-        <span class="namea">节标题</span>
-        <el-input placeholder="请输入节标题" v-model="input2" clearable maxlength="12"></el-input>
-        <span class="number">{{this.input2.length}}/12</span>
-        <br>
-        <br>
-        <br>
-        <quill-editor
-          v-model="content1"
-          ref="myQuillEditor"
-          :options="editorOption"
-          @change="onEditorChange($event)">
-        </quill-editor>
+        <span class="namea">标题</span>
+        <el-input placeholder="请输入标题" v-model="input2" clearable maxlength="30"></el-input>
+        <span class="number">{{this.input2.length}}/30</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <el-checkbox
+          v-model="checked1"
+          @change="changes1"
+          value="0"
+          @click="this.value=(this.value==0)?1:0"
+        >是否试读</el-checkbox>
+        <br />
+        <br />
+        <br />
+        <!-- <Editor v-model="content1"></Editor> -->
+        <!-- 图片上传组件辅助-->
+        <!-- <el-upload
+          class="avatar-uploader"
+          :action="serverUrl1"
+          :on-success="uploadSuccess1"
+          :data="{
+            chapterId:this.chapterId,
+          }"
+          :on-error="uploadError1"
+          :before-upload="beforeUpload1"
+          accept=".jpg, .png, .gif, .bmp, .jpeg"
+        ></el-upload>
+        <quill-editor class="editor" v-model="content1" ref="myQuillEditor" :options="editorOption"></quill-editor> -->
+        <UE :defaultMsg="defaultMsg1" :config="config" :id="ue1" ref="ue"></UE>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="editsections()">保 存</el-button>
       </span>
     </el-dialog>
-        </div>    
-    </template>
+
+    <!-- 编辑章名称弹窗 -->
+    <el-dialog title :visible.sync="editmodifys" width="600px" center style="z-index: 999">
+      <div class="del-dialog-cnt">
+        <div class="edit-title">
+          修改章名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-input placeholder="请输入新的章名称" v-model="input3" clearable maxlength="20"></el-input>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
     <script>
-import sidebar from '@/components/sidebar/sidebar.vue'
-import Header from '@/components/Header/Header.vue'
-import {ceshi} from 'api/userAjax';
-import {chapter} from 'api/userAjax';
-import {chaptsectioner} from 'api/userAjax';
-import {section} from 'api/userAjax';
-import {editsection} from 'api/userAjax';
+import { quillEditor } from "vue-quill-editor";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import UE from "@/components/ue/ue";
+
+// 工具栏配置
+const toolbarOptions = [
+  ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
+  ["blockquote", "code-block"], // 引用  代码块
+  [{ header: 1 }, { header: 2 }], // 1、2 级标题
+  [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
+  [{ script: "sub" }, { script: "super" }], // 上标/下标
+  [{ indent: "-1" }, { indent: "+1" }], // 缩进
+  // [{'direction': 'rtl'}],                         // 文本方向
+  [{ size: ["small", false, "large", "huge"] }], // 字体大小
+  [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
+  [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
+  [{ font: [] }], // 字体种类
+  [{ align: [] }], // 对齐方式
+  ["clean"], // 清除文本格式
+  ["link", "image", "video"] // 链接、图片、视频
+];
+
+import sidebar from "@/components/sidebar/sidebar.vue";
+import Header from "@/components/Header/Header.vue";
+import { ceshi } from "api/userAjax";
+import { chapter } from "api/userAjax";
+import { chaptsectioner } from "api/userAjax";
+import { section } from "api/userAjax";
+import { editsection } from "api/userAjax";
+import { delsection } from "api/userAjax";
+import { delchapter } from "api/userAjax";
+import { editsection1 } from "api/userAjax";
 export default {
   data() {
     return {
+      defaultMsg: "",
+      defaultMsg1: "",
+      config: {
+        initialFrameWidth: null,
+        initialFrameWidth: 550,
+        initialFrameHeight: 400
+      },
+      ue: "ue",
+      ue1: "ue",
+
       input: "", // 章名称
       input1: "", // 新增节标题
-      input2: '', // 修改节标题
+      input2: "", // 修改节标题
+      input3: "", // 修改章标题
       delVisible: false, //新增弹窗
       delVisiblee: false, //编辑弹窗
-      content: "", // 新增节
-      content1: "", // 编辑节
-      courseDetail:[],  
-      sectionid:'',  //节ID
-      chapterid:'', //章ID
-      chapterId:'', //章ID
-      Id:'',   
-      date:[],
-      date1:[],
-      date2:[],
-      date3:[],
-
-    editorOption: {
+      editmodifys: false, // 编辑章名称
+      courseDetail: [],
+      sectionid: "", //节ID
+      chapterid: "", //章ID
+      chapterId: "", //章ID
+      delsectionID: "", //删除jieid
+      delchapterID: "", //删除章id
+      Id: "",
+      checked: false, // 是否试读
+      checked1: false, // 编辑是否试读
+      date: [],
+      date1: [],
+      date2: [],
+      date3: [],
+      content: this.value,
+      content1: this.value,
+      quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
+      editorOption: {
+        placeholder: "",
+        theme: "snow", // or 'bubble'
+        placeholder: "",
         modules: {
-          toolbar: [
-            [
-              "bold",
-              "italic",
-              "underline",
-              "strike",
-              "image",
-              "video",
-              "align",
-              "formula",
-              "link",
-              "background",
-              "code-block"
-            ] // toggled buttons
-            //  ['blockquote', 'code-block']
-          ]
+          toolbar: {
+            container: toolbarOptions,
+            // container: "#toolbar",
+            handlers: {
+              image: function(value) {
+                if (value) {
+                  // 触发input框选择图片文件
+                  document.querySelector(".avatar-uploader input").click();
+                } else {
+                  this.quill.format("image", false);
+                }
+              }
+            }
+          }
         }
       },
-      
+      serverUrl: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
+      serverUrl1: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
+      header: {
+        // token: sessionStorage.token
+      } // 有的图片服务器要求请求头需要有token
     };
   },
   created() {
@@ -155,71 +250,191 @@ export default {
     this.getdata();
   },
   methods: {
-
-      onEditorChange({editor, html, text}) {//内容改变事件
-      },
-        //获取传值    
-    getParams(){
-        var routerParams = this.$route.params.id
-        this.Id = routerParams
+    getUEContent() {
+      let content = this.$refs.ue.getUEContent(); // 调用子组件方法
+      console.log(content);
     },
-    //新增节   
-    sections(){
-        if (this.input1==="") {
-          alert("名称不可为空")
-        }
-      section(this.chapterid,this.input1,this.content).then(res => {
-        // this.$message.success(res.data.msg)
-      console.log(res)
-          this.getdata()
-
-      })  
-        console.log(this.content)
+    changes(val) {
+      this.checked = val;
+      // console.log(this.checked);
+    },
+    changes1(val) {
+      this.checked1 = val;
+      console.log(this.checked1);
+    },
+    onEditorChange({ editor, html, text }) {
+      //内容改变事件
+    },
+    //获取传值
+    getParams() {
+      var routerParams = this.$route.params.id;
+      this.Id = routerParams;
+    },
+    //新增节
+    sections() {
+      if (this.checked == true) {
+        this.checked = 1;
+      } else {
+        this.checked = 0;
+      }
+      section(this.chapterid, this.input1, this.defaultMsg, this.checked)
+        .then(res => {
+          this.delVisible = false;
+          this.$message.success(res.data);
+          this.input1 = "";
+          this.defaultMsg = "";
+          this.getdata();
+        })
+        .catch(err => {
+          this.$message.error(err);
+        });
+    },
+    //删除节
+    delsections(val) {
+      this.delsectionID = val;
+      delsection(this.delsectionID)
+        .then(res => {
+          this.$message.success(res.data);
+          this.getdata();
+        })
+        .catch(err => {
+          this.$message.error(err);
+        });
+    },
+    //删除章
+    delchapters(val) {
+      this.delchapterID = val;
+      delchapter(this.delchapterID)
+        .then(res => {
+          this.$message.success(res.data);
+          this.getdata();
+        })
+        .catch(err => {
+          this.$message.error(err);
+        });
     },
     //测试
-       getdata() {
-        ceshi(this.Id).then(res => {
-            this.courseDetail = res.data
-      })
+    getdata() {
+      ceshi(this.Id).then(res => {
+        this.courseDetail = res.data;
+      });
     },
-    //新增章   
-        chapters(){
-        chapter("1",this.Id,this.input).then(res => {
-            this.$message.success(res.data)
-            this.getdata()
-      })  
-        },
-        
+    //新增章
+    chapters() {
+      chapter(localStorage.getItem("ex2"), this.Id, this.input)
+        .then(res => {
+          this.$message.success(res.data);
+          this.getdata();
+        })
+        .catch(err => {
+          this.$message.error(err);
+        });
+    },
     //修改节
-      editsections(){
-      console.log(this.chapterid)
-          section(this.chapterId,this.input2,this.content1,this.sectionid).then(res => {
-      console.log(res)
-          this.getdata()
-      })  
-        },
-
+    editsections() {
+      if (this.checked1 == true) {
+        this.checked1 = 1;
+      } else {
+        this.checked1 = 0;
+      }
+      editsection1(
+        this.sectionid,
+        this.chapterId,
+        this.input2,
+        this.defaultMsg1,
+        this.checked1
+      )
+        .then(res => {
+          this.$message.success(res.data);
+          this.delVisiblee = false;
+          this.getdata();
+        })
+        .catch(err => {
+          this.$message.error(err);
+        });
+    },
     // 弹窗
     Popup(val) {
-      this.chapterid = val   //章id
+      this.chapterid = val; //章id
       this.delVisible = true;
-      console.log(this.chapterid)
     },
-    aa(val){
-      this.chapterId = val
+    aa(val) {
+      this.chapterId = val;
     },
+    // 修改章名称
+    editmodify(val) {
+      this.editmodifys = true;
+    },
+
     Popupp(val) {
-      this.sectionid = val   //节id
+      this.sectionid = val; //节id
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
-        this.input2 = res.data.name
-        this.content1 = res.data.url
-      }) 
+        this.input2 = res.data.name;
+        this.defaultMsg1 = res.data.url;
+        this.checked1 = res.data.extend2;
+        if (this.checked1 == 1) {
+          this.checked1 = true;
+        } else {
+          this.checked1 = false;
+        }
+        console.log(this.checked1);
+      });
+    },
+    // 富文本图片上传前
+    beforeUpload() {
+      // 显示loading动画
+      this.quillUpdateImg = true;
+    },
+    beforeUpload1() {
+      // 显示loading动画
+      this.quillUpdateImg = true;
+    },
+    uploadSuccess(res, file) {
+      let quill = this.$refs.myQuillEditor.quill;
+      // 获取光标所在位置
+      let length = quill.getSelection().index;
+      // 插入图片  res.url为服务器返回的图片地址
+      quill.insertEmbed(
+        length,
+        "image",
+        "http://yckt.yichuangketang.com:8081" + res.data
+      );
+      // 调整光标到最后
+      quill.setSelection(length + 1);
+      this.quillUpdateImg = false;
+    },
+    uploadSuccess1(res, file) {
+      let quill = this.$refs.myQuillEditor.quill;
+      // 获取光标所在位置
+      let length = quill.getSelection().index;
+      // 插入图片  res.url为服务器返回的图片地址
+      quill.insertEmbed(
+        length,
+        "image",
+        "http://yckt.yichuangketang.com:8081" + res.data
+      );
+      // 调整光标到最后
+      quill.setSelection(length + 1);
+      this.quillUpdateImg = false;
+    },
+    // 富文本图片上传失败
+    uploadError() {
+      // loading动画消失
+      this.quillUpdateImg = false;
+      this.$message.error("图片插入失败");
+    },
+    uploadError1() {
+      // loading动画消失
+      this.quillUpdateImg = false;
+      this.$message.error("图片插入失败");
     }
   },
   components: {
     sidebar,
-    Header
+    Header,
+    quillEditor,
+    UE
   }
 };
 </script>
@@ -427,6 +642,9 @@ export default {
 .hxj {
   margin-left: 100px;
 }
+.edit-title {
+  padding: 15px;
+}
 .gray {
   height: 50px;
   background: rgba(251, 251, 251, 1);
@@ -442,5 +660,80 @@ export default {
   border: 1px solid rgba(238, 238, 238, 1);
   height: 15px;
   padding: 20px;
+}
+.editor {
+  line-height: normal !important;
+  height: 300px;
+}
+.ql-snow .ql-tooltip[data-mode="link"]::before {
+  content: "请输入链接地址:";
+}
+.ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+  border-right: 0px;
+  content: "保存";
+  padding-right: 0px;
+}
+
+.ql-snow .ql-tooltip[data-mode="video"]::before {
+  content: "请输入视频地址:";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: "14px";
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
+  content: "10px";
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
+  content: "18px";
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
+  content: "32px";
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+  content: "文本";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content: "标题1";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content: "标题2";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content: "标题3";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  content: "标题4";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+  content: "标题5";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+  content: "标题6";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: "标准字体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {
+  content: "衬线字体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
+  content: "等宽字体";
 }
 </style>

@@ -1,41 +1,43 @@
 <template>
-    <div class="box">
-        <div class="header">
-            <div class="title">
-                <i><img src="../../../static/img/微信图片_20190610160537.png" alt=""></i>
-            </div>
-        </div>     
-        <div class="content">
-           <div class="cont-tit">
-                账号登录
-           </div>
-           <el-input placeholder="请输入用户名" v-model="input" clearable></el-input>
-           <el-input placeholder="请输入密码" v-model="input2" show-password></el-input><br>
-           <!-- <router-link to="/Home"> -->
-           <el-button type="primary" @click="getdata()">登录</el-button>
-           <!-- </router-link> -->
-        </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <div class="footer">
-                <p>©2018山西壹创科技有限公司《壹创堂隐私权政策》晋备ICP证：19003971号</p>
-        </div>
-    </div>    
+  <div class="box">
+    <div class="content">
+      <i class="icon">
+        <img src="~img/微信图片_20190704205529.png" alt />
+      </i>
+      <div class="header">
+        <h1>后台账户登录</h1>
+        <p>您可以直接输入您的后台账号和密码登录</p>
+      </div>
+      <br />
+      <br />
+      <el-input placeholder="请输入内容" v-model="input" clearable style="width:300px;" prefix-icon="el-icon-user"></el-input>
+      <br />
+      <br />
+      <el-input placeholder="请输入密码" v-model="input1" show-password style="width:300px;" prefix-icon="el-icon-lock"></el-input>
+      <br />
+      <br />
+      <br />
+      <el-button type="primary" style="width:300px;height:40px;" @click="getdata()">登 录</el-button>
+    </div>
+  </div>
 </template>
 <script>
-
-import qs from 'qs';
 import {login} from 'api/userAjax';
 export default {
-    data(){
-        return{
-            input:'',
-            input2:''
-        }
-    },
-    created () {
+  data() {
+    return {
+      input: "",
+      input1: ""
+    };
   },
-    methods:{
-    getdata() {
-        login(this.input, this.input2).then(res => {
+  created() {},
+  methods: {
+        getdata() {
+        login(this.input, this.input1).then(res => {
+          localStorage.setItem('ex2',res.data.date.accountid)
+          localStorage.setItem('phone',res.data.date.title)
+          localStorage.setItem('portrait',res.data.date.Codepath)
+          console.log(res.data.date)
             if (res.data.status == "success") {
                 this.$message.success('登录成功')
                   this.$router.push({
@@ -46,35 +48,55 @@ export default {
             }
       })
     },
-
-    // getdata() {
-    //   let url = "http://192.168.0.111:8081/acc/login?accountId="+this.input+"&accountPwd="+this.input2
-    //   this.$axios.post(url).then(res => {
-    //     console.log(res);
-    //   });
-    // },
-
-
-    //     async getdata () {
-    //   const {data: res} = await this.$axios.post('http://192.168.0.111:8081/acc/login', {
-    //     accountId:this.input,
-    //     accountPwd:this.input2
-    //   })
-    //  .then(res => {
-    //     console.log(res);
-    //   });
-    // },
-    }
-}
+  }
+};
 </script>
 <style scoped>
- *{padding: 0;margin: 0;}
- .box{background-color: rgba(255, 255, 255, 1);width: 100%;height: 100%;}
- .header{height: 100px;line-height: 100px;text-align: left;padding-left: 80px;}
- .title{color: rgba(16, 16, 16, 1);font-size: 28px;text-align: left;font-family: 方正兰亭黑-标准;}
- .content{width: 500px;height: 300px;background: #fff;margin: auto;padding: 50px 30px 50px 140px;margin-top: 100px;}
- .content .cont-tit{color: rgba(0, 0, 0, 1);font-size: 26px;text-align: left;font-family: SourceHanSansSC-bold;margin-bottom: 30px;width: 70%}
- .content .el-input{width: 70%;margin-bottom: 25px;}
- .content .el-button{width: 70%;height: 50px;}
- .footer p{color: rgba(153, 153, 153, 1);font-size: 14px;text-align: left;font-family: SourceHanSansSC-regular;text-align: center;}
+* {
+  padding: 0;
+  margin: 0;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+.box {
+  width: 100%;
+  height: 100%;
+  background: url("~img/bg.png") no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.icon {
+  display: inline-block;
+}
+.header {
+  padding: 130px 20px 20px 20px;
+}
+.header h1 {
+  font-size: 40px;
+  font-family: PingFangSC-Regular;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1);
+}
+.header p {
+  font-size: 7px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  padding: 15px 0 15px 0;
+}
+.content {
+  width: 600px;
+  height: 500px;
+  border-radius: 5px;
+  position: absolute;
+  left: 20%;
+  top: 18%;
+}
+/* .el-input input{padding-left: 25px;} */
 </style>

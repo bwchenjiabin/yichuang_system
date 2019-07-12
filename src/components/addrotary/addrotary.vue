@@ -20,28 +20,6 @@
           <br>
           <br>
           <br>
-          <span class="name">上传图片</span>
-          <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
-          <br>
-          <br>
-
-        <el-upload
-          class="upload-demo"
-          ref="upload"
-          :action="imageUrl"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :limit="1"
-          accept=".jpg,.png,.gif"
-          :auto-upload="false">
-          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">保存</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
-
-          <br>
-          <br>
           <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-radio v-model="radios" label="1" @change="radioq">跳转到</el-radio>
           <el-button plain @click="Popup" :disabled="disabled">选择</el-button>
@@ -52,8 +30,31 @@
           <br>
           <br>
           <br>
-          <el-button size="small" type="primary" @click="keep">保存</el-button>
+
         </div>
+          <span class="name">上传图片</span>
+          <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
+          <br>
+          <br>
+        <el-upload
+          class="upload-demo"
+          ref="upload"
+          :action="imageUrl"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          :on-success="handleAvatarSuccesss"
+          :data="{
+            name:this.input,
+            owner:this.userid,
+            lessonid:this.currentRow,
+          }"
+          :limit="1"
+          accept=".jpg,.png,.gif"
+          :auto-upload="false">
+          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          <el-button size="small" type="primary" @click="keep,submitUpload();">保存</el-button>
+        </el-upload>
       </div>
     </el-main>
 
@@ -144,16 +145,6 @@
             layout="total, prev, pager, next"
             :total="this.spsize"
           v-if="this.courser == 'video'"></el-pagination>
-            <!-- <el-tab-pane label="内容分类" name="sort">
-              <div class="Choice">
-                <ul>
-                  <li v-for="(item,index) in Choice" :key="index">
-                    <el-radio v-model="radio2" :label="item.kindId">{{item.kindName}}</el-radio>
-                    <br>
-                  </li>
-                </ul>
-              </div>
-            </el-tab-pane> -->
           </el-tabs>
         </div>
       </div>
@@ -175,7 +166,7 @@ export default {
     return {
       input: "",
       fileList: [],
-      imageUrl: "http://192.168.0.102:8081", // 上传地址
+      imageUrl: "http://yckt.yichuangketang.com:8081/rollimage/add", // 上传地址
       radios: "1",
       delVisible: false,
       activeName: "courser", //默认选择
@@ -197,6 +188,7 @@ export default {
       twsize:'',
       ypsize:'',
       spsize:'',
+      userid:''
     };
   },
   created() {
@@ -204,29 +196,34 @@ export default {
     this.getImgText()
     this.getaudio()
     this.getvideo()
+    this.userid = localStorage.getItem('ex2')
   },
   methods: {
     // 查询分类
     getdata() {
-        checkclass("1").then(res => {
+        checkclass(localStorage.getItem('ex2')).then(res => {
             this.Choice = res.data;
-            // console.log(res);
       })
     },
+    // 上传成功的钩子
+    handleAvatarSuccesss(res, file) {
+      this.$message.success(res)
+      this.switchss();
+      },
     // 新增轮播
     getdataadd() {
       this.delVisible = false;
     },
     // 图文查询
     getImgText() {
-        ImgText("1","1",this.currentPage).then(res => {
+        ImgText(localStorage.getItem('ex2'),"1",this.currentPage).then(res => {
             this.tableData = res.data.lesson;
             this.twsize = res.data.totalLesson
       })
     },
         // 音频查询
     getaudio() {
-        audio("1","2",this.currentPage1).then(res => {
+        audio(localStorage.getItem('ex2'),"2",this.currentPage1).then(res => {
             this.tableData1 = res.data.lesson;
             this.ypsize = res.data.totalLesson
             // console.log(res);
@@ -234,7 +231,7 @@ export default {
     },
         // 视频查询
     getvideo() {
-        video("1","3",this.currentPage2).then(res => {
+        video(localStorage.getItem('ex2'),"3",this.currentPage2).then(res => {
             this.tableData2 = res.data.lesson;
             this.spsize = res.data.totalLesson
             // console.log(res);
@@ -253,9 +250,6 @@ export default {
       if (this.courser == "video") {
         this.number = 3;
       }
-      addrotary({name:this.input,owner:'1',type:this.number,lessonid:this.currentRow,file:this.imageUrl}).then(res => {
-            console.log(res)
-      })
       console.log(this.input)
       console.log(this.currentRow)
       console.log(this.number)
@@ -296,7 +290,7 @@ export default {
         console.log(file, fileList);
       },
       handlePreview(file) {
-        console.log(file);
+        // console.log(file);
       },
     Popup() {
       this.delVisible = true;

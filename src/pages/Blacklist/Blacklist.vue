@@ -120,28 +120,15 @@ export default {
     methods:{
       // 展示
         getdata () {
-
-        blacklist("1").then(res => {
+        blacklist(localStorage.getItem('ex2')).then(res => {
          this.list = res.data.date
-        // console.log(this.list);
       })
-      // let url = "http://192.168.0.106:8081/business/black"
-      // let params = {
-      //     ex2:"1"
-      // }
-      // this.$axios({
-      //   url,
-      //   params
-      // }).then(res => {
-      //    this.list = res.data.date
-      //   })
     },
       // 单条删除
       handleClicks(row) {
         this.userid = row.businessId
         console.log(this.userid)
         delblacklist(this.userid).then(res => {
-        //  this.list = res.data.date
         console.log(res);
       })
       },
@@ -153,22 +140,10 @@ export default {
           // 多条删除
     getdatadel () {
         ddelblacklist(this.number1).then(res => {
-        // this.list = res.data.date
         console.log(res)
         this.getdata();
       })  
-      
-      // console.log(this.number1)
-      // let url = "http://192.168.0.106:8081/business/immigrant2"
-      // let params = {
-      //   businessId:this.number1
-      // }
-      // this.$axios({
-      //   url,
-      //   params
-      // }).then(res => {
-      //    console.log(res)
-      //   })
+
     },
 
 

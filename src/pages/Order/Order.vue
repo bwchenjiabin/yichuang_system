@@ -12,7 +12,7 @@
                                 <h4>订单管理</h4><br><br><br>
                                     <span class="search">搜索</span><el-input placeholder="搜索订单" v-model="input" clearable class="inp1"></el-input>
                                     <span class="search">订单状态</span>
-                                    <el-select v-model="value" clearable placeholder="全部状态" class="vip">
+                                    <el-select v-model="value" clearable placeholder="全部状态" class="vip" @change="changes">
                                         <el-option
                                           v-for="item in options"
                                           :key="item.value"
@@ -24,12 +24,20 @@
                                     <span class="search">交易时间</span>
                                     <el-date-picker
                                     v-model="value2"
-                                    type="daterange"
+                                    type="date"
+                                    value-format="yyyy-MM-dd"
                                     range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
+                                    placeholder="开始日期">
                                     </el-date-picker>
-                                    <el-button type="primary">搜索</el-button><br><br><br>
+                                    至
+                                     <el-date-picker
+                                    v-model="value3"
+                                    type="date"
+                                    range-separator="至"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="结束日期">
+                                    </el-date-picker>
+                                    <el-button type="primary" @click="orderSearchs">搜索</el-button><br><br><br>
                                     
                                     <el-table
                                             ref="multipleTable"
@@ -47,7 +55,7 @@
                                             label="商品"
                                             width="250">
                                             <template slot-scope="scope" >
-                                                <i class="img-box"><img :src="scope.row.lesson.img" alt=""></i>
+                                                <i class="img-box"><img :src="'http://yckt.yichuangketang.com'+scope.row.lesson.img" alt=""></i>
                                                  <span class="name">{{scope.row.lesson.lessonName}}</span><br>
                                                  <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
                                             </template>
@@ -66,6 +74,9 @@
                                             prop="orderStatus"
                                             label="订单状态"
                                             show-overflow-tooltip>
+                                            <template slot-scope="scope">
+                                          <span>{{scope.row.orderStatus==1?"待支付":scope.row.orderStatus==2?"已完成":scope.row.orderStatus==3?"已关闭":''}}</span>
+                                            </template>
                                             </el-table-column>
                                             <el-table-column
                                             prop="consumption"
@@ -82,11 +93,18 @@
                                             <template slot-scope="scope"  >
                                               <el-button type="text" size="small" @click="open(scope.row)">查看详情</el-button>
                                             </template>
-                                          </el-table-column>
-                                         
-
-                                          
+                                          </el-table-column>       
+                                            
                                         </el-table><br><br>
+                                        <el-pagination
+                                            @size-change="handleSizeChange"
+                                            @current-change="current_change"
+                                            @current-page="currentPage"
+                                            :page-size="pagesize"
+                                            background
+                                            layout="total, prev, pager, next"
+                                            :total="this.ordersize"
+                                          ></el-pagination>    
                         </el-main>
                     </el-container>
                 </el-container>
@@ -98,10 +116,8 @@
                   <li >
                       <span class="Order">订单编号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.orderNumber}}</span><br><br>
                       <span class="Order">支付订单号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.escrowTradeNo}}</span><br><br>
-                      <!-- <span class="Order">支付流水号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.orderNumber}}</span><br><br> -->
                       <span class="Order">创建时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.payTime}}</span><br><br>
                       <span class="Order">成交时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.payEndTime}}</span><br><br>
-                     
                   </li></ul></div>
               <span slot="footer" class="dialog-footer">
 
@@ -117,59 +133,31 @@ import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
 import {order} from 'api/userAjax';
 import {orderdeteils} from 'api/userAjax';
+import {orderSearch} from 'api/userAjax';
+import {orderStatus} from 'api/userAjax';
     export default {
         data(){
             return{
                 activeName: 'first',
                 input:'',
                 options: [{
-                value: '选项1',
-                label: '全部状态'
-                }, {
-                value: '选项2',
-                label: '已关闭'
+                value: '1',
+                label: '待支付'
                 },{
-                value: '选项3',
+                value: '2',
                 label: '已付款'
                 },{
-                value: '选项4',
-                label: '已完成'
+                value: '3',
+                label: '已关闭'
                 }],
-                value: '选项1',
+                value: '',
                 value2: '',
-                tableData: [{
-            date: '../../../static/img/微信图片_20190611141523.jpg',
-            names:'江南',
-            name: '王小虎',
-            address: '2019-02-25',
-            zt:'显示',
-            consumption:'100'
-          }, {
-            date: '../../../static/img/微信图片_20190611141523.jpg',
-            name: '王小虎',
-            address: '2019-02-25',
-            zt:'显示',
-            consumption:'500'
-          }, {
-            date: '../../../static/img/微信图片_20190611141523.jpg',
-            name: '王小虎',
-            address: '2019-02-25',
-            zt:'显示',
-            consumption:'200'
-          }, {
-            date: '../../../static/img/微信图片_20190611141523.jpg',
-            name: '王小虎',
-            address: '2019-02-25',
-            zt:'显示',
-            consumption:'100'
-          }],
-          details: [{
-            // number: '49876524789645163418541541',
-            // Order:'298765789244555',
-            // Pipeline: '4978784456484654548',
-            // build : '2019-02-25',
-            // Deal:'2018-02-03'
-          }],
+                value3: '',
+                change:'',
+                currentPage: 1, //图文当前页
+                ordersize:0,
+                pagesize: 5,
+          details: [],
             delVisible:false,
             list:[],
             ordernum:[]
@@ -177,19 +165,46 @@ import {orderdeteils} from 'api/userAjax';
             },
         created () {
           this.getdata();
+          this.changes();
       },
         methods:{
+    handleSizeChange(size) {
+      this.pagesize = size;
+    },
+    current_change: function(currentPage) {
+      this.currentPage = currentPage;
+      this.getdata();
+    },
+      changes(val){
+            this.change = val;
+            this.orderSearchss();
+          },
       // 展示
       getdata () {
-        order("1").then(res => {
-           this.list = res.data
-          //  console.log(this.list)
+        order(localStorage.getItem('ex2'),this.currentPage,this.pagesize).then(res => {
+           this.list = res.data.list;
+           this.ordersize = res.data.total
+          console.log(res)
       })
     },   
+    // 订单详情
       getdatad () {
         orderdeteils(this.ordernum).then(res => {
-           console.log(res.data)
            this.details = res.data
+      })
+    },
+    // 订单搜索
+      orderSearchs () {
+        orderSearch(localStorage.getItem('ex2'),this.input,this.change,this.value2,this.value3).then(res => {
+          this.list = res.data.list;
+          console.log(res.data.list)
+      })
+    },
+    //通过状态查询订单
+      orderSearchss () {
+        orderStatus(localStorage.getItem('ex2'),this.change).then(res => {
+          this.list = res.data.list;
+        this.$message.success("搜索成功")    
       })
     },
       open(row) {
@@ -197,7 +212,6 @@ import {orderdeteils} from 'api/userAjax';
         this.ordernum = row.orderNumber
         this.delVisible = true;      
         this.getdatad();
-        console.log(this.ordernum)
             },
       Close() {
             this.delVisible = false;

@@ -11,8 +11,10 @@
                         <el-main>
                             <h4>店铺会员</h4><br><br>
                             <span>会员名称&nbsp;&nbsp;&nbsp;</span> <el-input placeholder="请输入内容" v-model="input" clearable class="inpp"></el-input>&nbsp;<i class="el-icon-edit"></i><br><br>
-                            <span>年卡价格</span><i class="icon-money">￥</i><el-input placeholder="请输入内容" v-model="inputt" clearable id="inp2"></el-input>&nbsp;<i class="el-icon-edit"></i><br><br><br><br>
-                            <el-button type="primary"  @click="open2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</el-button>
+                            <span>年卡价格&nbsp;&nbsp;&nbsp;</span>
+                            <!-- <i class="icon-money">￥</i> -->
+                            <el-input placeholder="请输入内容" v-model="inputt" clearable id="inp2"></el-input>&nbsp;<i class="el-icon-edit"></i><br><br><br><br>
+                            <el-button type="primary"  @click="vips();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</el-button>
                         </el-main>
                     </el-container>
                 </el-container>
@@ -21,23 +23,34 @@
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
+import {vip} from 'api/userAjax';
+import {preview} from 'api/userAjax';
+
     export default {
         data(){
             return{
-                input:'江南',
-                inputt:'388'
+                    input:'',
+                    inputt:''
                 }
-                },
+            },
         created () {
+            this.getdata();
       },
         methods:{
-            open2() {
-                console.log(showcloss)
-        this.$message({
-          showClose: true,
-          message: '保存成功',
-          type: 'success'
-        });
+
+            //修改店铺会员
+      vips(){
+      vip(localStorage.getItem('ex2'),this.input,this.inputt).then(res => {
+           console.log(res)
+        })
+      },
+
+      getdata(){
+         preview("1").then(res => {
+             this.input = res.data.memberName
+             this.inputt = res.data.memberPrice
+           console.log(res);
+        })
       },
       
         },

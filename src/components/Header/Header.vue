@@ -5,9 +5,9 @@
         </div> 
         <div class="info">
             <div class="photo">
-            <img src="../../../static/img/矢量智能对象@2x_看图王.png" alt="">
+            <!-- <img :src="'http://yckt.yichuangketang.com:8081'+this.portrait" alt=""> -->
             </div>
-            <span class="phone">176****0684</span>
+            <span class="phone">{{this.phone}}</span>
             <span class="bq">标准版</span>
             <div class="quit" @click="getdata()">退出登录</div>
         </div>
@@ -20,10 +20,13 @@ import {tuichu} from 'api/userAjax';
     export default {
         data(){
             return{
-
+                phone:'',
+                portrait:''
             }
         },
         created () {
+           this.phone = localStorage.getItem('phone')
+           this.portrait = localStorage.getItem('portrait')
       },
         methods:{
         getdata() {
@@ -34,17 +37,6 @@ import {tuichu} from 'api/userAjax';
         });
         this.$message.success('退出成功')
       })
-
-
-    //   this.$axios({
-    //        method: 'get',
-    //         url: 'http://192.168.0.111:8081/acc/logout',
-    //     }).then(res => {
-    //     console.log(res);
-    //       this.$router.push({
-    //         path: `/`
-    //     });
-    //   });
     },
         }
     }

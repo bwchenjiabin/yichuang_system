@@ -8,6 +8,7 @@ import store from './store'
 import 'jquery'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import Vuex from 'vuex' //引入状态管理
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = ''
 Vue.config.productionTip = false
@@ -19,7 +20,7 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 Vue.use(VueQuillEditor)
-
+Vue.use(Vuex) ;
 Vue.config.productionTip = false
 
 

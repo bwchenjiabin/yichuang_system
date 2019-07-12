@@ -1,185 +1,160 @@
 <template>
-        <div class="box">
-               <el-container>
-                <el-header>
-                    <Header></Header>
-                </el-header>
-                <el-container>
-                    <el-aside width="200px">
-                        <sidebar></sidebar>
-                    </el-aside>
-
-                        <el-main>
-                                <router-link to="/content"><span class="course" style="cursor: pointer;">我的课程</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-        <span class="imgText">新增课程</span>
-       <div class="title">
-          <i class="icon"></i>
-          <span>课程信息</span>
-          <br><br><br>
+  <div class="box">
+    <el-container>
+      <el-header>
+        <Header></Header>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <sidebar></sidebar>
+        </el-aside>
+        <el-main>
+          <router-link to="/content">
+            <span class="course" style="cursor: pointer;">我的课程</span>
+          </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
+          <span class="imgText">新增课程</span>
+          <div class="title">
+            <i class="icon"></i>
+            <span>课程信息</span>
+            <br />
+            <br />
+            <br />
             <el-input placeholder="请输入章节标题" v-model="input" clearable class="inp2"></el-input>
-          <el-button type="primary" class="btn1" @click="chapters()">添加章</el-button>
-
-        </div>
-        <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content" >
-            <div class="cont-title" >
+            <el-button type="primary" class="btn1" @click="chapters()">添加章</el-button>
+          </div>
+          <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content">
+            <div class="cont-title">
               <span class="chapter">第{{index1+1}}章</span>
               <span class="chapter_name txt-cut">{{item.name}}</span>
-              <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button><i class="el-icon-delete icona"></i>
+              <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button>
+              <i class="el-icon-delete icona" @click="delchapters(item.id)"></i>
             </div>
             <div class="table" v-for="(node,index2) in item.sections" :key="index2">
               <ul>
                 <li>
+                  {{index1+1}}-{{index2+1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   {{node.name}}
-                  <div class="icons"><i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;<i class="el-icon-delete" delsections(node.id)></i></div>
+                  <div class="icons">
+                    <i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;
+                    <i class="el-icon-delete" @click="delsections(node.id)"></i>
+                  </div>
                 </li>
               </ul>
             </div>
-        </div>
-        <!-- <div class="content">
-          <div class="cont-tit">
-              <span class="chapter">第一章</span><span>章节标题</span><el-input placeholder="请输入章节标题" v-model="input1" clearable class="inp2"></el-input>
-              <el-button plain class="btn">+添加节</el-button>
           </div>
-          <el-button type="primary" class="btn1">添加章</el-button>
-        </div>
-        <div class="table">
-          <ul>
-            <li v-for="(item,index) in list" :key="index">{{item.name}}<div class="icons"><i class="el-icon-edit-outline" @click="Popupp"></i>&nbsp;&nbsp;&nbsp;<i class="el-icon-delete"></i></div></li>
-          </ul>
-        </div> -->
-        <!-- <div class="content">
-          <div class="cont-title">
-              <span class="chapter">第二章</span><span>章节标题</span><el-input placeholder="请输入章节标题" v-model="input2" clearable class="inp2"></el-input>
-              <el-button plain class="btn">+添加节</el-button><i class="el-icon-delete icona"></i>
-          </div>
-        </div> -->
-                </el-main>
-                </el-container>
-            </el-container>
-   <!-- 新增视频弹窗 -->
+        </el-main>
+      </el-container>
+    </el-container>
+    <!-- 新增音频弹窗 -->
     <el-dialog title :visible.sync="delVisible" width="600px" center style="z-index: 999">
       <div class="del-dialog-cnt">
-        <span class="namea">节标题</span>
-        <el-input placeholder="请输入节标题" v-model="input1" clearable maxlength="12"></el-input>
-        <span class="number">{{this.input1.length}}/12</span>
-        <br>
-        <br>
-        <br>
-            
-        视频上传：&nbsp;&nbsp;&nbsp; <el-upload
+        <span class="namea">标题</span>
+        <el-input placeholder="请输入标题" v-model="input1" clearable maxlength="30"></el-input>
+        <span class="number">{{this.input1.length}}/30</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<el-checkbox v-model="checked" @change="changes" value="0"  @click="this.value=(this.value==0)?1:0">是否试听</el-checkbox>
+        <br />
+        <br />
+        <br />视频上传：&nbsp;&nbsp;&nbsp;
+        <el-upload
           class="upload-demo"
           ref="upload"
           :action="imageUrl"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
+          :on-success="handleAvatarSuccess"
           :file-list="fileList"
           :data="{
             chapterid:this.chapterid,
-            name:this.input1
+            name:this.input1,
+            extend2:this.checkedss
           }"
           :limit="1"
           accept=".mp4,.avi,.webm"
-          :auto-upload="false">
-          
+          :auto-upload="false"
+        >
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">保存</el-button> -->
-          <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-         </el-upload>   
-        
-        </div>
-        <span slot="footer" class="dialog-footer">
-            <el-button  type="primary"  @click="submitUpload()">保 存</el-button>
-        </span>
+        </el-upload>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitUpload()">保 存</el-button>
+      </span>
     </el-dialog>
-     <!-- 编辑视频弹窗 -->
+
+    <!-- 编辑音频弹窗 -->
     <el-dialog title :visible.sync="delVisiblee" width="600px" center style="z-index: 999">
       <div class="del-dialog-cnt">
-        <span class="namea">节标题</span>
-        <el-input placeholder="请输入节标题" v-model="input2" clearable maxlength="12"></el-input>
-        <span class="number">{{this.input2.length}}/12</span>
-        <br>
-        <br>
-        <br>
-                视频上传：&nbsp;&nbsp;&nbsp; <el-upload
+        <span class="namea">标题</span>
+        <el-input placeholder="请输入标题" v-model="input2" clearable maxlength="30"></el-input>
+        <span class="number">{{this.input2.length}}/30</span>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<el-checkbox v-model="checked1" @change="changes1" value="0"  @click="this.value=(this.value==0)?1:0">是否试听</el-checkbox>
+        <br/>
+        <br/>
+        <br/>
+             视频上传：&nbsp;&nbsp;&nbsp; <span>{{this.videoname}}</span>
+             <el-upload
           class="upload-demo"
           ref="upload1"
           :action="imageUrl1"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
+          :on-success="handleAvatarSuccesss"
           :file-list="fileList1"
           :data="{
             id:this.sectionid,
             chapterid:this.chapterId,
-            name:this.input2
+            name:this.input2,
+            extend2:this.checkedss1
           }"
           :limit="1"
           accept=".mp4,.avi,.webm"
           :auto-upload="false">
           
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">保存</el-button> -->
-          <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
          </el-upload>   
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitUpload1(),editvideosections()">保 存</el-button>
       </span>
     </el-dialog>
-        </div>    
-    </template>
+  </div>
+</template>
     <script>
-import sidebar from '@/components/sidebar/sidebar.vue'
-import Header from '@/components/Header/Header.vue'
-import {ceshi} from 'api/userAjax';
-import {chapter} from 'api/userAjax';
-import {chaptsectioner} from 'api/userAjax';
-import {section} from 'api/userAjax';
-import {editsection} from 'api/userAjax';
-import {editvideosection} from 'api/userAjax';
-import {delsection} from 'api/userAjax';
+import sidebar from "@/components/sidebar/sidebar.vue";
+import Header from "@/components/Header/Header.vue";
+import { ceshi } from "api/userAjax";
+import { chapter } from "api/userAjax";
+import { chaptsectioner } from "api/userAjax";
+import { section } from "api/userAjax";
+import { editsection } from "api/userAjax";
+import { editvideosection } from 'api/userAjax';
+import { delsection } from 'api/userAjax';
+import { delchapter } from "api/userAjax";
 export default {
   data() {
     return {
       input: "", // 章名称
       input1: "", // 新增节标题
-      input2: '', // 修改节标题
+      input2: "", // 修改节标题
       delVisible: false, //新增弹窗
       delVisiblee: false, //编辑弹窗
-      courseDetail:[],  
-      sectionid:'',  //节ID
-      chapterid:'', //章ID
-      chapterId:'', //章ID
+      content: "", // 新增节
+      content1: "", // 编辑节
+      checked:false, // 是否试读
+      checkedss:false, // 是否试读
+      checked1:false, // 是否试读
+      checkedss1:false, // 是否试读
+      courseDetail: [],
       fileList:[],
       fileList1:[],
+      videoname:'',
+      delsectionID: "", //删除jieid
+      delchapterID:'',  //删除章id
       imageUrl: "http://192.168.0.107:8081/section/insertSectionFile", // 上传地址
-      imageUrl1:"http://192.168.0.107:8081/section/updateSection",  //修改地址
-      Id:'',   
-      date:[],
-      date1:[],
-      date2:[],
-      date3:[],
-      delsectionID:'',
-    editorOption: {
-        modules: {
-          toolbar: [
-            [
-              "bold",
-              "italic",
-              "underline",
-              "strike",
-              "image",
-              "video",
-              "align",
-              "formula",
-              "link",
-              "background",
-              "code-block"
-            ] // toggled buttons
-            //  ['blockquote', 'code-block']
-          ]
-        }
-      },
-      
+      imageUrl1:"http://yckt.yichuangketang.com:8081/section/updateSection",  //修改地址
+      sectionid: "", //节ID
+      chapterid: "", //章ID
+      chapterId: "", //章ID
+      Id: "",
+      date: [],
+      date1: [],
+      date2: [],
+      date3: [],
     };
   },
   created() {
@@ -187,78 +162,106 @@ export default {
     this.getdata();
   },
   methods: {
-      onEditorChange({editor, html, text}) {//内容改变事件
-      },
-      //新增
-      submitUpload() {
-        this.$refs.upload.submit();
-        this.getdata();
-      },
-      //修改
-      submitUpload1() {
-        this.$refs.upload1.submit();
-        this.getdata();
-      },
-
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-        //获取传值    
-    getParams(){
-        var routerParams = this.$route.params.id
-        this.Id = routerParams
+    //是否试听取值
+    changes(val){
+      this.checked = val
+      if (this.checked == true) {
+        this.checkedss = 1;
+      }else{
+        this.checkedss = 0;
+      }
     },
-    //测试
-       getdata() {
-        ceshi(this.Id).then(res => {
-            this.courseDetail = res.data
-      })
+    //是否试听取值
+    changes1(val){
+      this.checked1 = val
+      if (this.checked1 == true) {
+        this.checkedss1 = 1;
+      }else{
+        this.checkedss1 = 0;
+      }
     },
-    //新增章   
-        chapters(){
-        chapter("1",this.Id,this.input).then(res => {
-            this.$message.success(res.data)
-            this.getdata()
-      })  
-        },
-        
-    //修改节
-      editvideosections(){
-          editvideosection(this.sectionid,this.chapterId,this.input2).then(res => {
-            this.getdata()
-            // this.delVisiblee = false;
-      })  
-        },
+    //获取传值
+    getParams() {
+      var routerParams = this.$route.params.id;
+      this.Id = routerParams;
+    },
     //删除节
       delsections(val){
         this.delsectionID = val
           delsection(this.delsectionID).then(res => {
+            this.$message.success(res.data)
             this.getdata()
-            // this.delVisiblee = false;
       })  
         },
-        
+    //删除章
+    delchapters(val) {
+      this.delchapterID = val;
+      delchapter(this.delchapterID).then(res => {
+        this.$message.success(res.data);
+        this.getdata();
+      });
+    },
+      //修改
+      submitUpload1() {
+        this.$refs.upload1.submit();
+      },
+      //新增
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    //文件上传成功
+      handleAvatarSuccess(res, file) {
+      this.delVisible = false
+      this.$refs.upload.clearFiles()
+      this.input1 = ""
+      this.getdata();
+      this.$message.success(res)
+      console.log(file.size);
+      },
+      handleAvatarSuccesss(res, file) {
+      this.delVisiblee = false
+      this.$refs.upload.clearFiles()
+      this.input2 = ""
+      this.getdata();
+      this.$message.success(res)
+      },
+
+    //测试
+    getdata() {
+      ceshi(this.Id).then(res => {
+        this.courseDetail = res.data;
+      });
+    },
+    //新增章
+    chapters() {
+      chapter(localStorage.getItem('ex2'), this.Id, this.input).then(res => {
+        this.$message.success(res.data);
+        this.getdata();
+      }).catch(err => {
+      this.$message.error(err)
+    });
+    },
+    //修改节
+      editvideosections(){
+          editvideosection(this.sectionid,this.chapterId,this.input2).then(res => {
+            this.getdata()
+      })  
+        },
 
     // 弹窗
     Popup(val) {
-      this.chapterid = val   //章id
+      this.chapterid = val; //章id
       this.delVisible = true;
-      console.log(this.chapterid)
     },
-    aa(val){
-      this.chapterId = val
+    aa(val) {
+      this.chapterId = val;
     },
     Popupp(val) {
       this.sectionid = val   //节id
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name
-        // this.fileList1 = res.data.url
       }) 
-      console.log(val)
     }
   },
   components: {

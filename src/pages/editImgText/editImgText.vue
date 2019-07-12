@@ -26,7 +26,7 @@
                                     <el-upload
                                       class="upload-demo"
                                       ref="upload"
-                                      action="http://192.168.0.107:8081/lesson/insertLessonImg"
+                                      action="http://yckt.yichuangketang.com:8081/lesson/insertLessonImg"
                                       :on-preview="handlePreview"
                                       :on-remove="handleRemove"
                                       :file-list="fileList"
@@ -159,9 +159,14 @@ export default {
     },
         //修改
     updateLessons() {
-        updateLesson(this.Id,this.input,this.imgurl,this.textarea,this.radio,this.radios,this.input4,this.input3,"1").then(res => {
-          console.log(res)
-      })
+        updateLesson(this.Id,this.input,this.imgurl,this.textarea,this.radio,this.radios,this.input4,this.input3,localStorage.getItem('ex2')).then(res => {
+        this.$message.success(res.data)
+        this.$router.push({
+        path: `/content`
+      });
+      }).catch(err => {
+      this.$message.error(err)
+    })
     },
     
     //获取传值    
@@ -169,13 +174,8 @@ export default {
         var routerParams = this.$route.params.id
         this.Id = routerParams
     },
-    //刷新页面
-    switchss() {
-      this.$router.go(0);
-    },
     //判断如果选择收费，输入框可以输入
     radioq(val) {
-      console.log("111")
       let that = this;
       if (val == "0") {
         this.disabled = true;
@@ -185,12 +185,9 @@ export default {
         this.disabled = false;
       }
     },
-
-
-
     //分类展示
         getdata () {
-      classe("1").then(res => {
+      classe(localStorage.getItem('ex2')).then(res => {
         this.Choice = res.data
       })
     },

@@ -10,7 +10,7 @@
                         </el-aside>
                         <el-main>
                             <div class="title">
-                                <h3>176****0684的店铺</h3>
+                                <h3>{{this.phone}}</h3>
                                 <span class="bq">标准版</span>
                             </div>
                             <ul class="cont">
@@ -49,18 +49,19 @@ import {Home} from 'api/userAjax';
     export default {
         data(){
             return{
-                number:[]
+                number:[],
+                phone:'',
             }
         },
         created () {
             this.getdata();
+            this.phone = localStorage.getItem('phone')
       },
         methods:{
         getdata() {
-        Home("1").then(res => {
-            console.log(res.data);
+        Home(localStorage.getItem('ex2')).then(res => {
             this.number = res.data
-
+            // console.log(res);
       })
     },
         },

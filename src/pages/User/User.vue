@@ -34,6 +34,7 @@
                                     <el-date-picker
                                         v-model="value2"
                                         type="date"
+                                        value-format="yyyy-MM-dd"
                                         placeholder="结束时间">
                                     </el-date-picker>
                                     <el-button type="primary" @click="getdataphone()">搜索</el-button><br><br><br>
@@ -128,7 +129,7 @@ import {deluser} from 'api/userAjax';
                 userid:[],   //单条加入黑名单
                 checkBoxData: [],    //多选框选择的值
                 number:[],
-                number1:''
+                number1:'',
                 }
             },
             // computed: {
@@ -142,28 +143,18 @@ import {deluser} from 'api/userAjax';
         methods:{
       // 展示
         getdata () {
-        user("1").then(res => {
+        user(localStorage.getItem('ex2')).then(res => {
            this.list = res.data.date
-           console.log(this.list)
+          //  console.log(res)
       })
     },
     // 搜索
         getdataphone () {
-           ssuser("3",this.input,this.value,this.value1,this.value2).then(res => {
+           ssuser(localStorage.getItem('ex2'),this.input,this.value,this.value1,this.value2).then(res => {
            this.list = res.data.date
+           console.log(res)
       })        
-      // let url = "http://192.168.0.106:8081/business/selectBySearch"
-      // let params = {
-      //     ex2:"3",
-      //     businessPhone:this.input,   // 手机号
-      //     businessStatus:this.value,          //是否会员
-      //     businessConsumption:this.value1,     //是否付费
-      //     memberEndTime:this.value2,         //会员到期时间
-      // }
-      // this.$axios({url,params})
-      //   .then(res => {
-      //    console.log(res.data.date)
-      //   })
+
     },
     // 多条删除
     getdatadel () {
@@ -172,17 +163,6 @@ import {deluser} from 'api/userAjax';
         console.log(res)
         this.getdata();
       })  
-      // console.log(this.number1)
-      // let url = "http://192.168.0.106:8081/business/immigrant2"
-      // let params = {
-      //   businessId:this.number1
-      // }
-      // this.$axios({
-      //   url,
-      //   params
-      // }).then(res => {
-      //    console.log(res)
-      //   })
     },
 
     // 单条删除

@@ -5,16 +5,14 @@ Vue.use(Router)
 
 
 export default new Router({
-  mode:'history',
   routes: [
-
     {
       path:'/',
       component: resolve => require(['@/pages/Login/Login'], resolve)     //默认登录页
     },
     {
       path:'/Home',
-      component: resolve => require(['@/pages/Home/Home'], resolve)    //首页   店铺概况
+      component: resolve => require(['@/pages/Home/Home'], resolve),    //首页   店铺概况
     },
     {
       path:'/content',
@@ -102,3 +100,4 @@ export default new Router({
     },
   ]
 })
+

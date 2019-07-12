@@ -52,17 +52,35 @@ import {addclass} from 'api/userAjax';
                 radios:'1',
                 delVisible:false,
                    tableData: [{
-            img: '../../../static/img/微信图片_20190620142444.png',
+            img: "http://yckt.yichuangketang.com/img/banner/1.png",
             id: '1',
           },{
-            img: '../../../static/img/微信图片_20190620142459.png',
+            img: "http://yckt.yichuangketang.com/img/banner/2.png",
             id: '2',
           },{
-            img: '../../../static/img/微信图片_20190620142444.png',
+            img: "http://yckt.yichuangketang.com/img/banner/3.png",
             id: '3',
           },{
-            img: '../../../static/img/微信图片_20190620142459.png',
+            img: "http://yckt.yichuangketang.com/img/banner/4.png",
             id: '4',
+          },{
+            img: "http://yckt.yichuangketang.com/img/banner/5.png",
+            id: '5',
+          },{
+            img: "http://yckt.yichuangketang.com/img/banner/6.png",
+            id: '6',
+          },{
+            img: "http://yckt.yichuangketang.com/img/banner/7.png",
+            id: '7',
+          },{
+            img: "http://yckt.yichuangketang.com/img/banner/8.png",
+            id: '8',
+          },{
+            img: "http://yckt.yichuangketang.com/img/banner/9.png",
+            id: '9',
+          },{
+            img: "http://yckt.yichuangketang.com/img/banner/10.png",
+            id: '10',
           }],
        active : -1,
        imgid:'',
@@ -73,11 +91,10 @@ import {addclass} from 'api/userAjax';
         methods:{
     // 新增分类
       getdata () {
-        addclass(this.input,"1",this.imgid).then(res => {
-            console.log(res);
+        addclass(this.input,localStorage.getItem('ex2'),this.imgid).then(res => {
+        this.$message.success(res.data);
+        this.switchss();
       })
-      // console.log(this.input)
-      // console.log(this.imgid)
     },
         
     // 刷新页面
