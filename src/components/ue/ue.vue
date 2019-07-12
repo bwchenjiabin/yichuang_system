@@ -47,9 +47,13 @@ export default {
         });
     },
     methods: {
+        // 获取内容方法
         getUEContent() {
-            // 获取内容方法
             return this.editor.getContent();
+        },
+        // 设置内容方法
+        setUEContent(content) {
+            this.editor.setContent(content);
         }
     },
     destroyed() {

@@ -63,30 +63,7 @@
         <br>
         <br />
         <!-- 图片上传组件辅助 -->
-        <el-upload
-            class="avatar-uploader"
-            :action="serverUrl"
-            :on-success="uploadSuccess"
-            :data="{
-            chapterId:this.chapterid,
-          }"
-            :on-error="uploadError"
-            :before-upload="beforeUpload"
-            accept=".jpg, .png, .gif, .bmp, .jpeg"
-        ></el-upload>
-        <quill-editor
-            class="editor"
-            v-model="content"
-            ref="myQuillEditor"
-            :options="editorOption"
-        ></quill-editor>
-        <!-- <UE :defaultMsg="defaultMsg" :config="config" :id="ue" ref="ue"></UE> -->
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+        <UE :defaultMsg="defaultMsg" :config="config" :id="ue" ref="ue"></UE>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="sections()">保 存</el-button>
@@ -108,26 +85,7 @@
         <br />
         <br />
         <br />
-        <!-- 图片上传组件辅助-->
-        <el-upload
-          class="avatar-uploader"
-          :action="serverUrl1"
-          :on-success="uploadSuccess1"
-          :data="{
-            chapterId:this.chapterId,
-          }"
-          :on-error="uploadError1"
-          :before-upload="beforeUpload1"
-          accept=".jpg, .png, .gif, .bmp, .jpeg"
-        ></el-upload>
-        <quill-editor class="editor" v-model="content1" ref="myQuillEditor" :options="editorOption"></quill-editor>
-        <!-- <UE :defaultMsg="defaultMsg1" :config="config" :id="ue1" ref="ue1"></UE> -->
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+        <UE :defaultMsg="defaultMsg1" :config="config" :id="ue1" ref="ue1"></UE>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="editsections()">保 存</el-button>
@@ -185,6 +143,8 @@ import { querychapter } from "api/userAjax";
 export default {
   data() {
     return {
+      ue: "ue",
+      ue1: "ue1",
       defaultMsg: "",
       // defaultMsg1: "",
       config: {
@@ -192,9 +152,6 @@ export default {
         initialFrameWidth: 550,
         initialFrameHeight: 400
       },
-      ue: "ue",
-      // ue1: "ue1",
-
       input: "", // 章名称
       input1: "", // 新增节标题
       input2: "", // 修改节标题
@@ -248,13 +205,13 @@ export default {
     };
   },
   created() {
+    window.This = this
     this.getParams();
     this.getdata();
   },
   methods: {
     getUEContent() {
       let content = this.$refs.ue.getUEContent(); // 调用子组件方法
-      console.log(content);
     },
     changes(val) {
       this.checked = val;
@@ -279,12 +236,12 @@ export default {
       } else {
         this.checked = 0;
       }
-      section(this.chapterid, this.input1, this.content, this.checked)
+      section(this.chapterid, this.input1, this.$refs.ue.getUEContent(), this.checked)
         .then(res => {
           this.delVisible = false;
           this.$message.success(res.data);
           this.input1 = "";
-          this.content = "";
+          this.$refs.ue.setUEContent("")
           this.getdata();
         })
         .catch(err => {
@@ -343,13 +300,14 @@ export default {
         this.sectionid,
         this.chapterId,
         this.input2,
-        this.content1,
+        this.$refs.ue1.getUEContent(),
         this.checked1
       )
         .then(res => {
           this.$message.success(res.data);
           this.delVisiblee = false;
           this.getdata();
+          this.$refs.ue1.setUEContent("");
         })
         .catch(err => {
           this.$message.error(err);
@@ -389,7 +347,7 @@ export default {
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name;
-        this.content1 = res.data.url;
+        this.$refs.ue1.setUEContent(res.data.url);
         this.checked1 = res.data.extend2;
         if (this.checked1 == 1) {
           this.checked1 = true;
