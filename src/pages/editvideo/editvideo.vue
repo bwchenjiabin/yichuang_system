@@ -33,7 +33,7 @@
                                       :file-list="fileList"
                                       :on-success="handleAvatarSuccess"
                                       :limit="1"
-                                      accept=".jpg,.png,.gif"
+                                      accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" 
                                       :auto-upload="false">
                                       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                                       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">保存</el-button>

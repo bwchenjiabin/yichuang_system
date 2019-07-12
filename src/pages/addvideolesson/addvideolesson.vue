@@ -160,7 +160,7 @@ export default {
       videoname:'',
       delsectionID: "", //删除jieid
       delchapterID:'',  //删除章id
-      imageUrl: "http://192.168.0.107:8081/section/insertSectionFile", // 上传地址
+      imageUrl: "http://yckt.yichuangketang.com:8081/section/insertSectionFile", // 上传地址
       imageUrl1:"http://yckt.yichuangketang.com:8081/section/updateSection",  //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID

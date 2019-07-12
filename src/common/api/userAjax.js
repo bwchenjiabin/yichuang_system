@@ -387,7 +387,7 @@ const section = (chapterid,name,url,extend2) => {
 //修改图文节
 const editsection1 = (id,chapterid,name,url,extend2) => {
   return new Promise((resolve, reject) => {
-    ajax.post('/section/updateImgAndWord',{id,chapterid,name,url,}).then(res => {
+    ajax.post('/section/updateImgAndWord',{id,chapterid,name,url,extend2}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)

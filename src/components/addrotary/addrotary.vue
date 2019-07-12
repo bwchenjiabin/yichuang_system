@@ -50,7 +50,7 @@
             lessonid:this.currentRow,
           }"
           :limit="1"
-          accept=".jpg,.png,.gif"
+          accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" 
           :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           <el-button size="small" type="primary" @click="keep,submitUpload();">保存</el-button>

@@ -646,7 +646,6 @@ export default {
         localStorage.getItem("ex2"),
         this.currentPage,
       ).then(res => {
-        console.log(res.data.data);
         this.$message.success(res.data.msg)
         this.tableData = res.data.data;
         this.twsize = res.data.data.length;
