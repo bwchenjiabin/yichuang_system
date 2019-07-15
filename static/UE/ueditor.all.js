@@ -7998,9 +7998,9 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * ```
          */
         getActionUrl: function(action){
-            console.log(action)
             if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
-                return '/uploadimage';//指定访问路径
+                var chapterId = localStorage.getItem("chapterId")
+                return '/uploadimage?chapterId=' + chapterId;//指定访问路径
             } else {
                 var actionName = this.getOpt(action) || action,
                     imageUrl = this.getOpt('imageUrl'),
