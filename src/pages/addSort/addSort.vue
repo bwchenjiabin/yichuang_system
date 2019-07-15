@@ -33,9 +33,7 @@
                         </el-main>
                     </el-container>
                 </el-container>
-
             <!-- 弹窗 -->
-
             <el-dialog title="选择分类配图" :visible.sync="delVisible" width="600px" center style="z-index: 999">     
                 <div class="del-dialog-cnt">
                     
@@ -53,8 +51,6 @@
                     <el-button type="primary" >确 定</el-button>
                 </span>
             </el-dialog>
-
-
         </div>    
     </template>
     <script>

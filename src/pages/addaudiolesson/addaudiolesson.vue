@@ -295,7 +295,8 @@ export default {
       editvideosection(this.sectionid, this.chapterId, this.input2).then(
         res => {
           this.getdata();
-          // this.delVisiblee = false;
+          this.delVisiblee = false;
+          this.$message.success(res.data);
         }
       );
     },

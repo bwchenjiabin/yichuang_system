@@ -111,8 +111,6 @@
                 </el-tab-pane>
               </el-tabs>
             </el-tab-pane><br><br>
-
-
              <!-- 图文分页 -->
           <el-pagination
             @size-change="handleSizeChange"

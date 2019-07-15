@@ -264,9 +264,9 @@ const delclass = (kindId) => {
 }
 
 // 修改内容分类
-const modifys = (kindId,kindName) => {
+const modifys = (kindId,kindName,img) => {
   return new Promise((resolve, reject) => {
-    ajax.post('/lessonKind/update',{kindId,kindName}).then(res => {
+    ajax.post('/lessonKind/update',{kindId,kindName,img}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -332,9 +332,9 @@ const feedback = (ex2,pageNum,pageSize) => {
 }
 
 //搜索状态
-const selectId = (owner,lessonType,page,status) => {
+const selectId = (owner,lessonType,page,status,lessonKind) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/lesson/selectByOwnerAndType',{owner,lessonType,page,status}).then(res => {
+    ajax.get('/lesson/selectByOwnerAndType',{owner,lessonType,page,status,lessonKind}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -426,9 +426,9 @@ const ceshi = (lessonId) => {
 }
 
 //修改图文
-const updateLesson = (lessonid,lessonName,img,lessonDetail,status,lessonVip,lessonPriceFormer,lessonPriceNow,owner) => {
+const updateLesson = (lessonid,lessonName,img,lessonDetail,status,lessonVip,lessonPriceFormer,lessonPriceNow,owner,lessonKind) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/lesson/updateLesson',{lessonid,lessonName,img,lessonDetail,status,lessonVip,lessonPriceFormer,lessonPriceNow,owner}).then(res => {
+    ajax.get('/lesson/updateLesson',{lessonid,lessonName,img,lessonDetail,status,lessonVip,lessonPriceFormer,lessonPriceNow,owner,lessonKind}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)

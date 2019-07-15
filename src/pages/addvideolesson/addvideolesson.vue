@@ -78,7 +78,6 @@
         <el-button type="primary" @click="submitUpload()">保 存</el-button>
       </span>
     </el-dialog>
-
     <!-- 编辑音频弹窗 -->
     <el-dialog title :visible.sync="delVisiblee" width="600px" center style="z-index: 999">
       <div class="del-dialog-cnt">
@@ -240,7 +239,6 @@ export default {
       this.getdata();
       this.$message.success(res)
       },
-
     //测试
     getdata() {
       ceshi(this.Id).then(res => {
@@ -260,6 +258,8 @@ export default {
       editvideosections(){
           editvideosection(this.sectionid,this.chapterId,this.input2).then(res => {
             this.getdata()
+          this.delVisiblee = false;
+          this.$message.success(res.data);
       })  
         },
     // 修改章名称

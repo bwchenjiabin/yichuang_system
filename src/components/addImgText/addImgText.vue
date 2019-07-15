@@ -188,7 +188,6 @@ export default {
     //类型名字获取
     abv(val) {
       this.aaa = val;
-      // console.log(val);
     },
     assignment() {
       $(".sort").html(this.aaa);

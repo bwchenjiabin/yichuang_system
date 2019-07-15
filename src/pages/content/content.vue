@@ -14,7 +14,19 @@
         <el-main v-show="imgText">
           <el-tabs v-model="activeName">
             <el-tab-pane label="图文" name="first">
-              <el-select v-model="value" clearable placeholder="全部状态" @change="currentSel">
+              <el-select v-model="valuesort" clearable placeholder="分类筛选" @change="sortSel">
+                <el-option
+                  v-for="item in Choice"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.kindName"
+                ></el-option>
+              </el-select>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              <el-select v-model="value" clearable placeholder="状态查询" @change="currentSel">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -92,6 +104,18 @@
               <el-button @click="dellessons()">删除</el-button>
             </el-tab-pane>
             <el-tab-pane label="音频" name="second">
+              <el-select v-model="valuesort1" clearable placeholder="分类筛选" @change="sortSel1">
+                <el-option
+                  v-for="item in Choice"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.kindName"
+                ></el-option>
+              </el-select>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              &nbsp;
               <el-select v-model="value1" clearable placeholder="全部状态" @change="currentSel1">
                 <el-option
                   v-for="item in options"
@@ -169,6 +193,18 @@
               <el-button @click="dellessons1()">删除</el-button>
             </el-tab-pane>
             <el-tab-pane label="视频" name="third">
+              <el-select v-model="valuesort2" clearable placeholder="分类筛选" @change="sortSel2">
+                <el-option
+                  v-for="item in Choice"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.kindName"
+                ></el-option>
+              </el-select>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              &nbsp;
               <el-select v-model="value2" clearable placeholder="全部状态" @change="currentSel2">
                 <el-option
                   v-for="item in options"
@@ -250,7 +286,7 @@
       </el-container>
     </el-container>
     <!-- 删除提示 -->
-    <el-dialog title="提示" :visible.sync="Delprompt" width="300px" center style="z-index: 999">
+    <!-- <el-dialog title="提示" :visible.sync="Delprompt" width="300px" center style="z-index: 999">
       <div class="del-dialog-cnt">确定要删除选中的轮播图吗？</div>
 
       <span slot="footer" class="dialog-footer">
@@ -258,7 +294,7 @@
 
         <el-button type="primary">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
     <script>
@@ -276,6 +312,7 @@ import { UpperShelf } from "api/userAjax";
 import { lowerShelf } from "api/userAjax";
 import { dellesson } from "api/userAjax";
 import { keyword } from "api/userAjax";
+import {checkclass} from 'api/userAjax';
 
 // import { quillEditor } from 'vue-quill-editor'
 export default {
@@ -285,7 +322,6 @@ export default {
       imgText: true, //切换图文
       audios: false, //切换音频
       videos: false, //切换视频
-      // addlesson:false,   //切换添加课程
       Delprompt: false, //删除提示
       activeName: "first", //默认先显示图文
       checkBoxData: [], //TW多选框选择的值
@@ -298,11 +334,15 @@ export default {
       numberb: [],
       numberbb: "",
       value: "", //图文状态
+      valuesort: "", //图文分类
+      valuesort1: "", //音频分类
+      valuesort2: "", //视频分类
       value1: "", //音频状态
       value2: "", //视频状态
       input: "",   //图文关键词
       input1: "",   //音频关键词
       input2: "",   //视频关键词
+      Choice:'',
       delVisible: false,
       currentPage: 1, //图文当前页
       currentPage1: 1, //音频当前页
@@ -312,6 +352,9 @@ export default {
       tableData: [],
       tableData1: [],
       tableData2: [],
+      sortid:[],  // 图文分类下拉值
+      sortid1:[],  // 音频分类下拉值
+      sortid2:[],  // 视频分类下拉值
       twsize: 0,
       ypsize: 0,
       spsize: 0,
@@ -358,8 +401,15 @@ export default {
     this.getImgText();
     this.getaudio();
     this.getvideo();
+    this.getdata();
   },
   methods: {
+        // 查询分类
+    getdata() {
+        checkclass(localStorage.getItem('ex2')).then(res => {
+            this.Choice = res.data;
+      })
+    },
     //编辑图文
     editimgtxt(id) {
       this.editTwid = id;
@@ -414,6 +464,21 @@ export default {
     currentSel(val) {
       this.selectId = val;
       this.selectImgText();
+    },
+    // 获取图文分类下拉菜单值
+    sortSel(val) {
+      this.sortid = val;
+      this.sortImgText();
+    },
+    // 获取音频分类下拉菜单值
+    sortSel1(val) {
+      this.sortid1 = val;
+      this.sortaudio();
+    },
+    // 获取视频分类下拉菜单值
+    sortSel2(val) {
+      this.sortid2 = val;
+      this.sortvideo();
     },
     // 获取音频下拉菜单值
     currentSel1(val) {
@@ -594,13 +659,62 @@ export default {
         this.spsize = res.data.totalLesson;
       });
     },
+    // 图文通过分类查询
+      sortImgText() {
+      selectId(
+        localStorage.getItem("ex2"),
+        "1",
+        this.currentPage,
+        this.selectId,
+        this.sortid
+      ).then(res => {
+        this.$message.success(res.data.msg)
+        this.tableData = res.data.lesson;
+        this.twsize = res.data.lesson.length;
+      }).catch(err => {
+      this.$message.error(err)
+    });
+    },
+        // 音频通过分类查询
+      sortaudio() {
+      selectId(
+        localStorage.getItem("ex2"),
+        "2",
+        this.currentPage,
+        this.selectId1,
+        this.sortid1
+      ).then(res => {
+        this.$message.success(res.data.msg)
+        this.tableData1 = res.data.lesson;
+        this.ypsize = res.data.lesson.length;
+      }).catch(err => {
+      this.$message.error(err)
+    });
+    },
+            // 视频通过分类查询
+      sortvideo() {
+      selectId(
+        localStorage.getItem("ex2"),
+        "3",
+        this.currentPage,
+        this.selectId2,
+        this.sortid2
+      ).then(res => {
+        this.$message.success(res.data.msg)
+        this.tableData2 = res.data.lesson;
+        this.spsize = res.data.lesson.length;
+      }).catch(err => {
+      this.$message.error(err)
+    });
+    },
     // 图文通过状态查询
     selectImgText() {
       selectId(
         localStorage.getItem("ex2"),
         "1",
         this.currentPage,
-        this.selectId
+        this.selectId,
+        this.sortid
       ).then(res => {
         this.$message.success(res.data.msg)
         this.tableData = res.data.lesson;
@@ -615,7 +729,8 @@ export default {
         localStorage.getItem("ex2"),
         "2",
         this.currentPage,
-        this.selectId1
+        this.selectId1,
+        this.sortid1
       ).then(res => {
         this.$message.success(res.data.msg)
         this.tableData1 = res.data.lesson;
@@ -630,7 +745,8 @@ export default {
         localStorage.getItem("ex2"),
         "3",
         this.currentPage,
-        this.selectId2
+        this.selectId2,
+        this.sortid2
       ).then(res => {
         this.$message.success(res.data.msg)
         this.tableData2 = res.data.lesson;

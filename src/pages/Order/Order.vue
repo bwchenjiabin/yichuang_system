@@ -208,14 +208,13 @@ import {orderStatus} from 'api/userAjax';
       })
     },
       open(row) {
-        // this.getdatad();
         this.ordernum = row.orderNumber
         this.delVisible = true;      
         this.getdatad();
             },
       Close() {
             this.delVisible = false;
-      }  
+          }  
         },
         components:{
             sidebar,

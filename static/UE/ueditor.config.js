@@ -35,7 +35,7 @@ import { baseURL } from "common/config";
 
             ,
         // serverUrl: 'http://35.201.165.105:8000/controller.php'
-         serverUrl: baseURL + '/config?noCache=' + new Date().getTime()
+         serverUrl: baseURL + '/baidueditor/config?noCache=' + new Date().getTime()
 
 
             //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义

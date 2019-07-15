@@ -110,7 +110,6 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import UE from "@/components/ue/ue";
-
 // 工具栏配置
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
@@ -128,7 +127,6 @@ const toolbarOptions = [
   ["clean"], // 清除文本格式
   ["link", "image", "video"] // 链接、图片、视频
 ];
-
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import { ceshi } from "api/userAjax";
@@ -146,7 +144,7 @@ export default {
       ue: "ue",
       ue1: "ue1",
       defaultMsg: "",
-      // defaultMsg1: "",
+      defaultMsg1: "",
       config: {
         initialFrameWidth: null,
         initialFrameWidth: 550,
@@ -317,6 +315,8 @@ export default {
     Popup(val) {
       this.chapterid = val; //章id
       this.delVisible = true;
+      localStorage.setItem('chapterId',this.chapterid);
+      console.log(localStorage.getItem('chapterId'))
     },
     aa(val) {
       this.chapterId = val;
