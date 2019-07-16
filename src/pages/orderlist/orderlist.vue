@@ -12,11 +12,79 @@
           <router-link to="/Order">
             <span class="course" style="cursor: pointer;">订单管理</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <span class="imgText">订单列表</span>
+          <span class="imgText">订单列表</span><br><br>
           <div class="title">
             <i class="icon"></i>
-            <span>课程信息</span>
+            <span>课程订单</span>
           </div>
+
+
+          <el-table
+                                            ref="multipleTable"
+                                            :data="list"
+                                            tooltip-effect="dark"
+                                            order: string
+                                            style="width: 100%"
+                                            :header-cell-style="{background:'#f5f5f5',color:'#000'}">
+                                                         
+                                            <el-table-column
+                                            type="selection"
+                                            width="55">
+                                            </el-table-column>
+                                            <el-table-column
+                                            label="商品"
+                                            width="250">
+                                            <template slot-scope="scope" >
+                                                <i class="img-box"><img :src="'http://yckt.yichuangketang.com'+scope.row.lesson.img" alt=""></i>
+                                                 <span class="name">{{scope.row.lesson.lessonName}}</span><br>
+                                                 <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
+                                            </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="businessUser.businessName"
+                                            label="买家"
+                                            width="250">
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="payTime"
+                                            label="交易时间"
+                                            show-overflow-tooltip>
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="orderStatus"
+                                            label="订单状态"
+                                            show-overflow-tooltip>
+                                            <template slot-scope="scope">
+                                          <span>{{scope.row.orderStatus==1?"待支付":scope.row.orderStatus==2?"已完成":scope.row.orderStatus==3?"已关闭":''}}</span>
+                                            </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="consumption"
+                                            label="总价格"
+                                            show-overflow-tooltip>
+                                            <template slot-scope="scope" >
+                                              ￥{{scope.row.lesson.lessonPriceNow}}
+                                          </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                            fixed="right"
+                                            label="操作"
+                                            width="200">
+                                            <template slot-scope="scope"  >
+                                              <el-button type="text" size="small" @click="open(scope.row)">查看详情</el-button>
+                                            </template>
+                                          </el-table-column>       
+                                            
+                                        </el-table><br><br>
+                                        <el-pagination
+                                            @size-change="handleSizeChange"
+                                            @current-change="current_change"
+                                            @current-page="currentPage"
+                                            :page-size="pagesize"
+                                            background
+                                            layout="total, prev, pager, next"
+                                            :total="this.ordersize"
+                                          ></el-pagination>    
         </el-main>
       </el-container>
     </el-container>
