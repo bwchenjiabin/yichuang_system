@@ -47,6 +47,16 @@ export default {
         });
     },
     methods: {
+        doInit() {
+            return new Promise((resolve, reject) => {
+                this.editor = UE.getEditor(this.id, this.config);
+                
+                this.editor.addListener("ready", () => {
+                    this.editor.setContent(this.defaultMsg);
+                    resolve()
+                });
+            })
+        },
         // 获取内容方法
         getUEContent() {
             return this.editor.getContent();

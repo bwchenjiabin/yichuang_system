@@ -536,6 +536,17 @@ const orderlist = (formatId,page) => {
   })
 }
 
+// 修改分类展示
+const sortshow = (lessonKindId) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/lessonKind/selectById',{lessonKindId}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export {login}
 export {tuichu}
 export {rotary}
@@ -586,3 +597,4 @@ export {orderStatus}
 export {querychapter}
 export {keyword}
 export {orderlist}
+export {sortshow}

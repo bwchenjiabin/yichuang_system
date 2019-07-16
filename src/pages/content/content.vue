@@ -161,7 +161,11 @@
                 </el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
                 <el-table-column prop="browseNumber" label="访客数/浏览数" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="tradeNumber" label="销量" show-overflow-tooltip></el-table-column>
+                 <el-table-column prop="tradeNumber" label="销量">
+                  <template slot-scope="scope">
+                    <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
+                  </template>
+                </el-table-column>
                  <el-table-column label="状态">
                   <template slot-scope="scope">
                       <span>{{scope.row.status==1?"上架":"下架"}}</span>
@@ -250,7 +254,11 @@
                 </el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
                 <el-table-column prop="browseNumber" label="访客数/浏览数" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="tradeNumber" label="销量" show-overflow-tooltip></el-table-column>
+                 <el-table-column prop="tradeNumber" label="销量">
+                  <template slot-scope="scope">
+                    <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
+                  </template>
+                </el-table-column>
                  <el-table-column label="状态">
                   <template slot-scope="scope">
                       <span>{{scope.row.status==1?"上架":"下架"}}</span>
@@ -290,7 +298,7 @@
       </el-container>
     </el-container>
  <!-- 删除图文提示 -->
-      <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999">                      
+      <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999" :close-on-click-modal="false">                      
         <div class="del-dialog-cnt">确定要删除选中课程吗？</div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="Delete = false">取 消</el-button>
@@ -298,7 +306,7 @@
       </span>
     </el-dialog>
 <!-- 删除音频提示 -->
-<el-dialog title="提示" :visible.sync="Delete1" width="300px" center style="z-index: 999">                      
+<el-dialog title="提示" :visible.sync="Delete1" width="300px" center style="z-index: 999" :close-on-click-modal="false">                      
   <div class="del-dialog-cnt">确定要删除选中课程吗？</div>
   <span slot="footer" class="dialog-footer">
     <el-button @click="Delete1 = false">取 消</el-button>
@@ -306,7 +314,7 @@
 </span>
 </el-dialog>
 <!-- 删除视频提示 -->
-<el-dialog title="提示" :visible.sync="Delete2" width="300px" center style="z-index: 999">                      
+<el-dialog title="提示" :visible.sync="Delete2" width="300px" center style="z-index: 999" :close-on-click-modal="false">                      
   <div class="del-dialog-cnt">确定要删除选中课程吗？</div>
   <span slot="footer" class="dialog-footer">
     <el-button @click="Delete2 = false">取 消</el-button>

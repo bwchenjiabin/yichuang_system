@@ -24,7 +24,7 @@
                                 </el-table-column>
                                 <el-table-column fixed="right" label="操作" width="200">
                                         <template slot-scope="scope">
-                                          <el-button type="text" size="small" @click="modify(scope.row)">修改</el-button>
+                                          <el-button type="text" size="small" @click="modify(scope.row.kindId)">修改</el-button>
                                           <el-button type="text" size="small" @click="deleteRow(scope.row)">删除</el-button>
                                         </template>
                                 </el-table-column>
@@ -37,7 +37,7 @@
                 </el-container>
 
                    <!-- 删除提示 -->
-                   <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999">
+                   <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999" :close-on-click-modal="false">
                                             
                       <div class="del-dialog-cnt">确定要删除该条分类吗？</div>
 
@@ -50,15 +50,15 @@
                     </span>
 
                   </el-dialog>
-
                   <!-- 修改弹窗 -->
-                <el-dialog title="分类修改" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left">                                
+                <el-dialog title="分类修改" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left" :close-on-click-modal="false">                                
               <div class="del-dialog-cnt">
+                <span class="name">分类名称</span>&nbsp;&nbsp;&nbsp;
                 <el-input
                   v-model="value"
                   :placeholder="modifyName"
                   clearable>
-                </el-input>
+                </el-input><br><br>
                 <span class="name">修改分类配图</span>&nbsp;&nbsp;&nbsp;<el-button plain @click="Popup">选择</el-button>
               </div>
               <span slot="footer" class="dialog-footer">
@@ -66,9 +66,9 @@
               </span>
           </el-dialog>
             <!-- 弹窗 -->
-            <el-dialog title="选择分类配图" :visible.sync="delVisiblee" width="600px" center style="z-index: 999">     
-                <div class="del-dialog-cnt"> 
-                    <ul>
+            <el-dialog title="选择分类配图" :visible.sync="delVisiblee" width="600px" center style="z-index: 999;" :close-on-click-modal="false">     
+                <div class="del-dialog-cnt" > 
+                    <ul style="height:500px;overflow:auto;">
                   <li v-for="(item,index) in tableDataa" :key="index" @click="aa(item.id)">
                       <span class="Order">{{item.id}}</span>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">
@@ -91,6 +91,7 @@ import addSort from '@/components/addSort/addSort.vue'
 import {classe} from 'api/userAjax';
 import {delclass} from 'api/userAjax';
 import {modifys} from 'api/userAjax';
+import {sortshow} from 'api/userAjax';
     export default {
       name:'classify',
         data(){
@@ -107,7 +108,8 @@ import {modifys} from 'api/userAjax';
           modifyName:'', // 修改名称
           modifyid:'', // 修改的id
           value:'',
-          active : -1,
+          active : "",
+          sortid:'',
           tableDataa: [{
             img: "http://yckt.yichuangketang.com/img/banner/1.png",
             id: '1',
@@ -161,12 +163,21 @@ import {modifys} from 'api/userAjax';
       aa(val){
         this.imgid = val
       },
-      //修改
+      //修改的弹窗
       modify(row){
+        this.sortid = row;
+        this.modifyid = row        
         this.delVisible = true;
-        this.modifyName = row.kindName
-        this.modifyid = row.kindId
-        console.log(row)
+        this.sortshows();
+      },
+    //修改展示
+      sortshows(){
+        sortshow(this.sortid).then(res => {
+          this.getdata();
+        this.modifyName = res.data.kindName
+        this.active = res.data.img-1
+            console.log(res);
+      })
       },
       //修改
       modifyclass(){
@@ -178,7 +189,6 @@ import {modifys} from 'api/userAjax';
       })
         this.getdata();
       },
-
       //展开删除提示
       del(){
         this.Delprompt = true;
@@ -215,8 +225,7 @@ import {modifys} from 'api/userAjax';
     <style scoped>
  .box{background: #f5f5f5;}
  .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
- .title{width: auto;display: block}.title span{margin-left: 10px;}.del-dialog-cnt{text-align: center;}
-
+ .title{width: auto;display: block}.title span{margin-left: 10px;}
   .box{background: #f5f5f5;}
   .course{font-size:18px;font-family:PingFangSC-Medium;font-weight:700;color:rgba(51,51,51,1);}
  .imgText{font-size:18px;font-family:PingFangSC-Medium;font-weight:500;color:rgba(153,153,153,1);}
@@ -230,12 +239,12 @@ import {modifys} from 'api/userAjax';
  .number .imga{width: 100%;height: 100%;}
  .text{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);display: inline;}
  .cont{margin-top: 10px;margin-left: 40px;color: rgba(153, 153, 153, 1);font-size: 14px;text-align: left;font-family: SourceHanSansSC-regular;width: 70%;float: left;}
- .cont p{display: inline;}.del-dialog-cnt{text-align: center;}
+ .cont p{display: inline;}
  .radio{margin-left: 50px;}.el-dialog .el-dialog__header{text-align: left!important;}
  .tit{padding: 0 20px 25px 20px;position: absolute;top: 0}
  .del-dialog-cnt li{display: flex;align-items: center;justify-content: center;position: relative;font-size:20px;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(20,85,250,1);}
  .del-dialog-cnt li .imga:hover{border:1px solid rgba(20,85,250,1);}
- .good{width: 15px;height: 15px;position: absolute;top: 12px;right: 75px;display: none} 
+ .good{width: 15px;height: 15px;position: absolute;top: 12px;right: 67px;display: none} 
  .addclass{border:1px solid rgba(20,85,250,1)}
  .goods{display: block}
  /deep/ .el-dialog__header{

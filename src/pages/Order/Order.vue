@@ -110,7 +110,7 @@
                 </el-container>
 
                 <!-- 弹窗 -->
-                <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left">
+                <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left" :close-on-click-modal="false">
                                             
               <div class="del-dialog-cnt"><ul>
                   <li >

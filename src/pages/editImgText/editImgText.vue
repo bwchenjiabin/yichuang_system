@@ -33,31 +33,15 @@
               <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
               <br />
               <br />
-              <div class="img-box">
-                <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
-              </div>
-              <br />
-              <el-upload
-                class="upload-demo"
-                ref="upload"
-                action="http://yckt.yichuangketang.com:8081/lesson/insertLessonImg"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :file-list="fileList"
-                :on-success="handleAvatarSuccess"
-                :limit="1"
-                accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
-                :auto-upload="false"
-              >
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button
-                  style="margin-left: 10px;"
-                  size="small"
-                  type="success"
-                  @click="submitUpload"
-                >保存</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-              </el-upload>
+                <el-upload
+            class="avatar-uploader"
+            action="http://yckt.yichuangketang.com:8081/lesson/insertLessonImg"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
+            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com'+this.imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
               <br />
               <br />
 
@@ -122,9 +106,6 @@
               <div style="display:inline-block" class="hxj">
                 <span>
                   原价
-                  <!-- <span class="bt">
-                <br>&nbsp;&nbsp;(必填)
-                  </span>-->
                 </span>
               </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <span class="money">￥</span>
@@ -138,7 +119,7 @@
       </el-container>
     </el-container>
     <!-- 弹窗 -->
-    <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999">
+    <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <div class="gray">注意：包含以下级分类的项目不可选择</div>
         <br />
@@ -158,7 +139,7 @@
     </el-dialog>
   </div>
 </template>
-    <script>
+<script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import { classe } from "api/userAjax";
@@ -171,9 +152,7 @@ export default {
       input3: "", // 收费价格
       input4: "", // 划线价
       fileList: [],
-      // imageUrl: "", // 上传地址
-      imgurl: "", //后台返回的路径
-      imgurls: "",
+      imageUrl: "", //后台返回的路径
       textarea: "", // 课程简介
       radio: "", // 上架时间
       radios: "", // 获取形式
@@ -183,9 +162,7 @@ export default {
       aaa: "", // 类型名字
       lessonType: 1,
       date: [],
-
       delVisible: false,
-
       radio: "1",
       Choice: [],
       Id: ""
@@ -204,6 +181,7 @@ export default {
     assignment() {
       $(".sort").html(this.aaa);
       console.log(this.aaa);
+
     },
     //修改展示
     getdataedit() {
@@ -215,7 +193,7 @@ export default {
         this.radios = res.data.lessonVip + "";
         this.input4 = res.data.lessonPriceFormer;
         this.input3 = res.data.lessonPriceNow;
-        this.imgurl = res.data.img;
+        this.imageUrl = res.data.img;
         $(".sort").html(res.data.lessonKind);
         console.log(res);
         if (this.radios == "0") {
@@ -232,7 +210,7 @@ export default {
       updateLesson(
         this.Id,
         this.input,
-        this.imgurl,
+        this.imageUrl,
         this.textarea,
         this.radio,
         this.radios,
@@ -277,13 +255,9 @@ export default {
     submitUpload() {
       this.$refs.upload.submit();
     },
-    handleAvatarSuccess(response) {
-      console.log(response);
-      this.imgurl = response;
-    },
-    handleRemove(file, fileList) {},
-    handlePreview(file) {
-      console.log(file);
+
+    handleAvatarSuccess(res) {
+      this.imageUrl = res;
     },
 
     //弹窗

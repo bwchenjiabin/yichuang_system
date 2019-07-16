@@ -17,7 +17,7 @@
                             <el-button type="primary"  @click="vips();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</el-button>
                         </el-main>
                     </el-container>
-                </el-container>
+            </el-container>
         </div>    
     </template>
     <script>

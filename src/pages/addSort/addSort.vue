@@ -34,7 +34,7 @@
                     </el-container>
                 </el-container>
             <!-- 弹窗 -->
-            <el-dialog title="选择分类配图" :visible.sync="delVisible" width="600px" center style="z-index: 999">     
+            <el-dialog title="选择分类配图" :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">     
                 <div class="del-dialog-cnt">
                     
                     <ul>

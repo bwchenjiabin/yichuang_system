@@ -24,9 +24,9 @@
             </div>
         </el-main>
             <!-- 弹窗 -->
-            <el-dialog title="选择分类配图" :visible.sync="delVisible" width="600px" center style="z-index: 999">     
+            <el-dialog title="选择分类配图" :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">     
                 <div class="del-dialog-cnt"> 
-                    <ul>
+                    <ul style="height:500px;overflow:auto;">
                   <li v-for="(item,index) in tableData" :key="index" @click="aa(item.id)">
                       <span class="Order">{{item.id}}</span>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">
@@ -133,7 +133,7 @@ import {addclass} from 'api/userAjax';
  .tit{padding: 0 20px 25px 20px;position: absolute;top: 0}
  .del-dialog-cnt li{display: flex;align-items: center;justify-content: center;position: relative;font-size:20px;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(20,85,250,1);}
  .del-dialog-cnt li .imga:hover{border:1px solid rgba(20,85,250,1);}
- .good{width: 15px;height: 15px;position: absolute;top: 12px;right: 75px;display: none} 
+ .good{width: 15px;height: 15px;position: absolute;top: 12px;right: 67px;display: none} 
  .addclass{border:1px solid rgba(20,85,250,1)}
  .goods{display: block}
  /deep/ .el-dialog__header{

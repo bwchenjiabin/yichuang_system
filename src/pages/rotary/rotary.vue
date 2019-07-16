@@ -82,7 +82,7 @@
       </el-container>
     </el-container>
     <!-- 删除提示 -->
-    <el-dialog title="提示" :visible.sync="delVisible" width="300px" center style="z-index: 999">
+    <el-dialog title="提示" :visible.sync="delVisible" width="300px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">确定要删除该条轮播图吗？</div>
 
       <span slot="footer" class="dialog-footer">
@@ -120,7 +120,6 @@ export default {
   },
   created() {
     this.getdata();
-    console.log(localStorage.getItem('ex2'))
   },
   methods: {
     //切换新增页面

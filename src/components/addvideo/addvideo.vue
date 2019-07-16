@@ -22,30 +22,14 @@
           <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
           <br />
           <br />
-          <div class="img-box">
-            <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
-          </div>
-          <br />
-          <br />
-          <el-upload
-            class="upload-demo"
-            ref="upload"
-            :action="imageUrl"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :file-list="fileList"
+            <el-upload
+            class="avatar-uploader"
+            action="http://yckt.yichuangketang.com:8081/lesson/insertLessonImg"
+            :show-file-list="false"
             :on-success="handleAvatarSuccess"
-            :limit="1"
-            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" 
-            :auto-upload="false"
-          >
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <el-button
-              style="margin-left: 10px;"
-              size="small"
-              type="success"
-              @click="submitUpload"
-            >保存</el-button>
+            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
+            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com'+this.imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <br />
           <br />
@@ -131,7 +115,7 @@
       </div>
     </el-main>
     <!-- 弹窗 -->
-    <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999">
+    <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <div class="gray">注意：包含以下级分类的项目不可选择</div>
         <br />
@@ -166,7 +150,7 @@ export default {
       input3: "", // 收费价格
       input4: "", // 划线价
       fileList: [],
-      imageUrl: "http://yckt.yichuangketang.com:8081/lesson/insertLessonImg", // 上传地址
+      imageUrl: "", // 上传地址
       textarea: "", // 课程简介
       radio: "1", // 上架时间
       radios: "0", // 获取形式
@@ -188,7 +172,6 @@ export default {
     //类型名字获取
     abv(val) {
       this.aaa = val;
-      // console.log(val);
     },
     assignment() {
       $(".sort").html(this.aaa);
@@ -223,7 +206,7 @@ export default {
               this.$message.error('价钱不可以小于0元')
               return;
             }else{
-                addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imgurl)
+                addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imageUrl)
             .then(res => {
               this.switchss();
               this.$message.success(res.data);
@@ -233,7 +216,7 @@ export default {
             });
               }
           }else{
-              addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imgurl)
+              addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imageUrl)
             .then(res => {
               this.switchss();
               this.$message.success(res.data);
@@ -246,11 +229,9 @@ export default {
     submitUpload() {
       this.$refs.upload.submit();
     },
-    handleAvatarSuccess(response) {
-      this.imgurl = response;
+    handleAvatarSuccess(res) {
+      this.imageUrl = res;
     },
-    handleRemove(file, fileList) {},
-    handlePreview(file) {},
     //弹窗
     Popup() {
       this.delVisible = true;

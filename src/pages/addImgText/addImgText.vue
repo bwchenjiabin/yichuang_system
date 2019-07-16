@@ -93,7 +93,7 @@
                     </el-container>
                 </el-container>
               <!-- 弹窗 -->
-            <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999">     
+            <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">     
                 <div class="del-dialog-cnt">      
                     <div class="gray">
                       注意：包含以下级分类的项目不可选择

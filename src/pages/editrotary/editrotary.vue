@@ -33,7 +33,11 @@
               <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
               <br />
               <br />
-
+          <div class="img-box">
+            <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
+          </div>
+          <br />
+          <br />
           <el-upload
             class="upload-demo"
             ref="upload"
@@ -72,7 +76,7 @@
     </el-container>
 
     <!-- 弹窗 -->
-    <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999">
+    <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <div class="tab">
           <el-tabs v-model="activeName">
@@ -379,6 +383,14 @@ export default {
 }
 .title {
   padding: 20px;
+}
+.img-box {
+    width: 150px;
+    height: 150px;
+}
+.img-box img {
+  width: 100%;
+  height: 100%;
 }
 .cont li {
   width: 300px;

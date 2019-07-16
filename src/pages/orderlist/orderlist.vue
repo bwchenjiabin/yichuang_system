@@ -17,95 +17,117 @@
             <i class="icon"></i>
             <span>课程订单</span>
           </div>
-
-
           <el-table
-                                            ref="multipleTable"
-                                            :data="list"
-                                            tooltip-effect="dark"
-                                            order: string
-                                            style="width: 100%"
-                                            :header-cell-style="{background:'#f5f5f5',color:'#000'}">
-                                                         
-                                            <el-table-column
-                                            type="selection"
-                                            width="55">
-                                            </el-table-column>
-                                            <el-table-column
-                                            label="商品"
-                                            width="250">
-                                            <template slot-scope="scope" >
-                                                <i class="img-box"><img :src="'http://yckt.yichuangketang.com'+scope.row.lesson.img" alt=""></i>
-                                                 <span class="name">{{scope.row.lesson.lessonName}}</span><br>
-                                                 <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
-                                            </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                            prop="businessUser.businessName"
-                                            label="买家"
-                                            width="250">
-                                            </el-table-column>
-                                            <el-table-column
-                                            prop="payTime"
-                                            label="交易时间"
-                                            show-overflow-tooltip>
-                                            </el-table-column>
-                                            <el-table-column
-                                            prop="orderStatus"
-                                            label="订单状态"
-                                            show-overflow-tooltip>
-                                            <template slot-scope="scope">
-                                          <span>{{scope.row.orderStatus==1?"待支付":scope.row.orderStatus==2?"已完成":scope.row.orderStatus==3?"已关闭":''}}</span>
-                                            </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                            prop="consumption"
-                                            label="总价格"
-                                            show-overflow-tooltip>
-                                            <template slot-scope="scope" >
-                                              ￥{{scope.row.lesson.lessonPriceNow}}
-                                          </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                            fixed="right"
-                                            label="操作"
-                                            width="200">
-                                            <template slot-scope="scope"  >
-                                              <el-button type="text" size="small" @click="open(scope.row)">查看详情</el-button>
-                                            </template>
-                                          </el-table-column>       
-                                            
-                                        </el-table><br><br>
-                                        <el-pagination
-                                            @size-change="handleSizeChange"
-                                            @current-change="current_change"
-                                            @current-page="currentPage"
-                                            :page-size="pagesize"
-                                            background
-                                            layout="total, prev, pager, next"
-                                            :total="this.ordersize"
-                                          ></el-pagination>    
+              ref="multipleTable"
+              :data="list"
+              tooltip-effect="dark"
+              order: string
+              style="width: 100%"
+              :header-cell-style="{background:'#f5f5f5',color:'#000'}">
+                            
+              <el-table-column
+              type="selection"
+              width="55">
+              </el-table-column>
+              <el-table-column
+              label="商品"
+              width="250">
+              <template slot-scope="scope" >
+                  <i class="img-box"><img :src="'http://yckt.yichuangketang.com'+scope.row.lesson.img" alt=""></i>
+                    <span class="name">{{scope.row.lesson.lessonName}}</span><br>
+                    <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
+              </template>
+              </el-table-column>
+              <el-table-column
+              prop="businessUser.businessName"
+              label="买家"
+              width="250">
+              </el-table-column>
+              <el-table-column
+              prop="payTime"
+              label="交易时间"
+              show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column
+              prop="orderStatus"
+              label="订单状态"
+              show-overflow-tooltip>
+              <template slot-scope="scope">
+            <span>{{scope.row.orderStatus==1?"待支付":scope.row.orderStatus==2?"已完成":scope.row.orderStatus==3?"已关闭":''}}</span>
+              </template>
+              </el-table-column>
+              <el-table-column
+              prop="consumption"
+              label="总价格"
+              show-overflow-tooltip>
+              <template slot-scope="scope" >
+                ￥{{scope.row.lesson.lessonPriceNow}}
+            </template>
+              </el-table-column>
+              <el-table-column
+              fixed="right"
+              label="操作"
+              width="200">
+              <template slot-scope="scope"  >
+                <el-button type="text" size="small" @click="open(scope.row)">查看详情</el-button>
+              </template>
+            </el-table-column>       
+              
+          </el-table><br><br>
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="current_change"
+              @current-page="currentPage"
+              :page-size="pagesize"
+              background
+              layout="total, prev, pager, next"
+              :total="this.ordersize"
+            ></el-pagination> 
         </el-main>
       </el-container>
     </el-container>
+      <!-- 弹窗 -->
+                <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left" :close-on-click-modal="false">
+                                            
+              <div class="del-dialog-cnt"><ul>
+                  <li >
+                      <span class="Order">订单编号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.orderNumber}}</span><br><br>
+                      <span class="Order">支付订单号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.escrowTradeNo}}</span><br><br>
+                      <span class="Order">创建时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.payTime}}</span><br><br>
+                      <span class="Order">成交时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.payEndTime}}</span><br><br>
+                  </li></ul></div>
+              <span slot="footer" class="dialog-footer">
+
+                  <el-button type="primary"  @click="Close">确 定</el-button>
+
+              </span>
+
+          </el-dialog>
   </div>
 </template>
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import {orderlist} from 'api/userAjax';
+import {orderdeteils} from 'api/userAjax';
 export default {
   data() {
     return {
         Id:'', 
-        Choice:'',
+        Choice:[],
+        list:[],
+        delVisible:false,
+        details: [],
+        currentPage: 1, //图文当前页
+        ordersize:0,
+        pagesize: 5,
+        ordernum:[],
+        
     };
   },
   created() {
 this.getParams();
-console.log(this.Id)
 this.getdata();
-
   },
   methods: {
     //获取传值
@@ -115,10 +137,35 @@ this.getdata();
     },
     // 订单列表展示
     getdata() {
-        orderlist(this.Id,"1").then(res => {
-            this.Choice = res.data;
-            console.log(res);
+        orderlist(this.Id,this.currentPage).then(res => {
+            this.ordersize = res.data.data.total
+            if (res.data.code == "0000") {
+              this.list = res.data.data.data
+            }
+            console.log(this.list);
       })
+    },
+    // 订单详情
+      getdatad () {
+        orderdeteils(this.ordernum).then(res => {
+           this.details = res.data
+      })
+    },
+    open(row) {
+        this.ordernum = row.orderNumber
+        this.delVisible = true;      
+        this.getdatad();
+      },
+    Close() {
+      this.delVisible = false;
+    },
+    // 分页
+    handleSizeChange(size) {
+      this.pagesize = size;
+    },
+    current_change: function(currentPage) {
+      this.currentPage = currentPage;
+      this.getdata();
     },
   },
   components: {
@@ -324,15 +371,7 @@ this.getdata();
 .bt {
   color: #999999;
 }
-.money {
-  width: 40px;
-  height: 40px;
-  background: rgba(238, 238, 238, 1);
-  border: 1px solid rgba(238, 238, 238, 1);
-  text-align: center;
-  line-height: 40px;
-  display: inline-block;
-}
+ .money{width:34px;height:12px;font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);line-height:24px;}
 .hxj {
   margin-left: 100px;
 }

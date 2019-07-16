@@ -37,7 +37,7 @@
           <br>
           <br>
            <div class="img-box">
-            <img :src="'http://192.168.0.203:8081'+this.imgurl" alt />
+            <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
           </div>
           <br />
           <br />
@@ -64,7 +64,7 @@
     </el-main>
 
     <!-- 弹窗 -->
-    <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999">
+    <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <div class="tab">
           <el-tabs v-model="activeName">
@@ -169,7 +169,7 @@ export default {
     return {
       input: "",
       fileList: [],
-      imageUrl: "http://192.168.0.203:8081/rollimage/add", // 上传地址
+      imageUrl: "http://yckt.yichuangketang.com/rollimage/add", // 上传地址
       radios: "1",
       delVisible: false,
       activeName: "courser", //默认选择
@@ -220,6 +220,7 @@ export default {
     },
     handleAvatarSuccess(response) {
       this.imgurl = response;
+      console.log(kindId)
     },
     // 图文查询
     getImgText() {

@@ -48,7 +48,7 @@
       </el-container>
     </el-container>
     <!-- 新增图文弹窗 -->
-    <el-dialog title :visible.sync="delVisible" width="600px" height="500px" center style="z-index: 999">
+    <el-dialog title :visible.sync="delVisible" width="600px" height="500px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <span class="namea">标题</span>
         <el-input placeholder="请输入标题" v-model="input1" clearable maxlength="30"></el-input>
@@ -70,7 +70,7 @@
       </span>
     </el-dialog>
     <!-- 编辑图文弹窗 -->
-    <el-dialog title :visible.sync="delVisiblee" width="600px" height="500px" center style="z-index: 999">
+    <el-dialog title :visible.sync="delVisiblee" width="600px" height="500px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <span class="namea">标题</span>
         <el-input placeholder="请输入标题" v-model="input2" clearable maxlength="30"></el-input>
@@ -93,7 +93,7 @@
     </el-dialog>
 
     <!-- 编辑章名称弹窗 -->
-    <el-dialog title :visible.sync="editmodifys" width="600px" center style="z-index: 999">
+    <el-dialog title :visible.sync="editmodifys" width="600px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <div class="edit-title">
           修改章名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -104,7 +104,7 @@
     </el-dialog>
 
      <!-- 删除章提示 -->
-      <el-dialog title="提示" :visible.sync="Deletez" width="300px" center style="z-index: 999">                      
+      <el-dialog title="提示" :visible.sync="Deletez" width="300px" center style="z-index: 999" :close-on-click-modal="false">                      
         <div class="del-dialog-cnt" style="text-align: center;">确定要删除该章吗？</div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="Deletez = false">取 消</el-button>
@@ -112,7 +112,7 @@
       </span>
     </el-dialog>
          <!-- 删除节提示 -->
-      <el-dialog title="提示" :visible.sync="Deletej" width="300px" center style="z-index: 999">                      
+      <el-dialog title="提示" :visible.sync="Deletej" width="300px" center style="z-index: 999" :close-on-click-modal="false">                      
         <div class="del-dialog-cnt" style="text-align: center;">确定要删除该节吗？</div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="Deletej = false">取 消</el-button>
@@ -374,9 +374,9 @@ export default {
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name;
-        setTimeout(() => {
-          this.$refs.ue1.setUEContent(res.data.url);
-        }, 1000)
+        this.$refs.ue1.doInit.then(() => {
+          setUEContent(res.data.url);
+        })
         this.checked1 = res.data.extend2;
         if (this.checked1 == 1) {
           this.checked1 = true;
