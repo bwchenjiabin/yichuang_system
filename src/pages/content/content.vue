@@ -68,7 +68,11 @@
                 </el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
                 <el-table-column prop="browseNumber" label="访客数/浏览数" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="tradeNumber" label="销量" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="tradeNumber" label="销量">
+                  <template slot-scope="scope">
+                    <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
+                  </template>
+                </el-table-column>
                 <el-table-column label="状态">
                   <template slot-scope="scope">
                       <span>{{scope.row.status==1?"上架":"下架"}}</span>
@@ -285,16 +289,30 @@
         </el-main>
       </el-container>
     </el-container>
-    <!-- 删除提示 -->
-    <!-- <el-dialog title="提示" :visible.sync="Delprompt" width="300px" center style="z-index: 999">
-      <div class="del-dialog-cnt">确定要删除选中的轮播图吗？</div>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="Delprompt = false">取 消</el-button>
-
-        <el-button type="primary">确 定</el-button>
+ <!-- 删除图文提示 -->
+      <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999">                      
+        <div class="del-dialog-cnt">确定要删除选中课程吗？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="Delete = false">取 消</el-button>
+          <el-button type="primary" @click="handleClicks()" >确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
+<!-- 删除音频提示 -->
+<el-dialog title="提示" :visible.sync="Delete1" width="300px" center style="z-index: 999">                      
+  <div class="del-dialog-cnt">确定要删除选中课程吗？</div>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="Delete1 = false">取 消</el-button>
+    <el-button type="primary" @click="handleClicks1()" >确 定</el-button>
+</span>
+</el-dialog>
+<!-- 删除视频提示 -->
+<el-dialog title="提示" :visible.sync="Delete2" width="300px" center style="z-index: 999">                      
+  <div class="del-dialog-cnt">确定要删除选中课程吗？</div>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="Delete2 = false">取 消</el-button>
+    <el-button type="primary" @click="handleClicks2()" >确 定</el-button>
+</span>
+</el-dialog>
   </div>
 </template>
     <script>
@@ -359,6 +377,9 @@ export default {
       ypsize: 0,
       spsize: 0,
       editTwid: "", //修改图文的id
+      Delete:false,   // 删除图文课程
+      Delete1:false,   // 删除音频课程
+      Delete2:false,   // 删除视频课程
       options: [
         {
           //图文状态值
@@ -417,6 +438,13 @@ export default {
         path: `/editImgText/${id}`
       });
     },
+    // 进入订单详情
+    openDetails(id){
+      this.editTwid = id;
+      this.$router.push({
+        path: `/orderlist/${id}`
+      });
+    },
     //编辑音频
     editaudio(id) {
       this.editTwid = id;
@@ -434,30 +462,17 @@ export default {
 
     //删除图文课
     dellessons() {
-      dellesson(this.number1).then(res => {
-        this.$message.success(res.data)
-        this.getImgText();
-      }).catch(err => {
-      this.$message.error(err)
-    });
+
+      this.Delete = true;
+   
     },
     //删除音频课
         dellessons1() {
-      dellesson(this.numberaa).then(res => {
-        this.$message.success(res.data)
-        this.getaudio();
-      }).catch(err => {
-      this.$message.error(err)
-    });
+      this.Delete1 = true;
     },
     // 删除视频课
         dellessons2() {
-      dellesson(this.numberbb).then(res => {
-        this.$message.success(res.data)
-        this.getvideo();
-      }).catch(err => {
-      this.$message.error(err)
-    });
+      this.Delete2 = true;
     },
 
     // 获取图文下拉菜单值
@@ -506,9 +521,39 @@ export default {
       this.imgText = false;
       this.videos = true;
     },
+
+    //课程排序
+    // handleClicks(row) {
+    //   $(".sort").css("display", "block");
+    // },
+    // 删除图文课程
     handleClicks(row) {
-      $(".sort").css("display", "block");
-    },
+   dellesson(this.number1).then(res => {
+        this.$message.success(res.data)
+        this.Delete = false;
+        this.getImgText();
+      }).catch(err => {
+      this.$message.error(err)
+    });
+},
+    handleClicks1(row) {
+      dellesson(this.numberaa).then(res => {
+        this.$message.success(res.data)
+        this.Delete1 = false;
+        this.getaudio();
+      }).catch(err => {
+      this.$message.error(err)
+    });
+},
+    handleClicks2(row) {
+      dellesson(this.numberbb).then(res => {
+        this.$message.success(res.data)
+        this.Delete2 = false;
+        this.getvideo();
+      }).catch(err => {
+      this.$message.error(err)
+    });
+},
     // 获取图文课程id
     addlessons(id) {
       this.$router.push({

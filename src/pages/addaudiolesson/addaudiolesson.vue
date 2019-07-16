@@ -132,6 +132,22 @@
         </div>
       </div>
     </el-dialog>
+     <!-- 删除章提示 -->
+      <el-dialog title="提示" :visible.sync="Deletez" width="300px" center style="z-index: 999">                      
+        <div class="del-dialog-cnt" style="text-align: center;">确定要删除该章吗？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="Deletez = false">取 消</el-button>
+          <el-button type="primary" @click="handleClicks()" >确 定</el-button>
+      </span>
+    </el-dialog>
+         <!-- 删除节提示 -->
+      <el-dialog title="提示" :visible.sync="Deletej" width="300px" center style="z-index: 999">                      
+        <div class="del-dialog-cnt" style="text-align: center;">确定要删除该节吗？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="Deletej = false">取 消</el-button>
+          <el-button type="primary" @click="handleClicksj()" >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
     <script>
@@ -174,6 +190,8 @@ export default {
       sectionid: "", //节ID
       chapterid: "", //章ID
       chapterId: "", //章ID
+      Deletez:false,   //删除章
+      Deletej:false,   //删除节
       Id: "",
       date: [],
       date1: [],
@@ -235,19 +253,26 @@ export default {
     //删除节
     delsections(val) {
       this.delsectionID = val;
-      delsection(this.delsectionID).then(res => {
+      this.Deletej = true;    
+    },
+    handleClicksj(){
+ delsection(this.delsectionID).then(res => {
         this.$message.success(res.data);
+        this.Deletej = false;
         this.getdata();
       });
     },
     //删除章
     delchapters(val) {
       this.delchapterID = val;
+      this.Deletez = true;
+    },
+    handleClicks(){
       delchapter(this.delchapterID).then(res => {
-        // this.$message.success(res);
-        console.log(res);
+        this.Deletez = false;
+        this.$message.success(res.data);
         this.getdata();
-      });
+      })
     },
     //修改
     submitUpload1() {

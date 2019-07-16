@@ -102,6 +102,23 @@
         </div>
       </div>
     </el-dialog>
+
+     <!-- 删除章提示 -->
+      <el-dialog title="提示" :visible.sync="Deletez" width="300px" center style="z-index: 999">                      
+        <div class="del-dialog-cnt" style="text-align: center;">确定要删除该章吗？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="Deletez = false">取 消</el-button>
+          <el-button type="primary" @click="handleClicks()" >确 定</el-button>
+      </span>
+    </el-dialog>
+         <!-- 删除节提示 -->
+      <el-dialog title="提示" :visible.sync="Deletej" width="300px" center style="z-index: 999">                      
+        <div class="del-dialog-cnt" style="text-align: center;">确定要删除该节吗？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="Deletej = false">取 消</el-button>
+          <el-button type="primary" @click="handleClicksj()" >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
     <script>
@@ -167,6 +184,8 @@ export default {
       Id: "",
       checked: false, // 是否试读
       checked1: false, // 编辑是否试读
+      Deletez:false,   //删除章
+      Deletej:false,   //删除节
       date: [],
       date1: [],
       date2: [],
@@ -249,9 +268,13 @@ export default {
     //删除节
     delsections(val) {
       this.delsectionID = val;
-      delsection(this.delsectionID)
+      this.Deletej = true;    
+    },
+        handleClicksj(){
+     delsection(this.delsectionID)
         .then(res => {
           this.$message.success(res.data);
+          this.Deletej = false
           this.getdata();
         })
         .catch(err => {
@@ -261,9 +284,13 @@ export default {
     //删除章
     delchapters(val) {
       this.delchapterID = val;
+      this.Deletez = true;
+    },
+    handleClicks(){
       delchapter(this.delchapterID)
         .then(res => {
           this.$message.success(res.data);
+          this.Deletez = false;
           this.getdata();
         })
         .catch(err => {
@@ -282,6 +309,7 @@ export default {
         .then(res => {
           this.$message.success(res.data);
           this.getdata();
+          this.input = ""
         })
         .catch(err => {
           this.$message.error(err);
@@ -341,13 +369,14 @@ export default {
           this.$message.error(err);
         });
     },
-
     Popupp(val) {
       this.sectionid = val; //节id
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name;
-        this.$refs.ue1.setUEContent(res.data.url);
+        setTimeout(() => {
+          this.$refs.ue1.setUEContent(res.data.url);
+        }, 1000)
         this.checked1 = res.data.extend2;
         if (this.checked1 == 1) {
           this.checked1 = true;

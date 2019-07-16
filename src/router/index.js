@@ -98,6 +98,10 @@ export default new Router({
       path:'/addaudiolesson/:id',
       component:resolve => require(['@/pages/addaudiolesson/addaudiolesson.vue'], resolve)   //新增章节
     },
+    {
+      path:'/orderlist/id',
+      component:resolve => require(['@/pages/orderlist/orderlist.vue'], resolve)   //新增章节
+    },
   ]
 })
 

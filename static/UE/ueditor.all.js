@@ -7915,7 +7915,7 @@
                 }
                 return count;
             },
-    
+
             /**
              * 注册输入过滤规则
              * @method  addInputRule
@@ -8000,12 +8000,11 @@
             getActionUrl: function(action){
                 if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
                     var chapterId = localStorage.getItem("chapterId")
-                    return '/uploadimage?chapterId=' + chapterId;//指定访问路径
+                    return '/baidueditor/uploadimage?chapterId=' + chapterId;//指定访问路径
                 } else {
                     var actionName = this.getOpt(action) || action,
                         imageUrl = this.getOpt('imageUrl'),
                         serverUrl = this.getOpt('serverUrl');
-    
                     if(!serverUrl && imageUrl) {
                         serverUrl = imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2');
                     }

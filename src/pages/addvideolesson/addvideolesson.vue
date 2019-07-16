@@ -122,6 +122,23 @@
         </div>
       </div>
     </el-dialog>
+<!-- 删除章提示 -->
+      <el-dialog title="提示" :visible.sync="Deletez" width="300px" center style="z-index: 999">                      
+        <div class="del-dialog-cnt" style="text-align: center;">确定要删除该章吗？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="Deletez = false">取 消</el-button>
+          <el-button type="primary" @click="handleClicks()" >确 定</el-button>
+      </span>
+    </el-dialog>
+         <!-- 删除节提示 -->
+      <el-dialog title="提示" :visible.sync="Deletej" width="300px" center style="z-index: 999">                      
+        <div class="del-dialog-cnt" style="text-align: center;">确定要删除该节吗？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="Deletej = false">取 消</el-button>
+          <el-button type="primary" @click="handleClicksj()" >确 定</el-button>
+      </span>
+    </el-dialog>
+    
   </div>
 </template>
     <script>
@@ -153,13 +170,15 @@ export default {
       input3: "", // 修改章标题
       chapterids:'', // 获取章id
       editmodifys:false,  //修改章弹窗
+      Deletez:false,   //删除章
+      Deletej:false,   //删除节
       courseDetail: [],
       fileList:[],
       fileList1:[],
       videoname:'',
       delsectionID: "", //删除jieid
       delchapterID:'',  //删除章id
-      imageUrl: "http://yckt.yichuangketang.com:8081/section/insertSectionFile", // 上传地址
+      imageUrl: "http://192.168.0.203:8081/section/insertSectionFile", // 上传地址
       imageUrl1:"http://yckt.yichuangketang.com:8081/section/updateSection",  //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID
@@ -202,16 +221,25 @@ export default {
     //删除节
       delsections(val){
         this.delsectionID = val
+        this.Deletej = true;
+        },
+                handleClicks(){
           delsection(this.delsectionID).then(res => {
             this.$message.success(res.data)
+            this.Deletej = false
             this.getdata()
       })  
-        },
+    },
     //删除章
     delchapters(val) {
       this.delchapterID = val;
-      delchapter(this.delchapterID).then(res => {
+      this.Deletez = true;
+     
+    },
+        handleClicks(){
+ delchapter(this.delchapterID).then(res => {
         this.$message.success(res.data);
+        this.Deletez = false;
         this.getdata();
       });
     },

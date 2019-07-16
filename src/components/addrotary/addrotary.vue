@@ -36,6 +36,11 @@
           <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
           <br>
           <br>
+           <div class="img-box">
+            <img :src="'http://192.168.0.203:8081'+this.imgurl" alt />
+          </div>
+          <br />
+          <br />
         <el-upload
           class="upload-demo"
           ref="upload"
@@ -43,7 +48,7 @@
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :file-list="fileList"
-          :on-success="handleAvatarSuccesss"
+          :on-success="handleAvatarSuccess"
           :data="{
             name:this.input,
             owner:this.userid,
@@ -164,7 +169,7 @@ export default {
     return {
       input: "",
       fileList: [],
-      imageUrl: "http://yckt.yichuangketang.com:8081/rollimage/add", // 上传地址
+      imageUrl: "http://192.168.0.203:8081/rollimage/add", // 上传地址
       radios: "1",
       delVisible: false,
       activeName: "courser", //默认选择
@@ -183,6 +188,7 @@ export default {
       currentPage1: 1,  //音频当前页
       currentPage2: 1,  //视频当前页
       pagesize: 8,
+      imgurl:'',
       twsize:'',
       ypsize:'',
       spsize:'',
@@ -204,13 +210,16 @@ export default {
       })
     },
     // 上传成功的钩子
-    handleAvatarSuccesss(res, file) {
-      this.$message.success(res)
-      this.switchss();
-      },
+    // handleAvatarSuccesss(res, file) {
+    //   this.$message.success(res)
+    //   this.switchss();
+    //   },
     // 新增轮播
     getdataadd() {
       this.delVisible = false;
+    },
+    handleAvatarSuccess(response) {
+      this.imgurl = response;
     },
     // 图文查询
     getImgText() {
@@ -407,5 +416,13 @@ export default {
 }
 .radio {
   margin-left: 125px;
+}
+.img-box {
+    width: 150px;
+    height: 150px;
+}
+.img-box img {
+  width: 100%;
+  height: 100%;
 }
 </style>

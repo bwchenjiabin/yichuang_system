@@ -219,7 +219,6 @@ export default {
             return;
           }
           if(this.disabled == false){
-            debugger
             if (this.input3 == 0 || this.input4 == 0) {
               this.$message.error('价钱不可以小于0元')
               return;

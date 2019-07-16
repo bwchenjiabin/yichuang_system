@@ -36,10 +36,10 @@
                     </el-container>
                 </el-container>
 
-                   <!-- 删除提示2 -->
+                   <!-- 删除提示 -->
                    <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999">
                                             
-                      <div class="del-dialog-cnt">确定要删除该条轮播图吗？</div>
+                      <div class="del-dialog-cnt">确定要删除该条分类吗？</div>
 
                       <span slot="footer" class="dialog-footer">
 
@@ -50,7 +50,6 @@
                     </span>
 
                   </el-dialog>
-
 
                   <!-- 修改弹窗 -->
                 <el-dialog title="分类修改" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left">                                

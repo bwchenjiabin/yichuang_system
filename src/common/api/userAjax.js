@@ -525,6 +525,17 @@ const keyword = (keyword,owner,page) => {
   })
 }
 
+// 订单列表展示
+const orderlist = (formatId,page) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/order/selectByFormatId',{formatId,page}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export {login}
 export {tuichu}
 export {rotary}
@@ -574,3 +585,4 @@ export {orderSearch}
 export {orderStatus}
 export {querychapter}
 export {keyword}
+export {orderlist}
