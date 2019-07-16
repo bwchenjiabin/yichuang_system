@@ -3,6 +3,7 @@
  * version: ueditor
  * build: Tue Aug 25 2015 15:23:01 GMT+0800 (CST)
  */
+import { baseURL } from "common/config";
 
 (function(){
 
@@ -8000,7 +8001,7 @@
             getActionUrl: function(action){
                 if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
                     var chapterId = localStorage.getItem("chapterId")
-                    return '/baidueditor/uploadimage?chapterId=' + chapterId;//指定访问路径
+                    return baseURL + '/baidueditor/uploadimage?chapterId=' + chapterId;//指定访问路径
                 } else {
                     var actionName = this.getOpt(action) || action,
                         imageUrl = this.getOpt('imageUrl'),
