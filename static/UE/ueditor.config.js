@@ -21,7 +21,7 @@ import { baseURL } from "common/config";
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
     // window.UEDITOR_HOME_URL = "/vue2-management-platform/static/UE/"  // vue2-management-platform是为gh-pages添加，本地开发写"/static/UE/"足以
-    window.UEDITOR_HOME_URL = "/dist/static/UE/"
+    window.UEDITOR_HOME_URL = baseURL.indexof("yichuangketang.com") ? "/dist/static/UE/" : "/dist/test/static/UE/"
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
      */
