@@ -1,4 +1,3 @@
-import { baseURL } from "common/config";
 /**
  * ueditor完整配置项
  * 可以在这里配置整个编辑器的特性
@@ -21,7 +20,9 @@ import { baseURL } from "common/config";
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
     // window.UEDITOR_HOME_URL = "/vue2-management-platform/static/UE/"  // vue2-management-platform是为gh-pages添加，本地开发写"/static/UE/"足以
-    window.UEDITOR_HOME_URL = baseURL.indexof("yichuangketang.com") ? "/dist/static/UE/" : "/dist/test/static/UE/"
+    var baseURL = sessionStorage.getItem("baseURL")
+    console.log(baseURL, typeof baseURL)
+    window.UEDITOR_HOME_URL = baseURL.indexOf("yichuangketang.com") ? "/dist/static/UE/" : "/dist/test/static/UE/"
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
      */
@@ -222,7 +223,7 @@ import { baseURL } from "common/config";
 
         //lineheight
         //行内间距 值和显示的名字相同
-        //,'lineheight':['1', '1.5','1.75','2', '3', '4', '5']
+        ,'lineheight':['1', '1.5','2','2.5', '3', '4', '5']
 
         //customstyle
         //自定义样式，不支持国际化，此处配置值即可最后显示值
@@ -290,7 +291,7 @@ import { baseURL } from "common/config";
 
         //autoHeightEnabled
         // 是否自动长高,默认true
-        //,autoHeightEnabled:true
+        ,autoHeightEnabled:false
 
         //scaleEnabled
         //是否可以拉伸长高,默认true(当开启时，自动长高失效)
@@ -356,6 +357,91 @@ import { baseURL } from "common/config";
 
         //webAppKey 百度应用的APIkey，每个站长必须首先去百度官网注册一个key后方能正常使用app功能，注册介绍，http://app.baidu.com/static/cms/getapikey.html
         //, webAppKey: ""
+
+
+
+
+        ,xssFilterRules: false
+		//input xss过滤
+		,inputXssFilter: false
+		//output xss过滤
+		,outputXssFilter: false
+		// xss过滤白名单 名单来源: https://raw.githubusercontent.com/leizongmin/js-xss/master/lib/default.js
+		,whitList: {
+			a:      ['target', 'href', 'title', 'class', 'style'],
+			abbr:   ['title', 'class', 'style'],
+			address: ['class', 'style'],
+			area:   ['shape', 'coords', 'href', 'alt'],
+			article: [],
+			aside:  [],
+			audio:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'class', 'style'],
+			b:      ['class', 'style'],
+			bdi:    ['dir'],
+			bdo:    ['dir'],
+			big:    [],
+			blockquote: ['cite', 'class', 'style'],
+			br:     [],
+			caption: ['class', 'style'],
+			center: [],
+			cite:   [],
+			code:   ['class', 'style'],
+			col:    ['align', 'valign', 'span', 'width', 'class', 'style'],
+			colgroup: ['align', 'valign', 'span', 'width', 'class', 'style'],
+			dd:     ['class', 'style'],
+			del:    ['datetime'],
+			details: ['open'],
+			div:    ['class', 'style'],
+			dl:     ['class', 'style'],
+			dt:     ['class', 'style'],
+			em:     ['class', 'style'],
+			font:   ['color', 'size', 'face'],
+			footer: [],
+			h1:     ['class', 'style'],
+			h2:     ['class', 'style'],
+			h3:     ['class', 'style'],
+			h4:     ['class', 'style'],
+			h5:     ['class', 'style'],
+			h6:     ['class', 'style'],
+			header: [],
+			hr:     [],
+			i:      ['class', 'style'],
+			img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', 'loadingclass', 'class', 'data-latex'],
+			ins:    ['datetime'],
+			li:     ['class', 'style'],
+			mark:   [],
+			nav:    [],
+			ol:     ['class', 'style'],
+			p:      ['class', 'style'],
+			pre:    ['class', 'style'],
+			s:      [],
+			section:[],
+			small:  [],
+			span:   ['class', 'style'],
+			sub:    ['class', 'style'],
+			sup:    ['class', 'style'],
+			strong: ['class', 'style'],
+			table:  ['width', 'border', 'align', 'valign', 'class', 'style'],
+			tbody:  ['align', 'valign', 'class', 'style'],
+			td:     ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
+			tfoot:  ['align', 'valign', 'class', 'style'],
+			th:     ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
+			thead:  ['align', 'valign', 'class', 'style'],
+			tr:     ['rowspan', 'align', 'valign', 'class', 'style'],
+			tt:     [],
+			u:      [],
+			ul:     ['class', 'style'],
+			video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style']
+		}
+
+
+
+
+
+
+        
+
+
+
     };
 
     function getUEBasePath(docUrl, confUrl) {

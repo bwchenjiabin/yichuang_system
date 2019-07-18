@@ -23,7 +23,8 @@
                             </div>
                             <br>
                             <br>
-                            <div>店铺内存：{{this.percentage}}/{{this.Memory}}</div> 
+                            <div style="margin-left:30px;">店铺内存：</div>
+                            <el-progress type="dashboard" :percentage="aa" :color="colors" style="margin-left:150px;"></el-progress>
                         </el-main>
                     </el-container>
             </el-container>
@@ -41,13 +42,22 @@ import {preview} from 'api/userAjax';
                 ewm:'',
                 percentage: 10,
                 Memory:'',
+                baifenbi:'',
+                num:0,
+                aa:0,
+                colors: [
+                {color: '#f56c6c', percentage: 20},
+                {color: '#e6a23c', percentage: 40},
+                {color: '#5cb87a', percentage: 60},
+                {color: '#1989fa', percentage: 80},
+                {color: '#6f7ad3', percentage: 100}
+                    ]
                 }
             },
         created () {
         this.getdata();
       },
         methods:{
-
             
     onCopy: function (e) {
       this.$message.success("复制成功")
@@ -59,11 +69,17 @@ import {preview} from 'api/userAjax';
         getdata () {
         preview(localStorage.getItem('ex2')).then(res => {
             console.log(res)
-            this.name = res.data.uname
+            this.name = res.data.accountTitle
             this.url = res.data.url
             this.ewm = res.data.codepath
             this.percentage = res.data.totalFileSize
             this.Memory = res.data.availableSize
+            this.baifenbi = this.percentage/this.Memory*100
+            var num =this.baifenbi;
+            this.num = num.toFixed(2);
+            Number(this.num)
+            this.aa = 100-this.num
+            console.log(this.num)
       })
     },
         },

@@ -181,7 +181,7 @@ import {orderStatus} from 'api/userAjax';
           },
       // 展示
       getdata () {
-        order(localStorage.getItem('ex2'),this.currentPage,this.pagesize).then(res => {
+        order(localStorage.getItem('ex2'),this.currentPage,this.change,this.input,this.value2,this.value3).then(res => {
            this.list = res.data.list;
            this.ordersize = res.data.total
           console.log(res)
@@ -197,6 +197,7 @@ import {orderStatus} from 'api/userAjax';
       orderSearchs () {
         orderSearch(localStorage.getItem('ex2'),this.input,this.change,this.value2,this.value3).then(res => {
           this.list = res.data.list;
+           this.ordersize = res.data.total          
           console.log(res.data.list)
       })
     },
@@ -204,6 +205,7 @@ import {orderStatus} from 'api/userAjax';
       orderSearchss () {
         orderStatus(localStorage.getItem('ex2'),this.change).then(res => {
           this.list = res.data.list;
+           this.ordersize = res.data.total          
         this.$message.success("搜索成功")    
       })
     },

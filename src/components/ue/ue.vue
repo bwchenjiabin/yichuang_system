@@ -8,6 +8,7 @@ import 'static/UE/ueditor.config.js'
 import 'static/UE/ueditor.all.js'
 import 'static/UE/lang/zh-cn/zh-cn.js'
 import 'static/UE/ueditor.parse.js'
+import { setTimeout } from 'timers';
 
 export default {
     name: "UE",
@@ -47,23 +48,21 @@ export default {
         });
     },
     methods: {
-        doInit() {
-            return new Promise((resolve, reject) => {
-                this.editor = UE.getEditor(this.id, this.config);
-                
-                this.editor.addListener("ready", () => {
-                    this.editor.setContent(this.defaultMsg);
-                    resolve()
-                });
-            })
-        },
         // 获取内容方法
         getUEContent() {
+            if (!this.editor) {
+                this.editor = UE.getEditor(this.id, this.config);
+            }
             return this.editor.getContent();
         },
         // 设置内容方法
         setUEContent(content) {
-            this.editor.setContent(content);
+            if (!this.editor) {
+                this.editor = UE.getEditor(this.id, this.config);
+            }
+            setTimeout(() => {
+                this.editor.setContent(content);
+            }, 1000)
         }
     },
     destroyed() {

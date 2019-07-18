@@ -25,10 +25,10 @@
               style="width: 100%"
               :header-cell-style="{background:'#f5f5f5',color:'#000'}">
                             
-              <el-table-column
+              <!-- <el-table-column
               type="selection"
               width="55">
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column
               label="商品"
               width="250">
@@ -61,7 +61,7 @@
               label="总价格"
               show-overflow-tooltip>
               <template slot-scope="scope" >
-                ￥{{scope.row.lesson.lessonPriceNow}}
+                ￥{{scope.row.orderAmount}}
             </template>
               </el-table-column>
               <el-table-column
@@ -142,7 +142,7 @@ this.getdata();
             if (res.data.code == "0000") {
               this.list = res.data.data.data
             }
-            console.log(this.list);
+            // console.log(this.list);
       })
     },
     // 订单详情
@@ -394,4 +394,13 @@ this.getdata();
   height: 15px;
   padding: 20px;
 }
+ .box{background: #f5f5f5;}
+ .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
+ .title{width: auto;display: block}.title span{margin-left: 10px;}.search{margin-right: 20px;}.inp1{margin-right: 40px;}.vip{margin-right: 40px;}
+ .screen{margin-right: 40px;}
+ .name{width:111px;height:40px;font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);line-height:24px;display: inline-block;position: absolute;top: 20px;}
+ .img-box{width: 100px;height: 75px;;display: inline-block;}.img-box img{width: 100%;height: 100%;}
+ .money{width:34px;height:12px;font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);line-height:24px;}
+ .number{width: 300px;text-align: left;display: inline-block;}
+ .Order{width: 80px;display: inline-block;}
 </style>

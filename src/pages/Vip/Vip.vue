@@ -46,7 +46,7 @@ import {preview} from 'api/userAjax';
       },
 
       getdata(){
-         preview("1").then(res => {
+         preview(localStorage.getItem('ex2')).then(res => {
              this.input = res.data.memberName
              this.inputt = res.data.memberPrice
            console.log(res);

@@ -20,9 +20,9 @@ const tuichu = () => {
   })
 }
 //展示轮播
-const rotary = (owner) => {
+const rotary = (owner,page) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/rollimage/selectAll',{owner}).then(res => {
+    ajax.get('/rollimage/selectAll',{owner,page}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -53,7 +53,7 @@ const ddelrotary = data => {
 //新增轮播  
 const addrotary = data => {
   return new Promise((resolve, reject) => {
-    ajax.post('rollimage/add', data).then(res => {
+    ajax.post('rollimage/insertAndUpdate', data).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -113,9 +113,9 @@ const video = (owner,lessonType,page) => {
   })
 }
 //展示我的用户
-const user = (ex2) => {
+const user = (ex2,pageNum) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/business/select',{ex2}).then(res => {
+    ajax.get('/business/select',{ex2,pageNum}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -123,9 +123,9 @@ const user = (ex2) => {
   })
 }
 //搜索我的用户
-const ssuser = (ex2,businessPhone,businessStatus,businessConsumption,memberEndTime) => {
+const ssuser = (ex2,businessPhone,businessStatus,businessConsumption,memberEndTime,pageNum) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/business/selectBySearch',{ex2,businessPhone,businessStatus,businessConsumption,memberEndTime}).then(res => {
+    ajax.get('/business/selectBySearch',{ex2,businessPhone,businessStatus,businessConsumption,memberEndTime,pageNum}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -231,9 +231,9 @@ const classe = (owner) => {
 
 
 // 订单展示
-const order = (ex2,pageNum,pageSize) => {
+const order = (ex2,pageNum,orderStatus,orderNumber,payTime,payEndTime) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/order/select',{ex2,pageNum,pageSize}).then(res => {
+    ajax.get('/order/selectBySearch',{ex2,pageNum,orderStatus,orderNumber,payTime,payEndTime}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -321,9 +321,9 @@ const updataId = (id) => {
 
 
 //用户反馈
-const feedback = (ex2,pageNum,pageSize) => {
+const feedback = (ex2,page) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/feedback/select',{ex2,pageNum,pageSize}).then(res => {
+    ajax.get('/feedback/select',{ex2,page}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)

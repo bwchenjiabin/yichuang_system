@@ -13,8 +13,8 @@
           <br />
           <br />
           <span class="name">课程名称</span>
-          <el-input placeholder="请输入名称，最多不超过12个字" v-model="input" clearable maxlength="12"></el-input>
-          <span class="number">{{this.input.length}}/12</span>
+          <el-input placeholder="请输入名称，最多不超过12个字" v-model="input" clearable maxlength="30"></el-input>
+          <span class="number">{{this.input.length}}/30</span>
           <br />
           <br />
           <br />

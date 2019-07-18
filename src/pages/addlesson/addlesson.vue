@@ -48,7 +48,7 @@
       </el-container>
     </el-container>
     <!-- 新增图文弹窗 -->
-    <el-dialog title :visible.sync="delVisible" width="600px" height="500px" center style="z-index: 999" :close-on-click-modal="false">
+    <el-dialog title :visible.sync="delVisible" width="700px"  center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <span class="namea">标题</span>
         <el-input placeholder="请输入标题" v-model="input1" clearable maxlength="30"></el-input>
@@ -70,7 +70,7 @@
       </span>
     </el-dialog>
     <!-- 编辑图文弹窗 -->
-    <el-dialog title :visible.sync="delVisiblee" width="600px" height="500px" center style="z-index: 999" :close-on-click-modal="false">
+    <el-dialog title :visible.sync="delVisiblee" width="700px"  center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <span class="namea">标题</span>
         <el-input placeholder="请输入标题" v-model="input2" clearable maxlength="30"></el-input>
@@ -122,28 +122,28 @@
   </div>
 </template>
     <script>
-import { quillEditor } from "vue-quill-editor";
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
+// import { quillEditor } from "vue-quill-editor";
+// import "quill/dist/quill.core.css";
+// import "quill/dist/quill.snow.css";
+// import "quill/dist/quill.bubble.css";
 import UE from "@/components/ue/ue";
 // 工具栏配置
-const toolbarOptions = [
-  ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
-  ["blockquote", "code-block"], // 引用  代码块
-  [{ header: 1 }, { header: 2 }], // 1、2 级标题
-  [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-  [{ script: "sub" }, { script: "super" }], // 上标/下标
-  [{ indent: "-1" }, { indent: "+1" }], // 缩进
-  // [{'direction': 'rtl'}],                         // 文本方向
-  [{ size: ["small", false, "large", "huge"] }], // 字体大小
-  [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
-  [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-  [{ font: [] }], // 字体种类
-  [{ align: [] }], // 对齐方式
-  ["clean"], // 清除文本格式
-  ["link", "image", "video"] // 链接、图片、视频
-];
+// const toolbarOptions = [
+//   ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
+//   ["blockquote", "code-block"], // 引用  代码块
+//   [{ header: 1 }, { header: 2 }], // 1、2 级标题
+//   [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
+//   [{ script: "sub" }, { script: "super" }], // 上标/下标
+//   [{ indent: "-1" }, { indent: "+1" }], // 缩进
+//   // [{'direction': 'rtl'}],                         // 文本方向
+//   [{ size: ["small", false, "large", "huge"] }], // 字体大小
+//   [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
+//   [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
+//   [{ font: [] }], // 字体种类
+//   [{ align: [] }], // 对齐方式
+//   ["clean"], // 清除文本格式
+//   ["link", "image", "video"] // 链接、图片、视频
+// ];
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import { ceshi } from "api/userAjax";
@@ -164,8 +164,8 @@ export default {
       defaultMsg1: "",
       config: {
         initialFrameWidth: null,
-        initialFrameWidth: 550,
-        initialFrameHeight: 400
+        initialFrameWidth: 650,
+        initialFrameHeight: 500
       },
       input: "", // 章名称
       input1: "", // 新增节标题
@@ -192,30 +192,30 @@ export default {
       date3: [],
       content: this.value,
       content1: this.value,
-      quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
-      editorOption: {
-        placeholder: "",
-        theme: "snow", // or 'bubble'
-        placeholder: "",
-        modules: {
-          toolbar: {
-            container: toolbarOptions,
-            // container: "#toolbar",
-            handlers: {
-              image: function(value) {
-                if (value) {
-                  // 触发input框选择图片文件
-                  document.querySelector(".avatar-uploader input").click();
-                } else {
-                  this.quill.format("image", false);
-                }
-              }
-            }
-          }
-        }
-      },
-      serverUrl: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
-      serverUrl1: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
+      // quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
+      // editorOption: {
+      //   placeholder: "",
+      //   theme: "snow", // or 'bubble'
+      //   placeholder: "",
+      //   modules: {
+      //     toolbar: {
+      //       container: toolbarOptions,
+      //       // container: "#toolbar",
+      //       handlers: {
+      //         image: function(value) {
+      //           if (value) {
+      //             // 触发input框选择图片文件
+      //             document.querySelector(".avatar-uploader input").click();
+      //           } else {
+      //             this.quill.format("image", false);
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // },
+      // serverUrl: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
+      // serverUrl1: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
       header: {
         // token: sessionStorage.token
       } // 有的图片服务器要求请求头需要有token
@@ -236,7 +236,7 @@ export default {
     },
     changes1(val) {
       this.checked1 = val;
-      console.log(this.checked1);
+      // console.log(this.checked1);
     },
     onEditorChange({ editor, html, text }) {
       //内容改变事件
@@ -344,7 +344,7 @@ export default {
       this.chapterid = val; //章id
       this.delVisible = true;
       localStorage.setItem('chapterId',this.chapterid);
-      console.log(localStorage.getItem('chapterId'))
+      // console.log(localStorage.getItem('chapterId'))
     },
     aa(val) {
       this.chapterId = val;
@@ -374,72 +374,70 @@ export default {
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name;
-        this.$refs.ue1.doInit.then(() => {
-          setUEContent(res.data.url);
-        })
+        this.$refs.ue1.setUEContent(res.data.url);
         this.checked1 = res.data.extend2;
         if (this.checked1 == 1) {
           this.checked1 = true;
         } else {
           this.checked1 = false;
         }
-        console.log(res);
+        // console.log(res);
       });
     },
-    // 富文本图片上传前
-    beforeUpload() {
-      // 显示loading动画
-      this.quillUpdateImg = true;
-    },
-    beforeUpload1() {
-      // 显示loading动画
-      this.quillUpdateImg = true;
-    },
-    uploadSuccess(res, file) {
-      let quill = this.$refs.myQuillEditor.quill;
-      // 获取光标所在位置
-      let length = quill.getSelection().index;
-      // 插入图片  res.url为服务器返回的图片地址
-      console.log(res)
-      quill.insertEmbed(
-        length,
-        "image",
-        "http://yckt.yichuangketang.com:8081" + res.data
-      );
-      // 调整光标到最后
-      quill.setSelection(length + 1);
-      this.quillUpdateImg = false;
-    },
-    uploadSuccess1(res, file) {
-      let quill = this.$refs.myQuillEditor.quill;
-      // 获取光标所在位置
-      let length = quill.getSelection().index;
-      // 插入图片  res.url为服务器返回的图片地址
-      quill.insertEmbed(
-        length,
-        "image",
-        "http://yckt.yichuangketang.com:8081" + res.data
-      );
-      // 调整光标到最后
-      quill.setSelection(length + 1);
-      this.quillUpdateImg = false;
-    },
-    // 富文本图片上传失败
-    uploadError() {
-      // loading动画消失
-      this.quillUpdateImg = false;
-      this.$message.error("图片插入失败");
-    },
-    uploadError1() {
-      // loading动画消失
-      this.quillUpdateImg = false;
-      this.$message.error("图片插入失败");
-    }
+    // // 富文本图片上传前
+    // beforeUpload() {
+    //   // 显示loading动画
+    //   this.quillUpdateImg = true;
+    // },
+    // beforeUpload1() {
+    //   // 显示loading动画
+    //   this.quillUpdateImg = true;
+    // },
+    // uploadSuccess(res, file) {
+    //   let quill = this.$refs.myQuillEditor.quill;
+    //   // 获取光标所在位置
+    //   let length = quill.getSelection().index;
+    //   // 插入图片  res.url为服务器返回的图片地址
+    //   console.log(res)
+    //   quill.insertEmbed(
+    //     length,
+    //     "image",
+    //     "http://yckt.yichuangketang.com:8081" + res.data
+    //   );
+    //   // 调整光标到最后
+    //   quill.setSelection(length + 1);
+    //   this.quillUpdateImg = false;
+    // },
+    // uploadSuccess1(res, file) {
+    //   let quill = this.$refs.myQuillEditor.quill;
+    //   // 获取光标所在位置
+    //   let length = quill.getSelection().index;
+    //   // 插入图片  res.url为服务器返回的图片地址
+    //   quill.insertEmbed(
+    //     length,
+    //     "image",
+    //     "http://yckt.yichuangketang.com:8081" + res.data
+    //   );
+    //   // 调整光标到最后
+    //   quill.setSelection(length + 1);
+    //   this.quillUpdateImg = false;
+    // },
+    // // 富文本图片上传失败
+    // uploadError() {
+    //   // loading动画消失
+    //   this.quillUpdateImg = false;
+    //   this.$message.error("图片插入失败");
+    // },
+    // uploadError1() {
+    //   // loading动画消失
+    //   this.quillUpdateImg = false;
+    //   this.$message.error("图片插入失败");
+    // }
   },
   components: {
     sidebar,
     Header,
-    quillEditor,
+    // quillEditor,
     UE
   }
 };

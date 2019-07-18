@@ -16,7 +16,7 @@
             <br>
             <div class="cont">
               <i class="el-icon-warning"></i>
-              <p>轮播图将在移动端首页顶部显示。最多设置5个轮播图，可对轮播图进行排序。</p>
+              <p>轮播图将在移动端首页顶部显示。最多设置3个轮播图，可对轮播图进行排序。</p>
             </div>
             <el-button
               type="primary"
@@ -26,20 +26,26 @@
           </div>
           <el-table
             ref="multipleTable"
-            :data="list.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            :data="list"
             tooltip-effect="dark"
             style="width: 100%"
             :header-cell-style="{background:'#f5f5f5',color:'#000'}"
             @selection-change="changeFun"
           >
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="name" label="名称" width="250">
+            <el-table-column prop="name" label="缩略图" width="250">
                <template slot-scope="scope">
-                <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt style="width: 50px;height: 50px">
-                <span class="name">{{scope.row.name}}</span>
+                <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt style="width: 50px;height: 50px">
+                <!-- <span class="name">{{scope.row.name}}</span> -->
               </template>
             </el-table-column>
-            <el-table-column prop="zt" label="状态" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="name" label="名称" show-overflow-tooltip></el-table-column>
+            <!-- <el-table-column prop="extendtwo" label="状态" show-overflow-tooltip></el-table-column> -->
+            <el-table-column label="状态">
+                  <template slot-scope="scope">
+                      <span>{{scope.row.extendtwo==1?"显示":"隐藏"}}</span>
+                  </template>
+                </el-table-column>
             <el-table-column fixed="right" label="操作" width="200">
               <template slot-scope="scope">
                 <el-button type="text" size="small" @click="Clicksort(scope.row)">排序</el-button>
@@ -59,11 +65,11 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="current_change"
-            :current-page="currentPage"
+            @current-page="currentPage"
             :page-size="pagesize"
             background
             layout="total, prev, pager, next"
-            :total="this.list.length"
+            :total="this.pageleng"
           ></el-pagination>
           <br>
           <br>
@@ -115,7 +121,8 @@ export default {
       userid: "", //单条删除的值
       list: [],
       sort:'',  //移动到第几位
-      sortid:''  //需要排序的id
+      sortid:'',  //需要排序的id
+      pageleng:0
     };
   },
   created() {
@@ -141,7 +148,6 @@ export default {
       $(".sort").css("display", "none");
     },
     Clickthen(row) {
-
       $(".sort").css("display", "none");
     },
 
@@ -179,11 +185,14 @@ export default {
     },
     current_change: function(currentPage) {
       this.currentPage = currentPage;
+      this.getdata();
     },
     // 展示
     getdata() {
-        rotary(localStorage.getItem('ex2')).then(res => {
+        rotary(localStorage.getItem('ex2'),this.currentPage).then(res => {
             this.list = res.data;
+            // this.pageleng = res.data.data.total
+            console.log(res);
       })
     },
     // 单条删除

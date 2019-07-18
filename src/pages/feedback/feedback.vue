@@ -19,9 +19,10 @@
             style="width: 100%"
             :header-cell-style="{background:'#eef1f6',color:'#000'}"
           >
-            <el-table-column prop="businessNanme" label="用户昵称" width="180"></el-table-column>
-            <el-table-column prop="feedbackHead" label="反馈标题" width="180"></el-table-column>
+            <el-table-column prop="businessNanme" label="用户昵称" ></el-table-column>
+            <el-table-column prop="feedbackHead" label="反馈标题" ></el-table-column>
             <el-table-column prop="feedbackBody" label="反馈内容"></el-table-column>
+            <el-table-column prop="time" label="反馈时间"></el-table-column>
           </el-table>
           <el-pagination
             @size-change="handleSizeChange"
@@ -63,9 +64,9 @@ export default {
       this.getdata();
     },
     getdata() {
-      feedback(localStorage.getItem("ex2"),this.currentPage,this.pagesize).then(res => {
-        this.tableData = res.data.list;
-        this.feedbacksize = res.data.total
+      feedback(localStorage.getItem("ex2"),this.currentPage).then(res => {
+        this.tableData = res.data.data.data;
+        this.feedbacksize = res.data.data.total
         console.log(res);
       });
     }

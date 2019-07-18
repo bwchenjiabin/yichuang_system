@@ -6,9 +6,9 @@
                 <div class="title">
 
                     <span class="name">分类名称</span>
-                    <el-input placeholder="请输入分类名称" v-model="input" clearable maxlength="12"> 
+                    <el-input placeholder="请输入分类名称" v-model="input" clearable maxlength="6"> 
                     </el-input>
-                    <span class="number">{{this.input.length}}/12</span><br><br><br>
+                    <span class="number">{{this.input.length}}/6</span><br><br><br>
                     <span class="name">选择分类配图</span>&nbsp;&nbsp;&nbsp;<el-button plain @click="Popup">选择</el-button>
 
                 
@@ -124,7 +124,7 @@ import {addclass} from 'api/userAjax';
  .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
  .title{width: auto;display: block}.title span{margin-left: 10px;}
  .name{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);margin-right: 15px;}
- .number{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);width: 350px;height: 80px;border:1px solid rgba(238,238,238,1);margin: 10px 20px 10px 20px;}
+ .number{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);width: 350px;height: 80px;margin: 10px 20px 10px 20px;}
  .number .imga{width: 100%;height: 100%;}
  .text{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);display: inline;}
  .cont{margin-top: 10px;margin-left: 40px;color: rgba(153, 153, 153, 1);font-size: 14px;text-align: left;font-family: SourceHanSansSC-regular;width: 70%;float: left;}

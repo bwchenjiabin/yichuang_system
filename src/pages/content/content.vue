@@ -67,8 +67,8 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
-                <el-table-column prop="browseNumber" label="访客数/浏览数" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="tradeNumber" label="销量">
+                <el-table-column prop="browseNumber" label="访客数" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="tradeNumber" label="销量" :sortable="true" :sort-method="sortByDate">
                   <template slot-scope="scope">
                     <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
                   </template>
@@ -80,16 +80,20 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                   <template slot-scope="scope">
-                    <!-- <el-button @click="handleClicks(scope.row)" type="text" size="small">排序</el-button> -->
+                    <!-- <el-button @click="handleClickssort(scope.row)" type="text" size="small">排序</el-button> -->
                     <el-button type="text" size="small" @click="editimgtxt(scope.row.lessonid)">编辑</el-button>
                     <el-button type="text" size="small" @click="addlessons(scope.row.lessonid)">课程添加</el-button>
                   </template>
                 </el-table-column>
-              </el-table>
+              </el-table><br><br>
               <div class="sort">
-                移动到第
-                <input type="number" />
-                位
+                  移动到第
+                  <input type="number" v-model="sort">
+                  位
+                  <br>
+                  <br>
+                  <el-button @click="Clicknone()">取 消</el-button>
+                  <el-button type="primary" @click="sortrota()">确 定</el-button>
               </div>
               <!-- 分页 -->
               <el-pagination
@@ -160,7 +164,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
-                <el-table-column prop="browseNumber" label="访客数/浏览数" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="browseNumber" label="访客数" show-overflow-tooltip></el-table-column>
                  <el-table-column prop="tradeNumber" label="销量">
                   <template slot-scope="scope">
                     <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
@@ -173,16 +177,21 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                   <template slot-scope="scope">
-                    <!-- <el-button @click="handleClicks(scope.row)" type="text" size="small">排序</el-button> -->
+                    <!-- <el-button @click="handleClickssort(scope.row)" type="text" size="small">排序</el-button> -->
                     <el-button type="text" size="small" @click="editaudio(scope.row.lessonid)">编辑</el-button>
-                    <el-button
-                      type="text"
-                      size="small"
-                      @click="addaudiolesson(scope.row.lessonid)"
-                    >课程添加</el-button>
+                    <el-button type="text" size="small" @click="addaudiolesson(scope.row.lessonid)" >课程添加</el-button>
                   </template>
                 </el-table-column>
-              </el-table>
+              </el-table><br><br>
+              <div class="sort">
+                  移动到第
+                  <input type="number" v-model="sort">
+                  位
+                  <br>
+                  <br>
+                  <el-button @click="Clicknone()">取 消</el-button>
+                  <el-button type="primary" @click="sortrota()">确 定</el-button>
+              </div>
               <!-- 音频分页 -->
               <el-pagination
                 @size-change="handleSizeChange"
@@ -253,7 +262,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
-                <el-table-column prop="browseNumber" label="访客数/浏览数" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="browseNumber" label="访客数" show-overflow-tooltip></el-table-column>
                  <el-table-column prop="tradeNumber" label="销量">
                   <template slot-scope="scope">
                     <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
@@ -266,16 +275,21 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="200">
                   <template slot-scope="scope">
-                    <!-- <el-button @click="handleClicks(scope.row)" type="text" size="small">排序</el-button> -->
+                    <!-- <el-button @click="handleClickssort(scope.row)" type="text" size="small">排序</el-button> -->
                     <el-button type="text" size="small" @click="editvideo(scope.row.lessonid)">编辑</el-button>
-                    <el-button
-                      type="text"
-                      size="small"
-                      @click="addvideolesson(scope.row.lessonid)"
-                    >课程添加</el-button>
+                    <el-button type="text" size="small" @click="addvideolesson(scope.row.lessonid)">课程添加</el-button>
                   </template>
                 </el-table-column>
-              </el-table>
+              </el-table><br><br>
+              <div class="sort">
+                  移动到第
+                  <input type="number" v-model="sort">
+                  位
+                  <br>
+                  <br>
+                  <el-button @click="Clicknone()">取 消</el-button>
+                  <el-button type="primary" @click="sortrota()">确 定</el-button>
+              </div>
               <!-- 视频分页 -->
               <el-pagination
                 @size-change="handleSizeChange"
@@ -286,7 +300,6 @@
                 layout="total, prev, pager, next"
                 :total="this.spsize"
               ></el-pagination>
-
               <br />
               <br />
               <el-button @click="Upper2()">上架</el-button>
@@ -339,8 +352,6 @@ import { lowerShelf } from "api/userAjax";
 import { dellesson } from "api/userAjax";
 import { keyword } from "api/userAjax";
 import {checkclass} from 'api/userAjax';
-
-// import { quillEditor } from 'vue-quill-editor'
 export default {
   data() {
     return {
@@ -433,7 +444,11 @@ export default {
     this.getdata();
   },
   methods: {
-        // 查询分类
+    // 排序 
+    sortByDate(){
+
+    },
+    // 查询分类
     getdata() {
         checkclass(localStorage.getItem('ex2')).then(res => {
             this.Choice = res.data;
@@ -482,7 +497,6 @@ export default {
         dellessons2() {
       this.Delete2 = true;
     },
-
     // 获取图文下拉菜单值
     currentSel(val) {
       this.selectId = val;
@@ -531,9 +545,17 @@ export default {
     },
 
     //课程排序
-    // handleClicks(row) {
-    //   $(".sort").css("display", "block");
-    // },
+    handleClickssort(row) {
+      $(".sort").css("display", "block");
+    },
+    Clicknone(row) {
+      $(".sort").css("display", "none");
+      this.sort = "";
+    },
+    Clickthen(row) {
+      $(".sort").css("display", "none");
+      this.sort = "";
+    },
     // 删除图文课程
     handleClicks(row) {
    dellesson(this.number1).then(res => {
@@ -744,7 +766,7 @@ export default {
       this.$message.error(err)
     });
     },
-            // 视频通过分类查询
+      // 视频通过分类查询
       sortvideo() {
       selectId(
         localStorage.getItem("ex2"),

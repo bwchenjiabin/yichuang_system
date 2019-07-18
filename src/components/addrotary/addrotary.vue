@@ -36,30 +36,25 @@
           <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
           <br>
           <br>
-           <div class="img-box">
-            <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
-          </div>
-          <br />
-          <br />
-        <el-upload
-          class="upload-demo"
-          ref="upload"
-          :action="imageUrl"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :on-success="handleAvatarSuccess"
-          :data="{
-            name:this.input,
-            owner:this.userid,
-            lessonid:this.currentRow,
-          }"
-          :limit="1"
-          accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" 
-          :auto-upload="false">
-          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <el-button size="small" type="primary" @click="keep,submitUpload();">保存</el-button>
-        </el-upload>
+          <el-upload
+            class="avatar-uploader"
+            action="http://yckt.yichuangketang.com:8081/lesson/insertImg"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
+            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload><br><br>
+          <span class="name">是否显示：</span>
+          <el-switch
+            v-model="value"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            @change="changes">
+          </el-switch>
+              <br />
+              <br />
+        <el-button type="primary" @click="keep();">保存</el-button>
       </div>
     </el-main>
 
@@ -169,7 +164,7 @@ export default {
     return {
       input: "",
       fileList: [],
-      imageUrl: "http://yckt.yichuangketang.com/rollimage/add", // 上传地址
+      imageUrl: "", // 上传地址
       radios: "1",
       delVisible: false,
       activeName: "courser", //默认选择
@@ -177,7 +172,8 @@ export default {
       tabPosition: "left", // 方向
       courser: "imgText", //默认选择
       currentRow: null,
-      // disab: true, //按钮禁用
+      value: true, //按钮禁用
+      valnum:1,
       disabled: false, //按钮禁用
       Choice: [],
       tableData: [],
@@ -209,18 +205,22 @@ export default {
             this.Choice = res.data;
       })
     },
-    // 上传成功的钩子
-    // handleAvatarSuccesss(res, file) {
-    //   this.$message.success(res)
-    //   this.switchss();
-    //   },
+      //上传成功的回调
+    handleAvatarSuccess(res) {
+      this.imageUrl = res.data;
+      this.$message.success(res.msg);
+    },
+    changes(val){
+      if (val == true) {
+        this.valnum = 1
+      }else{
+        this.valnum = 2
+      }
+      console.log(this.valnum)
+    },
     // 新增轮播
     getdataadd() {
       this.delVisible = false;
-    },
-    handleAvatarSuccess(response) {
-      this.imgurl = response;
-      console.log(kindId)
     },
     // 图文查询
     getImgText() {
@@ -229,7 +229,7 @@ export default {
             this.twsize = res.data.totalLesson
       })
     },
-        // 音频查询
+   // 音频查询
     getaudio() {
         audio(localStorage.getItem('ex2'),"2",this.currentPage1).then(res => {
             this.tableData1 = res.data.lesson;
@@ -237,12 +237,11 @@ export default {
             // console.log(res);
       })
     },
-        // 视频查询
+  // 视频查询
     getvideo() {
         video(localStorage.getItem('ex2'),"3",this.currentPage2).then(res => {
             this.tableData2 = res.data.lesson;
             this.spsize = res.data.totalLesson
-            // console.log(res);
       })
     },
     // 刷新页面
@@ -258,10 +257,10 @@ export default {
       if (this.courser == "video") {
         this.number = 3;
       }
-      console.log(this.input)
-      console.log(this.currentRow)
-      console.log(this.number)
-      console.log(this.imageUrl)
+      addrotary({name:this.input,owner:this.userid,lessonid:this.currentRow,img:this.imageUrl,extendtwo:this.valnum}).then(res => {
+        this.$message.success(res.data.msg);
+        // this.switchss();
+      })
     },
     radioq(val) {
       let that = this;
@@ -293,6 +292,7 @@ export default {
     },
       submitUpload() {
         this.$refs.upload.submit();
+
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);

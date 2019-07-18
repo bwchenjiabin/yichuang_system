@@ -33,29 +33,23 @@
               <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
               <br />
               <br />
-          <div class="img-box">
-            <img :src="'http://yckt.yichuangketang.com'+this.imgurl" alt />
-          </div>
-          <br />
-          <br />
-          <el-upload
-            class="upload-demo"
-            ref="upload"
-            :action="imageUrl"
-            :file-list="fileList"
+           <el-upload
+            class="avatar-uploader"
+            action="http://yckt.yichuangketang.com:8081/lesson/insertImg"
+            :show-file-list="false"
             :on-success="handleAvatarSuccess"
-            :limit="1"
-            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" 
-            :auto-upload="false"
-          >
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <el-button
-              style="margin-left: 10px;"
-              size="small"
-              type="success"
-              @click="submitUpload"
-            >保存</el-button>
+            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
+            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+          <br><br>
+          <span class="name">是否显示：</span>
+          <el-switch
+            v-model="value"
+            active-color="#13ce66"
+            inactive-color="#ccc"
+            @change="changes">
+          </el-switch>
               <br />
               <br />
               <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -74,7 +68,6 @@
         </el-main>
       </el-container>
     </el-container>
-
     <!-- 弹窗 -->
     <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
@@ -184,12 +177,13 @@ import { ImgText } from "api/userAjax";
 import { audio } from "api/userAjax";
 import { video } from "api/userAjax";
 import { updataId } from "api/userAjax";
+import {addrotary} from 'api/userAjax';
 export default {
   data() {
     return {
       input: "",
       fileList: [],
-      imageUrl: "http://yckt.yichuangketang.com:8081/lesson/insertLessonImg", // 上传地址
+      imageUrl: "", // 上传返回路径
       radios: "1",
       delVisible: false,
       activeName: "courser", //默认选择
@@ -217,6 +211,8 @@ export default {
       currentPage: 1, //图文当前页
       currentPage1: 1, //音频当前页
       currentPage2: 1, //视频当前页
+      value: true, // 
+      valnum:1,
       pagesize: 8,
       twsize: "",
       ypsize: "",
@@ -242,7 +238,14 @@ export default {
         this.currentRow = res.data.lessonid;
       });
     },
-
+    changes(val){
+      if (val == true) {
+        this.valnum = 1
+      }else{
+        this.valnum = 2
+      }
+      console.log(this.valnum)
+    },
 
       submitUpload() {
         this.$refs.upload.submit();
@@ -279,15 +282,8 @@ export default {
     },
     //编辑轮播
     updatar() {
-      updatarotary({
-        name: this.input,
-        owner: localStorage.getItem("ex2"),
-        type: this.number,
-        lessonid: this.currentRow,
-        img: this.imgurl,
-        id: this.Id
-      }).then(res => {
-        this.$message.success(res.data);
+      addrotary({name:this.input,owner:localStorage.getItem("ex2"),lessonid:this.currentRow,img:this.imageUrl,id:this.Id,extendtwo:this.valnum}).then(res => {
+        this.$message.success(res.data.msg);
         this.$router.push({
           path: `/rotary`
         });
@@ -318,11 +314,10 @@ export default {
         this.disab = false;
       }
     },
-    handleAvatarSuccess(response) {
-      this.imgurl = response;
-      console.log(this.imgurl)
+    handleAvatarSuccess(res) {
+      this.imageUrl = res.data;
+      this.$message.success(res.msg);
     },
-
     handleCurrentChange(val) {
       this.currentRow = val.lessonid;
     },

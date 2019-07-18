@@ -100,8 +100,8 @@ export default new Router({
     },
     {
       path:'/orderlist/:id',
-      component:resolve => require(['@/pages/orderlist/orderlist.vue'], resolve)   //新增章节
-    },
+      component:resolve => require(['@/pages/orderlist/orderlist.vue'], resolve)   //  课程订单页面
+    },    
   ]
 })
 

@@ -13,7 +13,7 @@
                                 <el-tab-pane label="我的用户" name="first">
                                     <span class="search">用户搜索</span><el-input placeholder="请输入手机号" v-model="input" clearable class="inp1"></el-input>
                                     <span >是否会员</span>
-                                    <el-select v-model="value" clearable placeholder="请选择" class="vip">
+                                    <el-select v-model="value" clearable placeholder="请选择" class="vip" @change="changes">
                                         <el-option
                                           v-for="item in options"
                                           :key="item.value"
@@ -22,7 +22,7 @@
                                         </el-option>
                                     </el-select>
                                     <span>付费客户筛选</span>
-                                    <el-select v-model="value1" clearable placeholder="请选择" class="screen">
+                                    <el-select v-model="value1" clearable placeholder="请选择" class="screen" @change="changess">
                                         <el-option
                                           v-for="item in options1"
                                           :key="item.value"
@@ -35,7 +35,8 @@
                                         v-model="value2"
                                         type="date"
                                         value-format="yyyy-MM-dd"
-                                        placeholder="结束时间">
+                                        placeholder="结束时间"
+                                        :disabled="disabled">
                                     </el-date-picker>
                                     <el-button type="primary" @click="getdataphone()">搜索</el-button><br><br><br>
 
@@ -75,7 +76,7 @@
                                             </el-table-column>
                                             <el-table-column
                                             prop="businessConsumption"
-                                            label="消费总金额"
+                                            label="消费总金额(元)"
                                             show-overflow-tooltip>
                                             </el-table-column>
                                             
@@ -88,12 +89,21 @@
                                             </template>
                                           </el-table-column>
                                         </el-table><br><br>
+                                          <el-pagination
+                                            @size-change="handleSizeChange"
+                                            @current-change="current_change"
+                                            @current-page="currentPage"
+                                            :page-size="pagesize"
+                                            background
+                                            layout="total, prev, pager, next"
+                                            :total="this.usersize"
+                                          ></el-pagination>   <br><br> 
                                         <el-button @click="getdatadel">加入黑名单</el-button>
                                 </el-tab-pane>                   
                               </el-tabs>
                         </el-main>
                     </el-container>
-                </el-container>
+              </el-container>
         </div>    
     </template>
     <script>
@@ -115,11 +125,11 @@ import {deluser} from 'api/userAjax';
                 label: '否'
                 }],
                 options1: [{
-                value: '选项1',
-                label: '有'
+                value: '1',
+                label: '付费'
                 }, {
-                value: '选项2',
-                label: '无'
+                value: '2',
+                label: '未付'
                 }],
                 value: '',  //是否会员
                 value1:'',   //是否付费
@@ -130,6 +140,10 @@ import {deluser} from 'api/userAjax';
                 checkBoxData: [],    //多选框选择的值
                 number:[],
                 number1:'',
+                disabled:false,
+                currentPage: 1, //图文当前页
+                usersize:0,
+                pagesize: 5,
                 }
             },
             // computed: {
@@ -143,16 +157,39 @@ import {deluser} from 'api/userAjax';
         methods:{
       // 展示
         getdata () {
-        user(localStorage.getItem('ex2')).then(res => {
-           this.list = res.data.date
-          //  console.log(res)
+        user(localStorage.getItem('ex2'),this.currentPage).then(res => {
+           this.list = res.data.data.data
+           this.usersize = res.data.data.total
+           console.log(res)
       })
+    },
+    // 分页
+    handleSizeChange(size) {
+      this.pagesize = size;
+    },
+    current_change: function(currentPage) {
+      this.currentPage = currentPage;
+      this.getdata();
+    },
+    // 下拉事件
+    changes(){
+        if (this.value == 1) {
+          this.disabled = true;
+        }else{
+          this.disabled = false;
+        }
+       this.getdataphone(); 
+    },
+    // 下拉事件
+    changess(){
+       this.getdataphone(); 
     },
     // 搜索
         getdataphone () {
-           ssuser(localStorage.getItem('ex2'),this.input,this.value,this.value1,this.value2).then(res => {
-           this.list = res.data.date
-           console.log(res)
+           ssuser(localStorage.getItem('ex2'),this.input,this.value,this.value1,this.value2,this.currentPage).then(res => {
+           this.list = res.data.data.data
+        this.$message.success(res.data.msg)    
+          //  console.log(res)
       })        
 
     },
@@ -160,7 +197,7 @@ import {deluser} from 'api/userAjax';
     getdatadel () {
         singledel(this.number1).then(res => {
         // this.list = res.data.date
-        console.log(res)
+        // console.log(res)
         this.getdata();
       })  
     },
@@ -170,7 +207,7 @@ import {deluser} from 'api/userAjax';
        this.userid = row.businessId
         deluser(this.userid).then(res => {
         // this.list = res.data.date
-        console.log(res)
+        // console.log(res)
       })  
       },
     changeFun(val) {
@@ -184,7 +221,7 @@ import {deluser} from 'api/userAjax';
       }
   },
     checkBox(){
-      console.log(this.number)
+      // console.log(this.number)
     },
     deleteRow(index, rows) {
         rows.splice(index, 1);
