@@ -61,7 +61,7 @@ import {Home} from 'api/userAjax';
         getdata() {
         Home(localStorage.getItem('ex2')).then(res => {
             this.number = res.data
-            // console.log(res);
+        //    console.error("1123")
       })
     },
         },

@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="title">
-                <img src="../../../static/img/微信图片_20190610160537.png" alt="">
+            <img src="../../../static/img/微信图片_20190610160537.png" alt="">
         </div> 
         <div class="info">
             <div class="photo">
@@ -43,7 +43,7 @@ import {tuichu} from 'api/userAjax';
  .header{text-align: left;padding-left: 80px;}
  .title{color: rgba(16, 16, 16, 1);font-size: 28px;text-align: left;font-family: 方正兰亭黑-标准;width: 20%;float: left;}
  .title img{width: 130px;height: 30px;margin-top: 15px;}
- .info{width: 20%;float: right;margin-right: 100px;}
+ .info{float: right;margin-right: 100px;}
  .photo{width: 30px;height: 30px;margin-top: 10px; color: rgba(51, 51, 51, 1);font-size: 16px;font-family: SourceHanSansSC-regular;position: absolute;}
  .photo img{width: 100%;height: 100%;border-radius: 50%;}
  .quit{cursor:pointer; display: inline;padding-left: 15px;border-left: 1px solid #ccc;color: #0065FF;font-size: 16px}.phone{padding-right: 20px;margin-left: 40px;font-size:18px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}

@@ -28,15 +28,15 @@ Vue.config.productionTip = false
 
 
 
-// router.beforeEach((to, from, next) => {
-//   //判断登录状态简单实例
-//   var userInfo = localStorage.getItem('ex2'); 
-//   if (userInfo) {
-//       next();
-//   } else {
-//       next('/');
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  //判断登录状态简单实例
+  var userInfo = localStorage.getItem('ex2'); 
+  if (userInfo) {
+      next();
+  } else {
+      next('/');
+  }
+})
 new Vue({
   el: '#app',
   router,

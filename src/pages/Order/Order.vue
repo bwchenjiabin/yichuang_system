@@ -10,7 +10,7 @@
                         </el-aside>
                         <el-main>
                                 <h4>订单管理</h4><br><br><br>
-                                    <span class="search">搜索</span><el-input placeholder="搜索订单" v-model="input" clearable class="inp1"></el-input>
+                                    <span class="search">搜索</span><el-input placeholder="搜索订单" v-model="input" clearable ></el-input>
                                     <span class="search">订单状态</span>
                                     <el-select v-model="value" clearable placeholder="全部状态" class="vip" @change="changes">
                                         <el-option
@@ -47,23 +47,27 @@
                                             style="width: 100%"
                                             :header-cell-style="{background:'#f5f5f5',color:'#000'}">
                                                          
-                                            <el-table-column
+                                            <!-- <el-table-column
                                             type="selection"
                                             width="55">
-                                            </el-table-column>
+                                            </el-table-column> -->
                                             <el-table-column
                                             label="商品"
-                                            width="250">
+                                            >
                                             <template slot-scope="scope" >
                                                 <i class="img-box"><img :src="'http://yckt.yichuangketang.com'+scope.row.lesson.img" alt=""></i>
-                                                 <span class="name">{{scope.row.lesson.lessonName}}</span><br>
                                                  <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
                                             </template>
                                             </el-table-column>
                                             <el-table-column
+                                            prop="lesson.lessonName"
+                                            label="商品名称"
+                                            >
+                                            </el-table-column>
+                                            <el-table-column
                                             prop="businessUser.businessName"
                                             label="买家"
-                                            width="250">
+                                            >
                                             </el-table-column>
                                             <el-table-column
                                             prop="payTime"
@@ -89,7 +93,7 @@
                                             <el-table-column
                                             fixed="right"
                                             label="操作"
-                                            width="200">
+                                            >
                                             <template slot-scope="scope"  >
                                               <el-button type="text" size="small" @click="open(scope.row)">查看详情</el-button>
                                             </template>
@@ -165,7 +169,7 @@ import {orderStatus} from 'api/userAjax';
             },
         created () {
           this.getdata();
-          this.changes();
+          // this.changes();
       },
         methods:{
     handleSizeChange(size) {
@@ -184,7 +188,6 @@ import {orderStatus} from 'api/userAjax';
         order(localStorage.getItem('ex2'),this.currentPage,this.change,this.input,this.value2,this.value3).then(res => {
            this.list = res.data.list;
            this.ordersize = res.data.total
-          console.log(res)
       })
     },   
     // 订单详情
@@ -198,7 +201,6 @@ import {orderStatus} from 'api/userAjax';
         orderSearch(localStorage.getItem('ex2'),this.input,this.change,this.value2,this.value3).then(res => {
           this.list = res.data.list;
            this.ordersize = res.data.total          
-          console.log(res.data.list)
       })
     },
     //通过状态查询订单

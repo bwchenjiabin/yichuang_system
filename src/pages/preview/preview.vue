@@ -23,8 +23,9 @@
                             </div>
                             <br>
                             <br>
-                            <div style="margin-left:30px;">店铺内存：</div>
+                            <div style="margin-left:30px;">店铺内存(剩余)：</div>
                             <el-progress type="dashboard" :percentage="aa" :color="colors" style="margin-left:150px;"></el-progress>
+                            <div style="margin-left:30px;">已用{{percentage}}MB</div><br><div style="margin-left:30px;">剩余{{percentages}}MB</div>                            
                         </el-main>
                     </el-container>
             </el-container>
@@ -40,7 +41,8 @@ import {preview} from 'api/userAjax';
                 name:'',
                 url:'',
                 ewm:'',
-                percentage: 10,
+                percentage: 0,
+                percentages: 0,
                 Memory:'',
                 baifenbi:'',
                 num:0,
@@ -68,18 +70,23 @@ import {preview} from 'api/userAjax';
         // 展示
         getdata () {
         preview(localStorage.getItem('ex2')).then(res => {
-            console.log(res)
             this.name = res.data.accountTitle
             this.url = res.data.url
-            this.ewm = res.data.codepath
-            this.percentage = res.data.totalFileSize
+            this.ewm = res.data.codepath          
+              Number(this.percentages)
+            var ee = res.data.totalFileSize
+            this.percentage = ee.toFixed(2)
+            
+
             this.Memory = res.data.availableSize
             this.baifenbi = this.percentage/this.Memory*100
             var num =this.baifenbi;
             this.num = num.toFixed(2);
             Number(this.num)
-            this.aa = 100-this.num
-            console.log(this.num)
+            var cc = 100-this.num
+            this.aa = cc.toFixed(2);
+            var dd = this.Memory-this.percentage
+            this.percentages = dd.toFixed(2)
       })
     },
         },

@@ -52,17 +52,21 @@
                                             width="55">
                                             </el-table-column>
                                             <el-table-column
-                                            label="用户"
-                                            width="250">
+                                            label="用户头像"
+                                            >
                                             <template slot-scope="scope" >
                                                 <img :src="scope.row.ex3" alt="" style="width: 50px;height: 50px">
-                                                 <span>{{scope.row.businessName}}</span>
                                             </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="businessName"
+                                            label="用户昵称"
+                                            >
                                             </el-table-column>
                                             <el-table-column
                                             prop="businessPhone"
                                             label="手机号"
-                                            width="250">
+                                            >
                                             </el-table-column>
                                             <el-table-column
                                             prop="businessRegisterTime"
@@ -83,9 +87,9 @@
                                             <el-table-column
                                             fixed="right"
                                             label="操作"
-                                            width="200">
+                                            >
                                             <template slot-scope="scope">
-                                              <el-button  type="text" size="small" @click="handleClicks(scope.row)" @click.native.prevent="deleteRow(scope.$index, list)">加入黑名单</el-button>
+                                              <el-button  type="text" size="small" @click="handleClicks(scope.row)">加入黑名单</el-button>
                                             </template>
                                           </el-table-column>
                                         </el-table><br><br>
@@ -104,6 +108,22 @@
                         </el-main>
                     </el-container>
               </el-container>
+                  <!-- 单条删除提示 -->
+    <el-dialog title="提示" :visible.sync="delVisible" width="300px" center style="z-index: 999" :close-on-click-modal="false">
+      <div class="del-dialog-cnt">确定要把该用户移入黑名单吗？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteRow()">确 定</el-button>
+      </span>
+    </el-dialog>
+        <!-- 多条删除提示 -->
+    <el-dialog title="提示" :visible.sync="delVisiblee" width="300px" center style="z-index: 999" :close-on-click-modal="false">
+      <div class="del-dialog-cnt">确定要把选中用户移入黑名单吗？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delVisiblee = false">取 消</el-button>
+        <el-button type="primary" @click="deleteRows()">确 定</el-button>
+      </span>
+    </el-dialog>
         </div>    
     </template>
     <script>
@@ -144,23 +164,19 @@ import {deluser} from 'api/userAjax';
                 currentPage: 1, //图文当前页
                 usersize:0,
                 pagesize: 5,
+                delVisible:false,
+                delVisiblee:false,
                 }
             },
-            // computed: {
-            //   ...mapGetters({
-            //     ex2: 'ex2'
-            //   })
-            // },
         created () {
           this.getdata();
       },
         methods:{
       // 展示
-        getdata () {
+      getdata () {
         user(localStorage.getItem('ex2'),this.currentPage).then(res => {
            this.list = res.data.data.data
            this.usersize = res.data.data.total
-           console.log(res)
       })
     },
     // 分页
@@ -188,44 +204,44 @@ import {deluser} from 'api/userAjax';
         getdataphone () {
            ssuser(localStorage.getItem('ex2'),this.input,this.value,this.value1,this.value2,this.currentPage).then(res => {
            this.list = res.data.data.data
-        this.$message.success(res.data.msg)    
-          //  console.log(res)
-      })        
+           this.usersize = res.data.data.total
 
+        this.$message.success(res.data.msg)    
+      })        
     },
     // 多条删除
     getdatadel () {
-        singledel(this.number1).then(res => {
-        // this.list = res.data.date
-        // console.log(res)
-        this.getdata();
-      })  
+       this.delVisiblee = true;
     },
 
     // 单条删除
     handleClicks(row) {
-       this.userid = row.businessId
+       this.userid = row.businessId          
+       this.delVisible = true;
+
+    },
+    changeFun(val) {
+      this.checkBoxData = val.map(item => item.businessId);
+  },
+    deleteRow() {
         deluser(this.userid).then(res => {
-        // this.list = res.data.date
-        // console.log(res)
+        this.delVisible = false;        
+        this.getdata();
+        this.$message.success('操作成功')
       })  
       },
-    changeFun(val) {
-      let aa
-      this.checkBoxData = val;
-      for (let i = 0; i < this.checkBoxData.length; i++) {
-        this.number.push(this.checkBoxData[i].businessId)
-        aa = this.number.join(",")
-        new Set(aa);
-        this.number1 = aa
+    deleteRows() {
+      if (this.checkBoxData == "") {
+          this.$message.error('请至少选择一个用户再进行操作')   
+          return;      
       }
-  },
-    checkBox(){
-      // console.log(this.number)
-    },
-    deleteRow(index, rows) {
-        rows.splice(index, 1);
+      singledel(this.checkBoxData.join(",")).then(res => {
+        this.delVisiblee = false;
+        this.getdata();
+        this.$message.success('操作成功')
+      })  
       },
+     
         },
         components:{
             sidebar,

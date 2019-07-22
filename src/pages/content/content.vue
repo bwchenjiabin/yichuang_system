@@ -53,22 +53,23 @@
                 :data="tableData"
                 tooltip-effect="dark"
                 style="width: 100%"
+                @sort-change ="sortchange"
                 :header-cell-style="{background:'#f5f5f5',color:'#000'}"
                 @selection-change="changeFun"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="名称" width="250">
+                <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
                       <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
                     </i>
-                    <span class="name">{{scope.row.lessonName}}</span>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
-                <el-table-column prop="browseNumber" label="访客数" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="tradeNumber" label="销量" :sortable="true" :sort-method="sortByDate">
+                <el-table-column prop="lessonName" label="课程名称"></el-table-column>
+                <el-table-column prop="upperoffTime" label="上架时间" sortable="custom"></el-table-column>
+                <el-table-column prop="browseNumber" label="访客数" sortable="custom"></el-table-column>
+                <el-table-column prop="tradeNumber" label="销量" sortable="custom">
                   <template slot-scope="scope">
                     <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
                   </template>
@@ -78,7 +79,7 @@
                       <span>{{scope.row.status==1?"上架":"下架"}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column fixed="right" label="操作" width="200">
+                <el-table-column fixed="right" label="操作">
                   <template slot-scope="scope">
                     <!-- <el-button @click="handleClickssort(scope.row)" type="text" size="small">排序</el-button> -->
                     <el-button type="text" size="small" @click="editimgtxt(scope.row.lessonid)">编辑</el-button>
@@ -151,10 +152,11 @@
                 :data="tableData1"
                 tooltip-effect="dark"
                 style="width: 100%"
+                @sort-change ="sortchange1"
                 @selection-change="changeFun1"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="名称" width="250">
+                <el-table-column label="名称" >
                   <template slot-scope="scope">
                     <i class="img-box">
                       <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
@@ -163,9 +165,9 @@
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
-                <el-table-column prop="browseNumber" label="访客数" show-overflow-tooltip></el-table-column>
-                 <el-table-column prop="tradeNumber" label="销量">
+                <el-table-column prop="upperoffTime" label="上架时间" sortable="custom"></el-table-column>
+                <el-table-column prop="browseNumber" label="访客数" sortable="custom"></el-table-column>
+                 <el-table-column prop="tradeNumber" label="销量" sortable="custom">
                   <template slot-scope="scope">
                     <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
                   </template>
@@ -249,10 +251,11 @@
                 :data="tableData2"
                 tooltip-effect="dark"
                 style="width: 100%"
+                @sort-change ="sortchange2"
                 @selection-change="changeFun2"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="名称" width="250">
+                <el-table-column label="名称" >
                   <template slot-scope="scope">
                     <i class="img-box">
                       <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
@@ -261,9 +264,9 @@
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="upperoffTime" label="上架时间" width="250"></el-table-column>
-                <el-table-column prop="browseNumber" label="访客数" show-overflow-tooltip></el-table-column>
-                 <el-table-column prop="tradeNumber" label="销量">
+                <el-table-column prop="upperoffTime" label="上架时间" sortable="custom"></el-table-column>
+                <el-table-column prop="browseNumber" label="访客数" sortable="custom"></el-table-column>
+                 <el-table-column prop="tradeNumber" label="销量" sortable="custom">
                   <template slot-scope="scope">
                     <el-button @click="openDetails(scope.row.lessonid)" type="text" size="small">{{scope.row.tradeNumber}}</el-button>
                   </template>
@@ -350,7 +353,6 @@ import { selectId } from "api/userAjax";
 import { UpperShelf } from "api/userAjax";
 import { lowerShelf } from "api/userAjax";
 import { dellesson } from "api/userAjax";
-import { keyword } from "api/userAjax";
 import {checkclass} from 'api/userAjax';
 export default {
   data() {
@@ -363,13 +365,10 @@ export default {
       activeName: "first", //默认先显示图文
       checkBoxData: [], //TW多选框选择的值
       checkBoxData1: [], //YP多选框选择的值
-      checkBoxData2: [], //SP多选框选择的值
+      checkBoxData2: [], //SP多选框选择的值.
       number: [],
-      number1: "",
       numbera: [],
-      numberaa: "",
       numberb: [],
-      numberbb: "",
       value: "", //图文状态
       valuesort: "", //图文分类
       valuesort1: "", //音频分类
@@ -379,6 +378,8 @@ export default {
       input: "",   //图文关键词
       input1: "",   //音频关键词
       input2: "",   //视频关键词
+      sort:'',
+      custom:true,
       Choice:'',
       delVisible: false,
       currentPage: 1, //图文当前页
@@ -399,6 +400,12 @@ export default {
       Delete:false,   // 删除图文课程
       Delete1:false,   // 删除音频课程
       Delete2:false,   // 删除视频课程
+      property:'',  // 排序的字段名
+      order:'',  // 排序的规则
+      property1:'',  // 排序的字段名
+      order1:'',  // 排序的规则
+      property2:'',  // 排序的字段名
+      order2:'',  // 排序的规则
       options: [
         {
           //图文状态值
@@ -558,7 +565,11 @@ export default {
     },
     // 删除图文课程
     handleClicks(row) {
-   dellesson(this.number1).then(res => {
+    if (this.checkBoxData == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+   dellesson(this.checkBoxData.join(",")).then(res => {
         this.$message.success(res.data)
         this.Delete = false;
         this.getImgText();
@@ -567,7 +578,11 @@ export default {
     });
 },
     handleClicks1(row) {
-      dellesson(this.numberaa).then(res => {
+    if (this.checkBoxData1 == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      dellesson(this.checkBoxData1.join(",")).then(res => {
         this.$message.success(res.data)
         this.Delete1 = false;
         this.getaudio();
@@ -576,7 +591,11 @@ export default {
     });
 },
     handleClicks2(row) {
-      dellesson(this.numberbb).then(res => {
+    if (this.checkBoxData2 == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      dellesson(this.checkBoxData2.join(",")).then(res => {
         this.$message.success(res.data)
         this.Delete2 = false;
         this.getvideo();
@@ -609,7 +628,11 @@ export default {
     },
     //TW上架
     Upper() {
-      UpperShelf(this.number1).then(res => {
+      if (this.checkBoxData == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      UpperShelf(this.checkBoxData.join(",")).then(res => {
         this.$message.success(res.data)
         this.getImgText();
       }).catch(err => {
@@ -618,7 +641,11 @@ export default {
     },
     //YP上架
     Upper1() {
-      UpperShelf(this.numberaa).then(res => {
+      if (this.checkBoxData1 == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      UpperShelf(this.checkBoxData1.join(",")).then(res => {
         this.$message.success(res.data)
         this.getaudio();
       }).catch(err => {
@@ -627,7 +654,11 @@ export default {
     },
     //SP上架
     Upper2() {
-      UpperShelf(this.numberbb).then(res => {
+      if (this.checkBoxData2 == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      UpperShelf(this.checkBoxData2.join(",")).then(res => {
         this.$message.success(res.data)
         this.getvideo();
       }).catch(err => {
@@ -636,7 +667,11 @@ export default {
     },
     //TW下架
     lower() {
-      lowerShelf({ lessonIds: this.number1 }).then(res => {
+      if (this.checkBoxData == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      lowerShelf({ lessonIds: this.checkBoxData.join(",") }).then(res => {
         this.$message.success(res.data)
         this.getImgText();
       }).catch(err => {
@@ -645,7 +680,11 @@ export default {
     },
     //YP下架
     lower1() {
-      lowerShelf({ lessonIds: this.numberaa }).then(res => {
+      if (this.checkBoxData1 == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      lowerShelf({ lessonIds: this.checkBoxData1.join(",") }).then(res => {
         this.$message.success(res.data)
         this.getaudio();
       }).catch(err => {
@@ -654,7 +693,11 @@ export default {
     },
     //SP下架
     lower2() {
-      lowerShelf({ lessonIds: this.numberbb }).then(res => {
+      if (this.checkBoxData2 == "") {
+          this.$message.error('请至少选择一个课程再进行操作') 
+          return;        
+      }
+      lowerShelf({ lessonIds: this.checkBoxData2.join(",") }).then(res => {
         this.$message.success(res.data)
         this.getvideo();
       }).catch(err => {
@@ -664,36 +707,16 @@ export default {
 
     //图文获取多选值
       changeFun(val) {
-      let str = []
-      this.checkBoxData = val;
-      for (let i = 0; i < this.checkBoxData.length; i++) {
-        if (str.indexOf(this.checkBoxData[i].lessonid) == -1) {
-          str.push(this.checkBoxData[i].lessonid);
-        }
-       this.number1 = str.join(',');  
-      }
+      this.checkBoxData = val.map(item => item.lessonid);
     },
     //音频获取多选值
       changeFun1(val) {
-      let str1 = []
-      this.checkBoxData1 = val;
-      for (let i = 0; i < this.checkBoxData1.length; i++) {
-        if (str1.indexOf(this.checkBoxData1[i].lessonid) == -1) {
-          str1.push(this.checkBoxData1[i].lessonid);
-        }
-       this.numberaa = str1.join(',');  
-      }
+      this.checkBoxData1 = val.map(item => item.lessonid);
     },
     //视频获取多选值
       changeFun2(val) {
-      let str2 = []
-      this.checkBoxData2 = val;
-      for (let i = 0; i < this.checkBoxData2.length; i++) {
-        if (str2.indexOf(this.checkBoxData2[i].lessonid) == -1) {
-          str2.push(this.checkBoxData2[i].lessonid);
-        }
-       this.numberbb = str2.join(',');  
-      }
+      this.checkBoxData2 = val.map(item => item.lessonid);
+
     },
     // 分页
     handleSizeChange(size) {
@@ -711,160 +734,116 @@ export default {
       this.currentPage2 = currentPage;
       this.getvideo();
     },
-
     // 图文查询
     getImgText() {
-      ImgText(localStorage.getItem("ex2"), "1", this.currentPage).then(res => {
-        this.tableData = res.data.lesson;
-        this.twsize = res.data.totalLesson;
+      ImgText(localStorage.getItem("ex2"), "1", this.currentPage,this.property,this.order,this.selectId,this.sortid,this.input).then(res => {
+        this.tableData = res.data.data.data;
+        this.twsize = res.data.data.total;
       });
-      
     },
     // 音频查询
     getaudio() {
-      audio(localStorage.getItem("ex2"), "2", this.currentPage1).then(res => {
-        this.tableData1 = res.data.lesson;
-        this.ypsize = res.data.totalLesson;
+      audio(localStorage.getItem("ex2"), "2", this.currentPage1,this.property1,this.order1,this.selectId1,this.sortid1,this.input1).then(res => {
+        this.tableData1 = res.data.data.data;
+        this.ypsize = res.data.data.total;
       });
     },
     // 视频查询
     getvideo() {
-      video(localStorage.getItem("ex2"), "3", this.currentPage2).then(res => {
-        this.tableData2 = res.data.lesson;
-        this.spsize = res.data.totalLesson;
+      video(localStorage.getItem("ex2"), "3", this.currentPage2,this.property2,this.order2,this.selectId2,this.sortid2,this.input2).then(res => {
+        this.tableData2 = res.data.data.data;
+        this.spsize = res.data.data.total;
       });
     },
-    // 图文通过分类查询
+    // // 图文通过分类查询
       sortImgText() {
-      selectId(
-        localStorage.getItem("ex2"),
-        "1",
-        this.currentPage,
-        this.selectId,
-        this.sortid
-      ).then(res => {
+          ImgText(localStorage.getItem("ex2"), "1", this.currentPage,this.property,this.order,this.selectId,this.sortid,this.input).then(res => {
+        this.tableData = res.data.data.data;
+        this.twsize = res.data.data.total;
         this.$message.success(res.data.msg)
-        this.tableData = res.data.lesson;
-        this.twsize = res.data.lesson.length;
-      }).catch(err => {
-      this.$message.error(err)
-    });
+      });
     },
-        // 音频通过分类查询
+    //     // 音频通过分类查询
       sortaudio() {
-      selectId(
-        localStorage.getItem("ex2"),
-        "2",
-        this.currentPage,
-        this.selectId1,
-        this.sortid1
-      ).then(res => {
+    audio(localStorage.getItem("ex2"), "2", this.currentPage1,this.property1,this.order1,this.selectId1,this.sortid1,this.input1).then(res => {
+        this.tableData1 = res.data.data.data;
         this.$message.success(res.data.msg)
-        this.tableData1 = res.data.lesson;
-        this.ypsize = res.data.lesson.length;
-      }).catch(err => {
-      this.$message.error(err)
-    });
+        this.ypsize = res.data.data.total;
+      });
     },
-      // 视频通过分类查询
+    //   // 视频通过分类查询
       sortvideo() {
-      selectId(
-        localStorage.getItem("ex2"),
-        "3",
-        this.currentPage,
-        this.selectId2,
-        this.sortid2
-      ).then(res => {
+         video(localStorage.getItem("ex2"), "3", this.currentPage2,this.property2,this.order2,this.selectId2,this.sortid2,this.input2).then(res => {
+        this.tableData2 = res.data.data.data;
+        this.spsize = res.data.data.total;
         this.$message.success(res.data.msg)
-        this.tableData2 = res.data.lesson;
-        this.spsize = res.data.lesson.length;
-      }).catch(err => {
-      this.$message.error(err)
-    });
+      });
     },
     // 图文通过状态查询
     selectImgText() {
-      selectId(
-        localStorage.getItem("ex2"),
-        "1",
-        this.currentPage,
-        this.selectId,
-        this.sortid
-      ).then(res => {
+     ImgText(localStorage.getItem("ex2"), "1", this.currentPage,this.property,this.order,this.selectId,this.sortid,this.input).then(res => {
+        this.tableData = res.data.data.data;
+        this.twsize = res.data.data.total;
         this.$message.success(res.data.msg)
-        this.tableData = res.data.lesson;
-        this.twsize = res.data.lesson.length;
-      }).catch(err => {
-      this.$message.error(err)
-    });
+      });
     },
     // 音频通过状态查询
     selectaudio() {
-      selectId(
-        localStorage.getItem("ex2"),
-        "2",
-        this.currentPage,
-        this.selectId1,
-        this.sortid1
-      ).then(res => {
+ audio(localStorage.getItem("ex2"), "2", this.currentPage1,this.property1,this.order1,this.selectId1,this.sortid1,this.input1).then(res => {
+        this.tableData1 = res.data.data.data;
         this.$message.success(res.data.msg)
-        this.tableData1 = res.data.lesson;
-        this.ypsize = res.data.lesson.length;
-      }).catch(err => {
-      this.$message.error(err)
-    });
+        this.ypsize = res.data.data.total;
+      });
     },
     // 视频通过状态查询
     selectvideo() {
-      selectId(
-        localStorage.getItem("ex2"),
-        "3",
-        this.currentPage,
-        this.selectId2,
-        this.sortid2
-      ).then(res => {
+  video(localStorage.getItem("ex2"), "3", this.currentPage2,this.property2,this.order2,this.selectId2,this.sortid2,this.input2).then(res => {
+        this.tableData2 = res.data.data.data;
+        this.spsize = res.data.data.total;
         this.$message.success(res.data.msg)
-        this.tableData2 = res.data.lesson;
-        this.spsize = res.data.lesson.length;
-      }).catch(err => {
-      this.$message.error(err)
-    });
+      });
     },
   // 图文关键词搜索
     keywords(){
-      keyword(
-        this.input,
-        localStorage.getItem("ex2"),
-        this.currentPage,
-      ).then(res => {
+        ImgText(localStorage.getItem("ex2"), "1", this.currentPage,this.property,this.order,this.selectId,this.sortid,this.input).then(res => {
+        this.tableData = res.data.data.data;
+        this.twsize = res.data.data.total;
         this.$message.success(res.data.msg)
-        this.tableData = res.data.data;
-        this.twsize = res.data.data.length;
-      })
+      });
     },
       // 音频关键词搜索
     keywords1(){
-      keyword(
-        this.input1,
-        localStorage.getItem("ex2"),
-        this.currentPage1,
-      ).then(res => {
+     audio(localStorage.getItem("ex2"), "2", this.currentPage1,this.property1,this.order1,this.selectId1,this.sortid1,this.input1).then(res => {
+        this.tableData1 = res.data.data.data;
         this.$message.success(res.data.msg)
-        this.tableData1 = res.data.data;
-        this.ypsize = res.data.data.length;
-      })
+        this.ypsize = res.data.data.total;
+      });
     },
       // 视频关键词搜索
     keywords2(){
-      keyword(
-        this.input2,
-        localStorage.getItem("ex2"),
-        this.currentPage2,
-      ).then(res => {
+      video(localStorage.getItem("ex2"), "3", this.currentPage2,this.property2,this.order2,this.selectId2,this.sortid2,this.input2).then(res => {
+        this.tableData2 = res.data.data.data;
+        this.spsize = res.data.data.total;
         this.$message.success(res.data.msg)
-        this.tableData2 = res.data.data;
-        this.spsize = res.data.data.length;
-      })
+      });
+    },
+    // 图文排序
+    sortchange(column, prop, order){
+      this.property = column.column.property
+      this.order = column.order
+      this.getImgText();
+    },
+        // 图文排序
+    sortchange1(column, prop, order){
+      this.property1 = column.column.property
+      this.order1 = column.order
+      this.getaudio();
+    },
+        // 图文排序
+    sortchange2(column, prop, order){
+      this.property2 = column.column.property
+      this.order2 = column.order
+      this.getvideo();
     },
   },
   components: {

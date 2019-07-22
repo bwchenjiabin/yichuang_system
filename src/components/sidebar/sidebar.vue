@@ -36,6 +36,7 @@
                             <el-menu-item index="/classify"><i></i>内容分类</el-menu-item>
                             <el-menu-item index="/Vip"><i></i>店铺会员</el-menu-item>
                             <el-menu-item index="/feedback"><i></i>用户反馈</el-menu-item>
+                            <el-menu-item index="/Source"><i></i>素材管理</el-menu-item>
             </el-submenu>
 
             <el-submenu index="5">

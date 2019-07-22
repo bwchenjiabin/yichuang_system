@@ -102,6 +102,14 @@ export default new Router({
       path:'/orderlist/:id',
       component:resolve => require(['@/pages/orderlist/orderlist.vue'], resolve)   //  课程订单页面
     },    
+    {
+      path:'/classdetails/:id',
+      component:resolve => require(['@/pages/classdetails/classdetails.vue'], resolve)   //  分类详情页面      
+    },    
+    {
+      path:'/Source',
+      component:resolve => require(['@/pages/Source/Source.vue'], resolve)   //  素材管理页面      
+    },    
   ]
 })
 

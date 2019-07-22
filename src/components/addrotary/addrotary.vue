@@ -30,7 +30,6 @@
           <br>
           <br>
           <br>
-
         </div>
           <span class="name">上传图片</span>
           <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
@@ -38,7 +37,8 @@
           <br>
           <el-upload
             class="avatar-uploader"
-            action="http://yckt.yichuangketang.com:8081/lesson/insertImg"
+            action="http://yckt.yichuangketang.com:8081/section/insertImg"
+            :data="{owner: this.userid}"   
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
@@ -188,7 +188,7 @@ export default {
       twsize:'',
       ypsize:'',
       spsize:'',
-      userid:''
+      userid:'',
     };
   },
   created() {

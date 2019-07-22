@@ -24,33 +24,63 @@
                                 width="55">
                                 </el-table-column>
                                 <el-table-column
-                                label="用户"
-                                width="250">
+                                label="用户头像"
+                              >
                                 <template slot-scope="scope" >
                                     <img :src="scope.row.ex3" alt="" style="width: 50px;height: 50px">
-                                     <span>{{scope.row.businessName}}</span>
                                 </template>
                                 </el-table-column>
+                                 <el-table-column
+                                prop="businessName"
+                                label="用户昵称"
+                                >
+                                </el-table-column>
+                                
                                 <el-table-column
                                 prop="blackTime"
                                 label="拉黑时间"
-                                width="250">
+                                >
                                 </el-table-column>
                                 
                                 <el-table-column
                                 label="操作"
-                                width="200">
+                               >
                                 <template slot-scope="scope">
-                                  <el-button  type="text" size="small" @click="handleClicks(scope.row)" @click.native.prevent="deleteRow(scope.$index, list)">移出黑名单</el-button>
+                                  <el-button  type="text" size="small" @click="handleClicks(scope.row)">移出黑名单</el-button>
                                 </template>
                               </el-table-column>
                             </el-table><br><br>
+                             <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="current_change"
+                                @current-page="currentPage"
+                                :page-size="pagesize"
+                                background
+                                layout="total, prev, pager, next"
+                                :total="this.blacksize"
+                              ></el-pagination>    <br><br>
                             <el-button style="margin-left: 50px;" @click="getdatadel()">移出黑名单</el-button>
                             </el-tab-pane>
                           </el-tabs>
                     </el-main>
                 </el-container>
             </el-container>
+            <!-- 单条删除提示 -->
+    <el-dialog title="提示" :visible.sync="delVisible" width="300px" center style="z-index: 999" :close-on-click-modal="false">
+      <div class="del-dialog-cnt">确定要把该用户移出黑名单吗？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteRow()">确 定</el-button>
+      </span>
+    </el-dialog>
+        <!-- 多条删除提示 -->
+    <el-dialog title="提示" :visible.sync="delVisiblee" width="300px" center style="z-index: 999" :close-on-click-modal="false">
+      <div class="del-dialog-cnt">确定要把选中用户移出黑名单吗？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delVisiblee = false">取 消</el-button>
+        <el-button type="primary" @click="deleteRows()">确 定</el-button>
+      </span>
+    </el-dialog>
     </div>    
 </template>
 <script>
@@ -111,7 +141,12 @@ export default {
       userid:[],   //单条移出黑名单
       checkBoxData:[],
       number:[],
-      number1:''
+      number1:'',
+      currentPage: 1, //图文当前页
+      blacksize:0,
+      pagesize: 5,
+      delVisible:false,
+      delVisiblee:false,
             }
         },
     created () {
@@ -120,43 +155,52 @@ export default {
     methods:{
       // 展示
         getdata () {
-        blacklist(localStorage.getItem('ex2')).then(res => {
-         this.list = res.data.date
+        blacklist(localStorage.getItem('ex2'),this.currentPage).then(res => {
+         this.list = res.data.data.data
+         this.blacksize = res.data.data.total
       })
     },
       // 单条删除
       handleClicks(row) {
         this.userid = row.businessId
-        console.log(this.userid)
-        delblacklist(this.userid).then(res => {
-        console.log(res);
-      })
+        this.delVisible = true;
       },
       // 单条删除
-      deleteRow(index, rows) {
-        rows.splice(index, 1);
-      },
-
-          // 多条删除
-    getdatadel () {
-        ddelblacklist(this.number1).then(res => {
-        console.log(res)
+      deleteRow() {
+        delblacklist(this.userid).then(res => {
         this.getdata();
+        this.delVisible = false;   
+        this.$message.success('操作成功');    
+      })
+    },
+      //多条删除
+      deleteRows(){
+        if (this.checkBoxData == "") {
+          this.$message.error('请至少选择一个用户再进行操作');     
+          return;         
+        }
+        ddelblacklist(this.checkBoxData.join(",")).then(res => {
+          this.delVisiblee = false;
+          this.getdata();
+          this.$message.success('操作成功');    
       })  
-
+    },
+      // 多条删除
+    getdatadel () {
+      this.delVisiblee = true;
+    },
+    // 分页
+     handleSizeChange(size) {
+      this.pagesize = size;
+    },
+    current_change: function(currentPage) {
+      this.currentPage = currentPage;
+      this.getdata();
     },
 
 
     changeFun(val) {
-      let aa
-      this.checkBoxData = val;
-      for (let i = 0; i < this.checkBoxData.length; i++) {
-        this.number.push(this.checkBoxData[i].businessId)
-        aa = this.number.join(",")
-        new Set(aa);
-        this.number1 = aa
-      }
-      // console.log(this.number)
+      this.checkBoxData = val.map(item => item.businessId);
   },
     },
     components:{

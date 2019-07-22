@@ -41,7 +41,6 @@ import {preview} from 'api/userAjax';
             //修改店铺会员
       vips(){
       vip(localStorage.getItem('ex2'),this.input,this.inputt).then(res => {
-           console.log(res)
         })
       },
 
@@ -49,7 +48,6 @@ import {preview} from 'api/userAjax';
          preview(localStorage.getItem('ex2')).then(res => {
              this.input = res.data.memberName
              this.inputt = res.data.memberPrice
-           console.log(res);
         })
       },
       

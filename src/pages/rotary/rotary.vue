@@ -87,13 +87,20 @@
         </el-main>
       </el-container>
     </el-container>
-    <!-- 删除提示 -->
+    <!-- 单条删除提示 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">确定要删除该条轮播图吗？</div>
-
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisible = false">取 消</el-button>
         <el-button type="primary" @click="deleteRow()">确 定</el-button>
+      </span>
+    </el-dialog>
+        <!-- 多条删除提示 -->
+    <el-dialog title="提示" :visible.sync="delVisiblee" width="300px" center style="z-index: 999" :close-on-click-modal="false">
+      <div class="del-dialog-cnt">确定要删除选中轮播图吗？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delVisiblee = false">取 消</el-button>
+        <el-button type="primary" @click="deleteRows()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -112,6 +119,7 @@ export default {
       isShow: true,
       isShows: false,
       delVisible: false,
+      delVisiblee: false,
       checkBoxData: [], //多选框选择的值
       ada: [],
       currentPage: 1,
@@ -167,17 +175,22 @@ export default {
             this.getdata();
       })
     },
+    deleteRows() {
+      if (this.checkBoxData == "") {
+          this.$message.error('请至少选择一个轮播再进行操作') 
+          return;       
+      }
+      this.delVisible = false;    
+        ddelrotary({rollimageIds:this.checkBoxData.join(",")}).then(res => {
+          this.$message.success('删除成功')
+            this.getdata();
+      })
+    },
+
+
     //多选值
     changeFun(val) {
-      let str = []
-      this.checkBoxData = val;
-      for (let i = 0; i < this.checkBoxData.length; i++) {
-        if (str.indexOf(this.checkBoxData[i].id) == -1) {
-          str.push(this.checkBoxData[i].id);
-        }
-       this.number = str.join(',');  
-       console.log(this.number)
-      }
+      this.checkBoxData = val.map(item => item.id);
     },
     // 分页
     handleSizeChange(size) {
@@ -190,9 +203,8 @@ export default {
     // 展示
     getdata() {
         rotary(localStorage.getItem('ex2'),this.currentPage).then(res => {
-            this.list = res.data;
-            // this.pageleng = res.data.data.total
-            console.log(res);
+            this.list = res.data.data.data;
+            this.pageleng = res.data.data.total
       })
     },
     // 单条删除
@@ -202,11 +214,7 @@ export default {
     },
     // 多条删除
     getdatadel() {
-      this.delVisible = false;    
-        ddelrotary({rollimageIds:this.number}).then(res => {
-          this.$message.success('删除成功')
-            this.getdata();
-      })
+      this.delVisiblee = true;
     }
   },
   components: {

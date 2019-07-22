@@ -56,20 +56,19 @@
         <br />
         <br />
         <br />视频上传：&nbsp;&nbsp;&nbsp;
-        <el-upload
+          <el-upload
           class="upload-demo"
           ref="upload"
           :action="imageUrl"
           :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
           :file-list="fileList"
           :data="{
-            chapterid:this.chapterid,
-            name:this.input1,
-            extend2:this.checkedss
+            accountId:this.accountId
           }"
           :limit="1"
           accept=".mp4,.avi,.webm"
-          :auto-upload="false"
+          :auto-upload="true"
         >
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
         </el-upload>
@@ -109,7 +108,7 @@
          </el-upload>   
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitUpload1(),editvideosections()">保 存</el-button>
+        <el-button type="primary" @click="submitUpload1()">保 存</el-button>
       </span>
     </el-dialog>
     <!-- 编辑章名称弹窗 -->
@@ -153,12 +152,15 @@ import { editvideosection } from 'api/userAjax';
 import { delsection } from 'api/userAjax';
 import { delchapter } from "api/userAjax";
 import { querychapter } from "api/userAjax";
+import { fileupload } from "api/userAjax";
+
 export default {
   data() {
     return {
       input: "", // 章名称
       input1: "", // 新增节标题
       input2: "", // 修改节标题
+      accountId:'',
       delVisible: false, //新增弹窗
       delVisiblee: false, //编辑弹窗
       content: "", // 新增节
@@ -175,11 +177,13 @@ export default {
       courseDetail: [],
       fileList:[],
       fileList1:[],
+      audiourl:'',
+      audiourl1:'',
       videoname:'',
       delsectionID: "", //删除jieid
       delchapterID:'',  //删除章id
-      imageUrl: "http://yckt.yichuangketang.com/section/insertSectionFile", // 上传地址
-      imageUrl1:"http://yckt.yichuangketang.com:8081/section/updateSection",  //修改地址
+      imageUrl: "http://192.168.0.203:8081/section/insertAudioOrVedio", // 上传地址
+      imageUrl1: "http://192.168.0.203:8081/section/insertAudioOrVedio", //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID
       chapterId: "", //章ID
@@ -193,6 +197,7 @@ export default {
   created() {
     this.getParams();
     this.getdata();
+    this.accountId = localStorage.getItem("ex2");
   },
   methods: {
     //是否试听取值
@@ -244,29 +249,36 @@ export default {
       });
     },
       //修改
-      submitUpload1() {
-        this.$refs.upload1.submit();
-      },
+    submitUpload1() {
+      console.log(this.chapterId)
+      console.log(this.sectionid)
+       fileupload(this.chapterId,this.input2,this.checkedss1,this.time1,this.audiourl1,this.sectionid).then(res => {
+        this.$message.success(res.data.msg);
+        this.delVisiblee = false;
+        this.input2 = "";
+        this.checkedss1 = false;
+        this.fileList1 = [];
+        this.getdata();
+      })
+    },
       //新增
     submitUpload() {
-      this.$refs.upload.submit();
+        fileupload(this.chapterid,this.input1,this.checkedss,this.time,this.audiourl).then(res => {
+        this.$message.success(res.data.msg);
+        this.delVisible = false;
+        this.input1 = "";
+        this.checkedss = false;
+        this.fileList = [];
+        this.getdata();
+      })
     },
     //文件上传成功
-      handleAvatarSuccess(res, file) {
-      this.delVisible = false
-      this.$refs.upload.clearFiles()
-      this.input1 = ""
-      this.getdata();
-      this.$message.success(res)
-      console.log(file.size);
-      },
-      handleAvatarSuccesss(res, file) {
-      this.delVisiblee = false
-      this.$refs.upload.clearFiles()
-      this.input2 = ""
-      this.getdata();
-      this.$message.success(res)
-      },
+    handleAvatarSuccess(res, file) {
+      this.audiourl = res.data;
+    },
+    handleAvatarSuccesss(res, file) {
+      this.audiourl1 = res.data;
+    },
     //测试
     getdata() {
       ceshi(this.Id).then(res => {
@@ -282,14 +294,6 @@ export default {
       this.$message.error(err)
     });
     },
-    //修改节
-      editvideosections(){
-          editvideosection(this.sectionid,this.chapterId,this.input2).then(res => {
-            this.getdata()
-          this.delVisiblee = false;
-          this.$message.success(res.data);
-      })  
-        },
     // 修改章名称
     editmodify(val) {
       this.chapterids = val
@@ -324,8 +328,67 @@ export default {
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name
+        this.checkedss1 = res.data.extend2
+        // this.fileList = res.data.url
+        if (this.checkedss1 == 1) {
+          this.checked1 = true;
+        }else{
+          this.checked1 = false;
+        }
       }) 
-    }
+    },
+      beforeAvatarUpload(file) {
+                this.getTimes(file);
+            },
+             getTimes(file) {
+                var content = file;
+                //获取录音时长
+                var url = URL.createObjectURL(content);
+                //经测试，发现audio也可获取视频的时长
+                var audioElement = new Audio(url);
+                audioElement.addEventListener("loadedmetadata", (_event) => {
+                    this.audioDuration = parseInt(audioElement.duration);
+                    var minute = parseInt(this.audioDuration / 60);
+                    var sec = (this.audioDuration % 60) + "";
+                    var isM0 = ":";
+                    if (minute == 0) {
+                    minute = "00";
+                    } else if (minute < 10) {
+                    minute = "0" + minute;
+                    }
+                    if (sec.length == 1) {
+                    sec = "0" + sec;
+                    }
+                    this.time = minute + isM0 + sec
+                    // console.log(this.time);
+                });
+            },
+      beforeAvatarUpload1(file) {
+                this.getTimes1(file);
+            },
+             getTimes1(file) {
+                var content = file;
+                //获取录音时长
+                var url = URL.createObjectURL(content);
+                //经测试，发现audio也可获取视频的时长
+                var audioElement = new Audio(url);
+                audioElement.addEventListener("loadedmetadata", (_event) => {
+                    this.audioDuration = parseInt(audioElement.duration);
+                    var minute = parseInt(this.audioDuration / 60);
+                    var sec = (this.audioDuration % 60) + "";
+                    var isM0 = ":";
+                    if (minute == 0) {
+                    minute = "00";
+                    } else if (minute < 10) {
+                    minute = "0" + minute;
+                    }
+                    if (sec.length == 1) {
+                    sec = "0" + sec;
+                    }
+                    this.time1 = minute + isM0 + sec
+                    // console.log(this.time);
+                });
+            },
   },
   components: {
     sidebar,

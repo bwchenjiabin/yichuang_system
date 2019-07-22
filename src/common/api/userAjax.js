@@ -82,30 +82,30 @@ const checkclass = (owner) => {
     })
   })
 }
-// 新增轮播查询图文
-const ImgText = (owner,lessonType,page) => {
+// 查询图文
+const ImgText = (owner,lessonType,page,sort,direction,status,lessonKind,keyword) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/lesson/selectByOwnerAndType',{owner,lessonType,page}).then(res => {
+    ajax.post('/lesson/selectpage',{owner,lessonType,page,sort,direction,status,lessonKind,keyword}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
     })
   })
 }
-// 新增轮播查询音频
-const audio = (owner,lessonType,page) => {
+// 查询音频
+const audio = (owner,lessonType,page,sort,direction,status,lessonKind,keyword) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/lesson/selectByOwnerAndType',{owner,lessonType,page}).then(res => {
+    ajax.post('/lesson/selectpage',{owner,lessonType,page,sort,direction,status,lessonKind,keyword}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
     })
   })
 }
-// 新增轮播查询视频
-const video = (owner,lessonType,page) => {
+// 查询视频
+const video = (owner,lessonType,page,sort,direction,status,lessonKind,keyword) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/lesson/selectByOwnerAndType',{owner,lessonType,page}).then(res => {
+    ajax.post('/lesson/selectpage',{owner,lessonType,page,sort,direction,status,lessonKind,keyword}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -173,9 +173,9 @@ const singledel = (businessId) => {
   })
 }
 // 黑名单展示
-const blacklist = (ex2) => {
+const blacklist = (ex2,pageNum) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/business/black',{ex2}).then(res => {
+    ajax.get('/business/black',{ex2,pageNum}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -318,23 +318,10 @@ const updataId = (id) => {
   })
 }
 
-
-
 //用户反馈
 const feedback = (ex2,page) => {
   return new Promise((resolve, reject) => {
     ajax.get('/feedback/select',{ex2,page}).then(res => {
-      resolve(res)
-    }).catch(err => {
-      reject(err)
-    })
-  })
-}
-
-//搜索状态
-const selectId = (owner,lessonType,page,status,lessonKind) => {
-  return new Promise((resolve, reject) => {
-    ajax.get('/lesson/selectByOwnerAndType',{owner,lessonType,page,status,lessonKind}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -514,17 +501,6 @@ const querychapter = (id) => {
   })
 }
 
-// 课程关键词搜索
-const keyword = (keyword,owner,page) => {
-  return new Promise((resolve, reject) => {
-    ajax.post('/lesson/selectLike',{keyword,owner,page}).then(res => {
-      resolve(res)
-    }).catch(err => {
-      reject(err)
-    })
-  })
-}
-
 // 订单列表展示
 const orderlist = (formatId,page) => {
   return new Promise((resolve, reject) => {
@@ -547,6 +523,29 @@ const sortshow = (lessonKindId) => {
   })
 }
 
+
+// 音频 视频上传   
+const fileupload = (chapterid,name,extend2,extend3,url,id) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/section/insertAudioOrVedioSection',{chapterid,name,extend2,extend3,url,id}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 查询分类课程
+const classlesson = (lessonKind,owner,page) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/lesson/selectpage',{lessonKind,owner,page}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+export {classlesson}
 export {login}
 export {tuichu}
 export {rotary}
@@ -577,7 +576,6 @@ export {updatarotary}
 export {updataId}
 export {ceshi}
 export {feedback}
-export {selectId}
 export {UpperShelf}
 export {lowerShelf}
 export {chapter}
@@ -595,6 +593,6 @@ export {editchapter}
 export {orderSearch}
 export {orderStatus}
 export {querychapter}
-export {keyword}
 export {orderlist}
 export {sortshow}
+export {fileupload}

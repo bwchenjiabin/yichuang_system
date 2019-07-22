@@ -18,9 +18,12 @@
                                 <el-table-column label=""  width="120" > 
                                     <template slot-scope="scope">{{ scope.row.kindName }}</template>
                                 </el-table-column>
-                                <el-table-column  prop="" label="" width="120" >
+                                <el-table-column  prop="" label="" width="450" >
                                 </el-table-column>
-                                <el-table-column prop="" label=""  show-overflow-tooltip>
+                                <el-table-column prop="" label="">
+                                    <template slot-scope="scope">
+                                    <el-button @click="openDetails(scope.row.kindName)" type="text" size="small">(包含内容数:{{ scope.row.num }})</el-button>
+                                  </template>
                                 </el-table-column>
                                 <el-table-column fixed="right" label="操作" width="200">
                                         <template slot-scope="scope">
@@ -39,7 +42,7 @@
                    <!-- 删除提示 -->
                    <el-dialog title="提示" :visible.sync="Delete" width="300px" center style="z-index: 999" :close-on-click-modal="false">
                                             
-                      <div class="del-dialog-cnt">确定要删除该条分类吗？</div>
+                      <div class="del-dialog-cnt" style="text-align: center;">确定要删除该条分类吗？</div>
 
                       <span slot="footer" class="dialog-footer">
 
@@ -193,7 +196,13 @@ import {sortshow} from 'api/userAjax';
       del(){
         this.Delprompt = true;
       },
-
+      // 进入分类详情
+    openDetails(id){
+      this.editTwid = id;
+      this.$router.push({
+        path: `/classdetails/${id}`
+      });
+    },
       // 展示
       getdata () {
         classe(localStorage.getItem('ex2')).then(res => {

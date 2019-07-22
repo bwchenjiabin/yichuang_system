@@ -35,8 +35,9 @@
               <br />
                 <el-upload
             class="avatar-uploader"
-            action="http://yckt.yichuangketang.com:8081/lesson/insertLessonImg"
+            action="http://yckt.yichuangketang.com:8081/section/insertImg"
             :show-file-list="false"
+            :data="{owner: this.Ids}"   
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
             <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com'+this.imageUrl" class="avatar">
@@ -165,13 +166,15 @@ export default {
       delVisible: false,
       radio: "1",
       Choice: [],
-      Id: ""
+      Id: "",
+      Ids: ""
     };
   },
   created() {
     this.getParams();
     this.getdata();
     this.getdataedit();
+    this.Ids = localStorage.getItem("ex2");
   },
   methods: {
     //类型名字获取

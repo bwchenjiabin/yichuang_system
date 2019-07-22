@@ -24,7 +24,8 @@
           <br />
             <el-upload
             class="avatar-uploader"
-            action="http://yckt.yichuangketang.com:8081/lesson/insertLessonImg"
+            action="http://yckt.yichuangketang.com:8081/section/insertImg"
+            :data="{owner: this.Id}"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
@@ -160,13 +161,14 @@ export default {
       lessonType: 3,
       imgurl: "", //后台返回的路径
       delVisible: false,
-
+      Id:'',
       radio: "1",
       Choice: []
     };
   },
   created() {
     this.getdata();
+    this.Id = localStorage.getItem("ex2")
   },
   methods: {
     //类型名字获取

@@ -35,7 +35,8 @@
               <br />
            <el-upload
             class="avatar-uploader"
-            action="http://yckt.yichuangketang.com:8081/lesson/insertImg"
+            action="http://yckt.yichuangketang.com:8081/section/insertImg"
+            :data="{owner: this.userid}"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
@@ -219,6 +220,7 @@ export default {
       spsize: "",
       Id: "",
       number: "",
+      userid:'',
     };
   },
   created() {
@@ -228,6 +230,7 @@ export default {
     this.getvideo();
     this.getdata();
     this.keep();
+    this.userid = localStorage.getItem("ex2");
   },
   methods: {
     getdata() {

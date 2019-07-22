@@ -67,7 +67,6 @@ export default {
       feedback(localStorage.getItem("ex2"),this.currentPage).then(res => {
         this.tableData = res.data.data.data;
         this.feedbacksize = res.data.data.total
-        console.log(res);
       });
     }
   },
