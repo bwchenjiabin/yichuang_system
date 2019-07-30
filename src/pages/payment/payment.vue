@@ -13,7 +13,7 @@
             <span class="course" style="cursor: pointer;">我的钱包</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <router-link to="/confirmorder"><span class="imgText">确认订单</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
+          <span class="imgText">确认订单</span>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
           <br />
           <br />
           <br>
@@ -30,7 +30,7 @@
                     <img src="../../../static/img/微信图片_20190727085949.png" alt="">
                 </i>
                 <h4 class="names">付款成功！</h4>
-                <p class="order-p1">订单号：9504154535948478</p>
+                <p class="order-p1">订单号：{{order}}</p>
             </div>
           </div>
         </el-main>
@@ -44,11 +44,20 @@ import Header from "@/components/Header/Header.vue";
 export default {
   data() {
     return {
-        align:true 
+        align:true ,
+        order:''
     };
   },
-  created() {},
-  methods: {},
+  created() {
+    this.getParams();
+  },
+  methods: {
+        //获取传值
+    getParams() {
+      var routerParamsorder = this.$route.query.order;
+      this.order = routerParamsorder
+    },
+  },
   components: {
     sidebar,
     Header

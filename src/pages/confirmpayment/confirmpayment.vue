@@ -13,7 +13,8 @@
             <span class="course" style="cursor: pointer;">我的钱包</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <router-link to="/confirmorder"><span class="imgText">确认订单</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
+          <span class="imgText">确认订单</span>
+          &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
           <br />
           <br />
           <br>
@@ -31,13 +32,14 @@
                 </i>
                 <h4 class="names">订单提交成功！</h4>
                 <p class="order-p1">请您在提交订单后<span>{{time}}</span>内完成，否则将自动取消。</p>
-                <p class="order-p2">订单号：9504154535948478 收款方：山西壹创科技有限公司</p>
+                <p class="order-p2">订单号：{{order}} 收款方：山西壹创科技有限公司</p>
             </div>
           </div>
          <div class="payment">
             <h4 class="vx">微信支付</h4><br><br>
-            <span class="moneys">￥200.00</span><br>
-            <img src="../../../static/img/微信图片_20190611141523.jpg" alt="">
+            <span class="moneys">￥{{money}}.00</span><br>
+            <!-- <img src="../../../static/img/微信图片_20190611141523.jpg" alt=""> -->
+            <qrcode-vue :value="url" :size="size" level="H" style="padding-left: 213px;"></qrcode-vue>
          </div>
         </el-main>
       </el-container>
@@ -47,6 +49,10 @@
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
+import QrcodeVue from 'qrcode.vue'
+import {orderQuery} from 'api/userAjax';
+import { setInterval, clearInterval, setTimeout } from 'timers';
+
 export default {
   data() {
     return {
@@ -56,21 +62,47 @@ export default {
           h:'',
           m:'',
           s:'',
-    };
+          url:'',
+          value: 'https://example.com',
+          size: 150,
+          money:'',
+          order:'',
+          time:'',
+          times:'',
+          mytimer: null,
+          mytime:null,
+    }
   },
   created() {
+    this.getParams();
     this.countTime();
-    // this.orderStatus();
+    this.orderStatus();
+  },
+  mounted(){
+     this.mytimer = setInterval(this.orderStatus, 5000);
+     console.log(this.mytimer)
+    this.mytime = setInterval(this.countTime,1000);
   },
   methods: {
-countTime: function () {
-                //获取当前时间
+            //获取传值
+    getParams() {
+      var routerParams = this.$route.query.codeUrl;
+      var routerParamsmoney = this.$route.query.money;
+      var routerParamsorder = this.$route.query.order;
+      var routerParamstime = this.$route.query.payStartTime;
+      this.url = routerParams;
+      this.money = routerParamsmoney
+      this.order = routerParamsorder
+      this.times = Date.parse(routerParamstime)
+    },
+    countTime() {
+                //当前
                 var date = new Date();
                 var now = date.getTime();
-                //设置截止时间
-                var endDate = new Date("2019-7-30 12:26:23");
-                var end = endDate.getTime();
-                //时间差
+                //截止
+                // var endDate = new Date("2019-7-30 23:23:23");
+                // var end = endDate.getTime();
+                var end = this.times
                 var leftTime = end - now;
                 if (leftTime >= 0) {
                     this.d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
@@ -79,18 +111,28 @@ countTime: function () {
                     this.s = Math.floor(leftTime / 1000 % 60);
                 }
                 this.time = this.h+'小时'+this.m+'分'+this.s+'秒'
-                //递归每秒调用countTime方法，显示动态时间效果
-                setTimeout(this.countTime, 1000);
             },
             //  定时查询订单状态
-            // orderStatus:function(){
-            //   console.log("123")
-            //   setTimeout(this.aa, 2000);
-            // }
+            orderStatus(){
+              orderQuery(this.order).then(res=>{
+                  if (res.data == "SUCCESS") {
+                      clearInterval(this.mytimer)
+                      this.$message.success("购买成功")
+                      this.$router.push({
+                      path: `/payment`,
+                      query:{order:this.order}
+                    });
+                  }else if (res.data == "CLOSED") {
+                    clearInterval(this.mytimer)
+                    this.$message.error("订单已关闭")
+                  }
+              })
+            }
   },
   components: {
     sidebar,
-    Header
+    Header,
+    QrcodeVue
   }
 };
 </script>

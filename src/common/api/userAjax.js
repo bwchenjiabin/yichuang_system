@@ -592,6 +592,18 @@ const pay = (orderNumber) => {
   })
 }  
 
+//查询订单状态   
+
+const orderQuery = (orderNumber) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/wechatpay/orderQuery',{orderNumber}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}  
+
 
 
 export {classlesson}
@@ -649,3 +661,4 @@ export {source}
 export {delsource}
 export {insertOrder}
 export {pay}
+export {orderQuery}

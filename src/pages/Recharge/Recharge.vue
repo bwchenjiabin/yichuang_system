@@ -142,7 +142,12 @@ export default {
             this.order = res.data.data;
       let money = this.radio1
       let order = this.order
-        console.log(this.order);
+      if (res.data.code == '0000') {
+        this.$message.success(res.data.msg)   
+      }else{
+        this.$message.error(res.data.msg)
+        return;
+      }
       this.$router.push({
         path: `/confirmorder`,
         query:{ money:money,order:order }

@@ -100,16 +100,15 @@ export default {
           Id:'',
           order:'',
           url:'',
+          time:'',
     };
   },
   created() {
     this.getParams();
-    // console.log(this.order);
   },
   methods: {
         getmoney(val){
         this.moneytype = val;
-        console.log(this.moneytype);
     },
         //获取传值
     getParams() {
@@ -122,13 +121,17 @@ export default {
 
     openDetails(){
       pay(this.order).then(res => {
-            console.log(res);
-            this.$message.success(res.data.data.msg)
+            if (res.data.code == '0000') {
+            this.$message.success(res.data.data.msg)              
+            }else{
+            this.$message.error(res.data.msg)
+              return;
+            }
             this.url = res.data.data.codeUrl
-
+            this.time = res.data.data.payStartTime
           this.$router.push({
         path: `/confirmpayment`,
-        query:{ codeUrl:this.url}
+        query:{codeUrl:this.url,money:this.Id,order:this.order,payStartTime:this.time}
       });
       })
     }, 
