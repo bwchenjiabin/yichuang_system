@@ -11,7 +11,19 @@
                         <el-main>
                             <div class="title">
                                 <h3>{{this.phone}}</h3>
-                                <span class="bq">标准版</span>
+                                         <el-popover
+                                            placement="top-start"
+                                            width="200"
+                                            trigger="hover"
+                                            v-model="visible">
+                                              <p>{{this.title}}已到期，店铺已打烊</p>
+                                            <div style="text-align: right; margin: 0">
+                                                <el-button type="primary" size="mini" @click="visible = false">续费</el-button>
+                                            </div>
+                                            <el-tag type="danger" slot="reference" v-if="isExpire == false">已到期</el-tag>
+                                        </el-popover>
+
+                                    <el-tag style="cursor:pointer;">{{title}}</el-tag>
                             </div>
                             <ul class="cont">
                                 <li>
@@ -20,7 +32,6 @@
                                         <span>总用户（人）</span><br><br>
                                         <h3>{{this.number.peopleNumber}}</h3>
                                     </div>
-                                    
                                 </li>
                                 <li>
                                     <div class="dd">
@@ -51,11 +62,16 @@ import {Home} from 'api/userAjax';
             return{
                 number:[],
                 phone:'',
+                title:'',
+                isExpire:'',
+                visible: false,
             }
         },
         created () {
             this.getdata();
             this.phone = localStorage.getItem('phone')
+            this.title = localStorage.getItem('accountType');
+            this.isExpire = localStorage.getItem('isExpire');
       },
         methods:{
         getdata() {

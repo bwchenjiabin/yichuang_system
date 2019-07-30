@@ -38,7 +38,7 @@
           <el-upload
             class="avatar-uploader"
             action="http://yckt.yichuangketang.com:8081/section/insertImg"
-            :data="{owner: this.userid}"   
+            :data="{accountId: this.userid}"   
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
@@ -208,7 +208,11 @@ export default {
       //上传成功的回调
     handleAvatarSuccess(res) {
       this.imageUrl = res.data;
+      if (res.code == "0000") {
       this.$message.success(res.msg);
+      }else{
+      this.$message.error(res.msg)
+      }
     },
     changes(val){
       if (val == true) {
@@ -225,23 +229,23 @@ export default {
     // 图文查询
     getImgText() {
         ImgText(localStorage.getItem('ex2'),"1",this.currentPage).then(res => {
-            this.tableData = res.data.lesson;
-            this.twsize = res.data.totalLesson
+            this.tableData = res.data.data.data;
+            this.twsize = res.data.data.total
       })
     },
    // 音频查询
     getaudio() {
         audio(localStorage.getItem('ex2'),"2",this.currentPage1).then(res => {
-            this.tableData1 = res.data.lesson;
-            this.ypsize = res.data.totalLesson
+            this.tableData1 = res.data.data.data;
+            this.ypsize = res.data.data.total
             // console.log(res);
       })
     },
   // 视频查询
     getvideo() {
         video(localStorage.getItem('ex2'),"3",this.currentPage2).then(res => {
-            this.tableData2 = res.data.lesson;
-            this.spsize = res.data.totalLesson
+            this.tableData2 = res.data.data.data;
+            this.spsize = res.data.data.total
       })
     },
     // 刷新页面
@@ -259,7 +263,7 @@ export default {
       }
       addrotary({name:this.input,owner:this.userid,lessonid:this.currentRow,img:this.imageUrl,extendtwo:this.valnum}).then(res => {
         this.$message.success(res.data.msg);
-        // this.switchss();
+        this.switchss();
       })
     },
     radioq(val) {

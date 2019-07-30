@@ -115,7 +115,7 @@ const video = (owner,lessonType,page,sort,direction,status,lessonKind,keyword) =
 //展示我的用户
 const user = (ex2,pageNum) => {
   return new Promise((resolve, reject) => {
-    ajax.get('/business/select',{ex2,pageNum}).then(res => {
+    ajax.get('/business/selectBySearch',{ex2,pageNum}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -545,6 +545,30 @@ const classlesson = (lessonKind,owner,page) => {
     })
   })
 }
+
+// 素材查询
+const source = (accountId,type,page) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/accountFile/show',{accountId,type,page}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}        
+
+
+// 素材删除
+const delsource = (accountFileIds) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/accountFile/delete',{accountFileIds}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}     
+
 export {classlesson}
 export {login}
 export {tuichu}
@@ -596,3 +620,5 @@ export {querychapter}
 export {orderlist}
 export {sortshow}
 export {fileupload}
+export {source}
+export {delsource}

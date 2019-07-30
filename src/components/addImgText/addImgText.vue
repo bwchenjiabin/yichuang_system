@@ -25,11 +25,11 @@
           <el-upload
             class="avatar-uploader"
             action="http://yckt.yichuangketang.com:8081/section/insertImg"
-            :data="{owner: this.Id}"   
+            :data="{accountId: this.Id}"   
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
-            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com'+this.imageUrl" class="avatar">
+            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <br />
@@ -88,7 +88,6 @@
             <span>
               现价
               <span class="bt"><br />(必填)
-                
               </span>
             </span>
           </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -99,7 +98,6 @@
           <br />
           <br />
           <br />
-
           <div style="display:inline-block" class="hxj">
             <span style="line-height:42px; display: block;height: 100%;">
               原价
@@ -232,7 +230,12 @@ export default {
       this.$refs.upload.submit();
     },
     handleAvatarSuccess(res) {
-      this.imageUrl = res;
+      this.imageUrl = res.data;
+      if (res.code == "0000") {
+      this.$message.success(res.msg);
+      }else{
+      this.$message.error(res.msg)
+      }
     },
     //弹窗
     Popup() {

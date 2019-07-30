@@ -36,11 +36,9 @@
             <el-table-column prop="name" label="缩略图" width="250">
                <template slot-scope="scope">
                 <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt style="width: 50px;height: 50px">
-                <!-- <span class="name">{{scope.row.name}}</span> -->
               </template>
             </el-table-column>
             <el-table-column prop="name" label="名称" show-overflow-tooltip></el-table-column>
-            <!-- <el-table-column prop="extendtwo" label="状态" show-overflow-tooltip></el-table-column> -->
             <el-table-column label="状态">
                   <template slot-scope="scope">
                       <span>{{scope.row.extendtwo==1?"显示":"隐藏"}}</span>
@@ -158,7 +156,6 @@ export default {
     Clickthen(row) {
       $(".sort").css("display", "none");
     },
-
     //轮播排序
       sortrota() {
       $(".sort").css("display", "none");
@@ -183,11 +180,10 @@ export default {
       this.delVisible = false;    
         ddelrotary({rollimageIds:this.checkBoxData.join(",")}).then(res => {
           this.$message.success('删除成功')
+          this.delVisiblee = false;
             this.getdata();
       })
     },
-
-
     //多选值
     changeFun(val) {
       this.checkBoxData = val.map(item => item.id);

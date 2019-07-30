@@ -37,7 +37,7 @@
             class="avatar-uploader"
             action="http://yckt.yichuangketang.com:8081/section/insertImg"
             :show-file-list="false"
-            :data="{owner: this.Ids}"   
+            :data="{accountId: this.Ids}"   
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
             <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com'+this.imageUrl" class="avatar">
@@ -183,7 +183,7 @@ export default {
     },
     assignment() {
       $(".sort").html(this.aaa);
-      console.log(this.aaa);
+      // console.log(this.aaa);
 
     },
     //修改展示
@@ -198,7 +198,7 @@ export default {
         this.input3 = res.data.lessonPriceNow;
         this.imageUrl = res.data.img;
         $(".sort").html(res.data.lessonKind);
-        console.log(res);
+        // console.log(res);
         if (this.radios == "0") {
           this.disabled = true;
           this.input3 = "";
@@ -260,7 +260,8 @@ export default {
     },
 
     handleAvatarSuccess(res) {
-      this.imageUrl = res;
+      this.imageUrl = res.data;
+      this.$message.success(res.msg);
     },
 
     //弹窗

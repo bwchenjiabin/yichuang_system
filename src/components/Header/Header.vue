@@ -7,7 +7,8 @@
             <div class="photo">
             </div>
             <span class="phone">{{this.phone}}</span>
-            <span class="bq">标准版</span>
+            <!-- <el-tag type="danger"  @click="open2" style="cursor:pointer;" v-if="isExpire == false">已到期</el-tag> -->
+            <el-tag style="cursor:pointer;">{{title}}</el-tag>
             <div class="quit" @click="getdata()">退出登录</div>
         </div>
     </div>   
@@ -19,17 +20,29 @@ import {tuichu} from 'api/userAjax';
         data(){
             return{
                 phone:'',
-                portrait:''
+                portrait:'',
+                title:'标准版',
+                isExpire:''
             }
         },
         created () {
            this.phone = localStorage.getItem('phone')
            this.portrait = localStorage.getItem('portrait')
+           this.title = localStorage.getItem('accountType');
+           this.isExpire = localStorage.getItem('isExpire');
       },
         methods:{
+        open2() {
+        this.$notify({
+          title: '提示',
+          message: this.title+'已到期，店铺已打烊',
+          type: 'warning'
+        });
+      },
         getdata() {
 
         tuichu().then(res => {
+        localStorage.removeItem('ex2');    
         this.$router.push({
             path: `/`
         });

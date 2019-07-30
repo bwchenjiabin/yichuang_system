@@ -25,7 +25,7 @@
             <el-upload
             class="avatar-uploader"
             action="http://yckt.yichuangketang.com:8081/section/insertImg"
-            :data="{owner: this.Id}" 
+            :data="{accountId: this.Id}" 
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
@@ -233,8 +233,12 @@ export default {
       this.$refs.upload.submit();
     },
     handleAvatarSuccess(res) {
-      this.imageUrl = res;
-      console.log(this.imageUrl)
+      this.imageUrl = res.data;
+      if (res.code == "0000") {
+      this.$message.success(res.msg);
+      }else{
+      this.$message.error(res.msg)
+      }
     },
     //弹窗
     Popup() {

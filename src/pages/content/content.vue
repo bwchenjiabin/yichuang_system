@@ -153,18 +153,19 @@
                 tooltip-effect="dark"
                 style="width: 100%"
                 @sort-change ="sortchange1"
+                :header-cell-style="{background:'#f5f5f5',color:'#000'}"
                 @selection-change="changeFun1"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="名称" >
+               <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
                       <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
                     </i>
-                    <span class="name">{{scope.row.lessonName}}</span>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column prop="lessonName" label="课程名称"></el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" sortable="custom"></el-table-column>
                 <el-table-column prop="browseNumber" label="访客数" sortable="custom"></el-table-column>
                  <el-table-column prop="tradeNumber" label="销量" sortable="custom">
@@ -251,19 +252,20 @@
                 :data="tableData2"
                 tooltip-effect="dark"
                 style="width: 100%"
+                :header-cell-style="{background:'#f5f5f5',color:'#000'}"
                 @sort-change ="sortchange2"
                 @selection-change="changeFun2"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="名称" >
+                <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
                       <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
                     </i>
-                    <span class="name">{{scope.row.lessonName}}</span>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column prop="lessonName" label="课程名称"></el-table-column>
                 <el-table-column prop="upperoffTime" label="上架时间" sortable="custom"></el-table-column>
                 <el-table-column prop="browseNumber" label="访客数" sortable="custom"></el-table-column>
                  <el-table-column prop="tradeNumber" label="销量" sortable="custom">
@@ -570,6 +572,7 @@ export default {
           return;        
       }
    dellesson(this.checkBoxData.join(",")).then(res => {
+        console.log(this.checkBoxData)
         this.$message.success(res.data)
         this.Delete = false;
         this.getImgText();
@@ -708,6 +711,7 @@ export default {
     //图文获取多选值
       changeFun(val) {
       this.checkBoxData = val.map(item => item.lessonid);
+      console.log(this.checkBoxData);
     },
     //音频获取多选值
       changeFun1(val) {

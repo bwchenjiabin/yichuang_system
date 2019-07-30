@@ -34,10 +34,15 @@ export default {
   methods: {
         getdata() {
         login(this.input, this.input1).then(res => {
+          // console.log(res);
           localStorage.setItem('ex2',res.data.date.accountid)
           localStorage.setItem('phone',res.data.date.accountTitle)
-          localStorage.setItem('portrait',res.data.date.Codepath)
-          console.log(res.data.date)
+          localStorage.setItem('portrait',res.data.date.Codepath)  
+          localStorage.setItem('accountType',res.data.date.accountType)
+          localStorage.setItem('expiretime',res.data.date.expiretime)
+          localStorage.setItem('isExpire',res.data.date.isExpire)
+
+          console.log(res)
             if (res.data.status == "success") {
               
                 this.$message.success('登录成功')
@@ -45,7 +50,7 @@ export default {
                     path: `/Home`
                 });
             }else{
-                this.$message.error('登录失败')
+                this.$message.error(res.data.date.errMsg)
             }
       })
     },

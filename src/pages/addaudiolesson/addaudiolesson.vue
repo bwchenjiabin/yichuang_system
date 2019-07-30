@@ -186,8 +186,8 @@ export default {
       editmodifys:false,  //修改章弹窗
       delsectionID: "", //删除jieid
       delchapterID: "", //删除章id
-      imageUrl: "http://192.168.0.203:8081/section/insertAudioOrVedio", // 上传地址
-      imageUrl1: "http://192.168.0.203:8081/section/insertAudioOrVedio", //修改地址
+      imageUrl: "http://192.168.0.103:8081/section/insertAudioOrVedio", // 上传地址
+      imageUrl1: "http://192.168.0.103:8081/section/insertAudioOrVedio", //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID
       chapterId: "", //章ID
@@ -306,9 +306,20 @@ export default {
     //文件上传成功
     handleAvatarSuccess(res, file) {
       this.audiourl = res.data;
+      if (res.code == "0000") {
+      this.$message.success(res.msg);
+      }else{
+      this.$message.error(res.msg)
+      }
     },
     handleAvatarSuccesss(res, file) {
       this.audiourl1 = res.data;
+      if (res.code == "0000") {
+      this.$message.success(res.msg);
+      }else{
+      this.$message.error(res.msg)
+      }
+
     },
 
     //测试
@@ -383,6 +394,7 @@ export default {
                 audioElement.addEventListener("loadedmetadata", (_event) => {
                     this.audioDuration = parseInt(audioElement.duration);
                     var minute = parseInt(this.audioDuration / 60);
+                    var times = parseInt(this.audioDuration / 3600);
                     var sec = (this.audioDuration % 60) + "";
                     var isM0 = ":";
                     if (minute == 0) {
@@ -390,10 +402,15 @@ export default {
                     } else if (minute < 10) {
                     minute = "0" + minute;
                     }
+                     if (times == 0) {
+                    times = "00";
+                    } else if (times < 10) {
+                    times = "0" + times;
+                    }
                     if (sec.length == 1) {
                     sec = "0" + sec;
                     }
-                    this.time = minute + isM0 + sec
+                    this.time = times + isM0 + minute + isM0 + sec
                     // console.log(this.time);
                 });
             },

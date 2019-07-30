@@ -36,7 +36,7 @@
            <el-upload
             class="avatar-uploader"
             action="http://yckt.yichuangketang.com:8081/section/insertImg"
-            :data="{owner: this.userid}"
+            :data="{accountId: this.userid}"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
@@ -236,9 +236,10 @@ export default {
     getdata() {
       updataId(this.Id).then(res => {
         this.input = res.data.name;
-        // this.imageUrl = res.data.img;
+        this.imageUrl = res.data.img;
         this.number = res.data.type;
         this.currentRow = res.data.lessonid;
+        console.log(res);
       });
     },
     changes(val){

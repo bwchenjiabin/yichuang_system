@@ -17,7 +17,7 @@
             :data="tableData"
             stripe
             style="width: 100%"
-            :header-cell-style="{background:'#eef1f6',color:'#000'}"
+            :header-cell-style="{background:'#f5f5f5',color:'#000'}"
           >
             <el-table-column prop="businessNanme" label="用户昵称" ></el-table-column>
             <el-table-column prop="feedbackHead" label="反馈标题" ></el-table-column>

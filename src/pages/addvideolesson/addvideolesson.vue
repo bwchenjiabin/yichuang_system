@@ -182,8 +182,8 @@ export default {
       videoname:'',
       delsectionID: "", //删除jieid
       delchapterID:'',  //删除章id
-      imageUrl: "http://192.168.0.203:8081/section/insertAudioOrVedio", // 上传地址
-      imageUrl1: "http://192.168.0.203:8081/section/insertAudioOrVedio", //修改地址
+      imageUrl: "http://192.168.0.103:8081/section/insertAudioOrVedio", // 上传地址
+      imageUrl1: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID
       chapterId: "", //章ID
@@ -228,7 +228,7 @@ export default {
         this.delsectionID = val
         this.Deletej = true;
         },
-                handleClicks(){
+        handleClicksj(){
           delsection(this.delsectionID).then(res => {
             this.$message.success(res.data)
             this.Deletej = false
@@ -275,9 +275,19 @@ export default {
     //文件上传成功
     handleAvatarSuccess(res, file) {
       this.audiourl = res.data;
+      if (res.code == "0000") {
+      this.$message.success(res.msg);
+      }else{
+      this.$message.error(res.msg)
+      }
     },
     handleAvatarSuccesss(res, file) {
       this.audiourl1 = res.data;
+      if (res.code == "0000") {
+      this.$message.success(res.msg);
+      }else{
+      this.$message.error(res.msg)
+      }
     },
     //测试
     getdata() {
@@ -375,6 +385,7 @@ export default {
                 audioElement.addEventListener("loadedmetadata", (_event) => {
                     this.audioDuration = parseInt(audioElement.duration);
                     var minute = parseInt(this.audioDuration / 60);
+                    var times = parseInt(this.audioDuration / 3600);
                     var sec = (this.audioDuration % 60) + "";
                     var isM0 = ":";
                     if (minute == 0) {
@@ -385,7 +396,7 @@ export default {
                     if (sec.length == 1) {
                     sec = "0" + sec;
                     }
-                    this.time1 = minute + isM0 + sec
+                    this.time1 = times + isM0 + minute + isM0 + sec
                     // console.log(this.time);
                 });
             },

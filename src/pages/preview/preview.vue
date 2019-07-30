@@ -25,7 +25,7 @@
                             <br>
                             <div style="margin-left:30px;">店铺内存(剩余)：</div>
                             <el-progress type="dashboard" :percentage="aa" :color="colors" style="margin-left:150px;"></el-progress>
-                            <div style="margin-left:30px;">已用{{percentage}}MB</div><br><div style="margin-left:30px;">剩余{{percentages}}MB</div>                            
+                            <div style="margin-left:30px;">已用{{percentage}}GB</div><br><div style="margin-left:30px;">剩余{{percentages}}GB</div>                            
                         </el-main>
                     </el-container>
             </el-container>
@@ -48,11 +48,11 @@ import {preview} from 'api/userAjax';
                 num:0,
                 aa:0,
                 colors: [
-                {color: '#f56c6c', percentage: 20},
-                {color: '#e6a23c', percentage: 40},
-                {color: '#5cb87a', percentage: 60},
-                {color: '#1989fa', percentage: 80},
-                {color: '#6f7ad3', percentage: 100}
+                {color: '#c62f2f', percentage: 20},
+                {color: '#ff4949', percentage: 40},
+                {color: '#e6a23c', percentage: 60},
+                {color: '#e6a23c', percentage: 80},
+                {color: '#67c23a', percentage: 100}
                     ]
                 }
             },
@@ -75,18 +75,21 @@ import {preview} from 'api/userAjax';
             this.ewm = res.data.codepath          
               Number(this.percentages)
             var ee = res.data.totalFileSize
-            this.percentage = ee.toFixed(2)
+            ee.toFixed(2)
+            var eee = ee/1024
+            this.percentage = eee.toFixed(2)
             
 
             this.Memory = res.data.availableSize
-            this.baifenbi = this.percentage/this.Memory*100
+            this.baifenbi = ee/this.Memory*100
             var num =this.baifenbi;
             this.num = num.toFixed(2);
             Number(this.num)
             var cc = 100-this.num
             this.aa = cc.toFixed(2);
-            var dd = this.Memory-this.percentage
-            this.percentages = dd.toFixed(2)
+            var dd = this.Memory-ee
+            var ff = dd/1024
+            this.percentages = ff.toFixed(2)
       })
     },
         },
