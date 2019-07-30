@@ -44,28 +44,7 @@ import Header from "@/components/Header/Header.vue";
 export default {
   data() {
     return {
-        tableData: [{
-            date: '壹创币',
-            name: '200',
-            address: '1',
-            numbers:'200'
-          }, {
-            date: '壹创币1',
-            name: '100',
-            address: '2',
-            numbers:'230'
-          }, {
-            date: '壹创币2',
-            name: '150',
-            address: '2',
-            numbers:'400'
-          }, {
-            date: '壹创币3',
-            name: '300',
-            address: '12',
-            numbers:'410'
-          }],
-          align:true 
+        align:true 
     };
   },
   created() {},

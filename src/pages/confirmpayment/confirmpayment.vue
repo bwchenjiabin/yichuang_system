@@ -13,7 +13,7 @@
             <span class="course" style="cursor: pointer;">我的钱包</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <router-link to="/confirmorder/50"><span class="imgText">确认订单</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
+          <router-link to="/confirmorder"><span class="imgText">确认订单</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
           <br />
           <br />
           <br>
@@ -60,7 +60,7 @@ export default {
   },
   created() {
     this.countTime();
-    // this.aa();
+    // this.orderStatus();
   },
   methods: {
 countTime: function () {
@@ -72,7 +72,6 @@ countTime: function () {
                 var end = endDate.getTime();
                 //时间差
                 var leftTime = end - now;
-                //定义变量 d,h,m,s保存倒计时的时间
                 if (leftTime >= 0) {
                     this.d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                     this.h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
@@ -83,9 +82,8 @@ countTime: function () {
                 //递归每秒调用countTime方法，显示动态时间效果
                 setTimeout(this.countTime, 1000);
             },
-
             //  定时查询订单状态
-            // aa:function(){
+            // orderStatus:function(){
             //   console.log("123")
             //   setTimeout(this.aa, 2000);
             // }

@@ -569,6 +569,31 @@ const delsource = (accountFileIds) => {
   })
 }     
 
+
+// 立即购买    
+const insertOrder = (accountId,count) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/wechatpay/insertOrder',{accountId,count}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}  
+
+//确认购买
+const pay = (orderNumber) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/wechatpay/pay',{orderNumber}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}  
+
+
+
 export {classlesson}
 export {login}
 export {tuichu}
@@ -622,3 +647,5 @@ export {sortshow}
 export {fileupload}
 export {source}
 export {delsource}
+export {insertOrder}
+export {pay}

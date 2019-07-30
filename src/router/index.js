@@ -200,7 +200,7 @@ export default new Router({
       }     
     },    
     {
-      path:'/confirmorder/:money',
+      path:'/confirmorder',
       component:resolve => require(['@/pages/confirmorder/confirmorder.vue'], resolve),   //  素材管理页面       
       meta:{
         requireAuth:true,

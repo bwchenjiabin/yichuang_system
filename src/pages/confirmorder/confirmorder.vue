@@ -73,7 +73,9 @@
         <span class="footerone">合计</span>
         <span style="float:right;margin-right:500px;" class="footertwo">￥{{Id}}.00</span>
     </div><br><br>
-     <router-link to="/confirmpayment"><el-button type="primary">立即付款</el-button></router-link>
+     <!-- <router-link to="/confirmpayment"> -->
+     <el-button type="primary" @click="openDetails">立即付款</el-button>
+     <!-- </router-link> -->
         </el-main>
       </el-container>
     </el-container>
@@ -82,6 +84,7 @@
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
+import {pay} from 'api/userAjax';
 export default {
   data() {
     return {
@@ -94,11 +97,14 @@ export default {
           radio1:'微信',
           moneytype:'',
           align:true,
-          Id:''
+          Id:'',
+          order:'',
+          url:'',
     };
   },
   created() {
     this.getParams();
+    // console.log(this.order);
   },
   methods: {
         getmoney(val){
@@ -107,10 +113,25 @@ export default {
     },
         //获取传值
     getParams() {
-      var routerParams = this.$route.params.money;
+      var routerParams = this.$route.query.money;
+      var routerParamsorder = this.$route.query.order;
       this.Id = routerParams;
+      this.order = routerParamsorder
       this.tableData[0].name = this.Id
     },
+
+    openDetails(){
+      pay(this.order).then(res => {
+            console.log(res);
+            this.$message.success(res.data.data.msg)
+            this.url = res.data.data.codeUrl
+
+          this.$router.push({
+        path: `/confirmpayment`,
+        query:{ codeUrl:this.url}
+      });
+      })
+    }, 
   },
   components: {
     sidebar,

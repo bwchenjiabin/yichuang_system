@@ -121,27 +121,38 @@
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
+import {insertOrder} from 'api/userAjax';
 export default {
   data() {
     return {
       money:'',
       radio1:'50',
-      align:true
+      align:true,
+      order:'',
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
     getmoney(val){
         this.radio1 = val;
-        // console.log(this.money);
     },
     openDetails(){
+      insertOrder(localStorage.getItem('ex2'),this.radio1).then(res => {
+            this.order = res.data.data;
       let money = this.radio1
+      let order = this.order
+        console.log(this.order);
       this.$router.push({
-        path: `/confirmorder/${money}`
+        path: `/confirmorder`,
+        query:{ money:money,order:order }
       });
-    }
-  },
+      })
+    },  
+    },
+  //   insertOrders() {
+
+  // },
   components: {
     sidebar,
     Header
