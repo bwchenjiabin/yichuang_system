@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -214,7 +215,7 @@ export default {
       currentPage2: 1, //视频当前页
       value: true, // 
       valnum:1,
-      pagesize: 8,
+      pagesize: 5,
       twsize: "",
       ypsize: "",
       spsize: "",
@@ -251,6 +252,15 @@ export default {
       console.log(this.valnum)
     },
 
+        //单条删除
+    deleteRow() {
+      this.delVisible = false;      
+        delrotary(this.userid).then(res => {
+          this.$message.success('删除成功')
+            this.getdata();
+      })
+    },
+
       submitUpload() {
         this.$refs.upload.submit();
       },
@@ -262,22 +272,22 @@ export default {
     // 图文查询
     getImgText() {
       ImgText(localStorage.getItem("ex2"), "1", this.currentPage).then(res => {
-        this.tableData = res.data.lesson;
-        this.twsize = res.data.totalLesson;
+        this.tableData = res.data.data.data;
+        this.twsize = res.data.data.total
       });
     },
     // 音频查询
     getaudio() {
       audio(localStorage.getItem("ex2"), "2", this.currentPage1).then(res => {
-        this.tableData1 = res.data.lesson;
-        this.ypsize = res.data.totalLesson;
+         this.tableData1 = res.data.data.data;
+            this.ypsize = res.data.data.total
       });
     },
     // 视频查询
     getvideo() {
       video(localStorage.getItem("ex2"), "3", this.currentPage2).then(res => {
-        this.tableData2 = res.data.lesson;
-        this.spsize = res.data.totalLesson;
+        this.tableData2 = res.data.data.data;
+            this.spsize = res.data.data.total
       });
     },
     // 刷新页面

@@ -571,20 +571,19 @@ const delsource = (accountFileIds) => {
 
 
 // 立即购买    
-const insertOrder = (accountId,count) => {
+const insertOrder = (accountId,productId) => {
   return new Promise((resolve, reject) => {
-    ajax.post('/wechatpay/insertOrder',{accountId,count}).then(res => {
+    ajax.post('/wechatpay/insertOrder',{accountId,productId}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
     })
   })
 }  
-
 //确认购买
-const pay = (orderNumber) => {
+const pay = (orderNumber,payType) => {
   return new Promise((resolve, reject) => {
-    ajax.post('/wechatpay/pay',{orderNumber}).then(res => {
+    ajax.post('/wechatpay/pay',{orderNumber,payType}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -593,7 +592,6 @@ const pay = (orderNumber) => {
 }  
 
 //查询订单状态   
-
 const orderQuery = (orderNumber) => {
   return new Promise((resolve, reject) => {
     ajax.post('/wechatpay/orderQuery',{orderNumber}).then(res => {
@@ -603,6 +601,257 @@ const orderQuery = (orderNumber) => {
     })
   })
 }  
+
+//根据商品类型id查商品
+const selectByType = (type) => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/product/selectByType',{type}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}  
+// 服务订购
+const service = (buyerId,pageNum,payType,orderStatus,orderType,orderNumber,payTime,payEndTime) => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/order/selectBySearchPay',{buyerId,pageNum,payType,orderStatus,orderType,orderNumber,payTime,payEndTime}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 查询订单详情
+const SearchPay = (id) => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/order/selectById',{id}).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+// 增加导航   
+const insert = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acnav/insert',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+// 查询所有导航
+const insertNav = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acnav/selectByAccountId',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 查询单个导航
+const oneinsertNav = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acnav/selectById',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+// 编辑导航
+const editNav = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acnav/update',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 删除导航
+const DelNav = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acnav/deleteById',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 排序导航
+const sortNav = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acnav/updateWeight',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+// 导航选择
+const Choicenav = data => {
+  return new Promise((resolve, reject) => {
+    ajax.post('/account/update',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+// 广告查询
+const selectacadvert = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acadvert/select',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 新增广告
+const updateacadvert = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acadvert/update',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 会员查询
+const selectvip = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acmember/selectByAccountAndLength',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 会员修改
+const editvip = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acmember/update',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 添加直播
+const addlive = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/lilive/insert',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 直播列表
+const selectlive = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/lilive/select',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+// 删除直播
+const dellive = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/lilive/deleteById',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+
+// 直播修改展示
+const editlive = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/lilive/selectById',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 直播修改
+const updatalive = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/lilive/update',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+
+// 添加讲师接口
+const addlecturer = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/liLivemember/insert',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 删除讲师接口
+const dellecturer = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/liLivemember/delete',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+// 二维码邀请讲师接口
+const invitelecturer = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/lilive/shareCode',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+
 
 
 
@@ -662,3 +911,25 @@ export {delsource}
 export {insertOrder}
 export {pay}
 export {orderQuery}
+export {selectByType}
+export {service}
+export {SearchPay}
+export {insert}
+export {insertNav}
+export {oneinsertNav}
+export {editNav}
+export {DelNav}
+export {sortNav}
+export {Choicenav}
+export {selectacadvert}
+export {updateacadvert}
+export {selectvip}
+export {editvip}
+export {addlive}
+export {selectlive}
+export {dellive}
+export {editlive}
+export {updatalive}
+export {addlecturer}
+export {dellecturer}
+export {invitelecturer}

@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -27,6 +28,7 @@
           <el-table
             ref="multipleTable"
             :data="list"
+            v-loading="loading"
             tooltip-effect="dark"
             style="width: 100%"
             :header-cell-style="{background:'#f5f5f5',color:'#000'}"
@@ -35,7 +37,8 @@
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="name" label="缩略图" width="250">
                <template slot-scope="scope">
-                <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt style="width: 50px;height: 50px">
+                 <i class="img-box"><img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img"  alt=""></i>
+                <!-- <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt style="width: 50px;height: 50px"> -->
               </template>
             </el-table-column>
             <el-table-column prop="name" label="名称" show-overflow-tooltip></el-table-column>
@@ -122,6 +125,7 @@ export default {
       ada: [],
       currentPage: 1,
       pagesize: 5,
+      loading:true,
       userList: [],
       number: [], //多选框的值
       userid: "", //单条删除的值
@@ -133,6 +137,7 @@ export default {
   },
   created() {
     this.getdata();
+    this.reload();
   },
   methods: {
     //切换新增页面
@@ -199,9 +204,14 @@ export default {
     // 展示
     getdata() {
         rotary(localStorage.getItem('ex2'),this.currentPage).then(res => {
+            this.loading = false;
             this.list = res.data.data.data;
             this.pageleng = res.data.data.total
       })
+    },
+    // 初始化回到顶部
+    reload() {
+     $('body,html').animate({scrollTop:0},200);
     },
     // 单条删除
     handleClick(row) {
@@ -381,4 +391,5 @@ h3 {
   background: rgba(251, 251, 251, 1);
   border: 1px solid rgba(238, 238, 238, 1);
 }
+ .img-box{width: 100px;height: 75px;;display: inline-block;}.img-box img{width: 100%;height: 100%;}
 </style>

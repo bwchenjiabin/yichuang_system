@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-       <el-header>
+       <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
           <Header></Header>
         </el-header>
       <el-container>

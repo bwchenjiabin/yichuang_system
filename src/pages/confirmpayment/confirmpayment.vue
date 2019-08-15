@@ -1,26 +1,41 @@
 <template>
   <div class="box">
-    <el-container>
-      <el-header>
+        <el-header
+      style="background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;"
+    >
+      <div class="titles">
+        <img src="../../../static/img/微信图片_20190610160537.png" alt />
+      </div>
+      <router-link to="/Home">
+      <div class="heade-right">
+        返回工作台
+      </div>
+      </router-link>
+    </el-header>
+    <el-container >
+      <!-- <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
+      </el-header> -->
+      
+      <!-- <el-container> -->
+        <!-- <el-aside width="200px">
           <sidebar></sidebar>
-        </el-aside>
+        </el-aside> -->
         <el-main>
-          <router-link to="/wallet">
+          <!-- <router-link to="/wallet">
             <span class="course" style="cursor: pointer;">我的钱包</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <span class="imgText">确认订单</span>
           &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
           <br />
-          <br />
+          <br /> -->
           <br>
           <br>
-           <el-steps :active="3" :align-center="align">
-          <el-step title="选择商品" description=""></el-step>
+           <el-steps :active="2" :align-center="align">
+          <!-- <el-step title="选择商品" description=""></el-step> -->
           <el-step title="确认订单信息" description=""></el-step>
           <el-step title="确认付款" description=""></el-step>
           <el-step title="购买成功" description=""></el-step>
@@ -39,10 +54,21 @@
             <h4 class="vx">微信支付</h4><br><br>
             <span class="moneys">￥{{money}}.00</span><br>
             <!-- <img src="../../../static/img/微信图片_20190611141523.jpg" alt=""> -->
-            <qrcode-vue :value="url" :size="size" level="H" style="padding-left: 213px;"></qrcode-vue>
+            <qrcode-vue :value="url" :size="size" level="H" style="padding-left: 213px;width: 150px;float: left;">
+            </qrcode-vue>
+            <div class="imgfoot">
+              <img src="../../../static/img/微信图片_20190731172529.png" alt="" style="float:left">
+              <span style="float:right">请使用微信扫一扫<br>
+              扫描二维码支付</span>
+            </div>
+            <div class="jc">
+              <img src="../../../static/img/图层 3_看图王.png" alt="" style="float:right">
+
+            </div>
          </div>
+
         </el-main>
-      </el-container>
+      <!-- </el-container> -->
     </el-container>
   </div>
 </template>
@@ -51,7 +77,6 @@ import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import QrcodeVue from 'qrcode.vue'
 import {orderQuery} from 'api/userAjax';
-import { setInterval, clearInterval, setTimeout } from 'timers';
 
 export default {
   data() {
@@ -80,11 +105,10 @@ export default {
   },
   mounted(){
      this.mytimer = setInterval(this.orderStatus, 5000);
-     console.log(this.mytimer)
     this.mytime = setInterval(this.countTime,1000);
   },
   methods: {
-            //获取传值
+      //获取传值
     getParams() {
       var routerParams = this.$route.query.codeUrl;
       var routerParamsmoney = this.$route.query.money;
@@ -100,8 +124,6 @@ export default {
                 var date = new Date();
                 var now = date.getTime();
                 //截止
-                // var endDate = new Date("2019-7-30 23:23:23");
-                // var end = endDate.getTime();
                 var end = this.times
                 var leftTime = end - now;
                 if (leftTime >= 0) {
@@ -116,18 +138,18 @@ export default {
             orderStatus(){
               orderQuery(this.order).then(res=>{
                   if (res.data == "SUCCESS") {
-                      clearInterval(this.mytimer)
+                    window.clearInterval(this.mytimer)
                       this.$message.success("购买成功")
                       this.$router.push({
                       path: `/payment`,
                       query:{order:this.order}
                     });
                   }else if (res.data == "CLOSED") {
-                    clearInterval(this.mytimer)
+                    window.clearInterval(this.mytimer)
                     this.$message.error("订单已关闭")
                   }
               })
-            }
+            },
   },
   components: {
     sidebar,
@@ -137,6 +159,14 @@ export default {
 };
 </script>
 <style scoped>
+.jc{
+    width: 270px;
+    height: 270px;
+    position: absolute;
+    top: 138px;
+    right: 150px;
+}
+.jc img{width: 100%;height: 100%;;}
 .course {
   font-size: 18px;
   font-family: PingFangSC-Medium;
@@ -153,7 +183,7 @@ export default {
   font-weight: 500;
   color: #FB6E39;
   padding-left: 235px;
-  margin-bottom: 50px
+  margin-bottom: 30px
 }
 .imgText{
     font-size:18px;
@@ -163,11 +193,7 @@ color:rgba(153,153,153,1);
 }
 .payment{
   padding-top: 100px;
-}
-.payment img{
-  width: 200px;
-  height: 200px;
-  padding-left: 190px;
+  position: relative;
 }
 .conts-title {
   display: inline;
@@ -381,5 +407,58 @@ width: auto;
 .Order {
   width: 80px;
   display: inline-block;
+}
+.el-main {
+  margin-top: 0;
+  padding-left: 50px;
+}
+.content {
+  width: 750px;
+  height: auto;
+  margin :auto;
+  padding-left: 100px;
+  padding: 10px;
+  border: 1px solid rgba(238, 238, 238, 1);
+}
+.el-container {
+  background: #fff;
+  width: 1000px;
+  height: 850px;
+  margin: 80px auto;
+}
+.titles {
+  color: rgba(16, 16, 16, 1);
+  font-size: 28px;
+  text-align: left;
+  font-family: 方正兰亭黑-标准;
+  width: 20%;
+  float: left;
+  padding-left: 200px;
+}
+.titles img {
+  width: 130px;
+  height: 30px;
+  margin-top: 15px;
+}
+.heade-right{
+  float: right;
+  margin-right:300px; 
+  color: #409EFF;
+  font-size: 18px;
+  cursor: pointer;
+  height: 60px;
+  line-height: 60px;
+}
+.imgfoot{
+      width: 150px;
+    height: auto;
+    display: inline-block;
+    position: absolute;
+    bottom: -205px;
+    left: 215px;
+    font-size:13px;
+font-family:PingFangSC-Regular;
+font-weight:400;
+color:rgba(102,102,102,1);
 }
 </style>

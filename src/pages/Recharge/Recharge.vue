@@ -1,58 +1,44 @@
 <template>
   <div class="box">
+        <el-header
+      style="background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
+      <div class="titles">
+        <img src="../../../static/img/微信图片_20190610160537.png" alt />
+      </div>
+      <router-link to="/Home">
+      <div class="heade-right">
+        返回工作台
+      </div>
+      </router-link>
+    </el-header>
     <el-container>
-      <el-header>
-        <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
-          <sidebar></sidebar>
-        </el-aside>
         <el-main>
-          <router-link to="/wallet">
-            <span class="course" style="cursor: pointer;">我的钱包</span>
-          </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <span class="imgText">充值</span>
-          <br />
-          <br />
-          <br><br>
-           <el-steps :active="1" :align-center="align">
-          <el-step title="选择商品" description=""></el-step>
-          <el-step title="确认订单信息" description=""></el-step>
-          <el-step title="确认付款" description=""></el-step>
-          <el-step title="购买成功" description=""></el-step>
-       </el-steps>
           <div class="headers">
             <i>
               <img src="../../../static/img/矢量智能对象_看图王.png" alt />
             </i>
             <div class="cont">
-              <h4>我的壹创币</h4>
+              <h4>{{name}}</h4>
               <br />
-              <span>可用于存储空间、下载流量的结算，不支持提现</span>
+              <span style="width:400px;display:block">可用于存储空间、下载流量的结算，不支持提现</span>
             </div>
           </div>
           <div class="footer">
             <span class="Explain">
               商品价格：
-              <p class="moneys">￥{{radio1}}.00</p>
+              <p class="moneys">￥{{radioName}}.00</p>
             </span>
             <br />
             <br />
             <span class="Explain">
               选择：
-              <el-radio-group v-model="radio1" @change="getmoney" border>
-                <el-radio-button  label="50" style="margin-left:30px;" >50个</el-radio-button>
-                <el-radio-button  label="100">100个</el-radio-button>
-                <el-radio-button  label="200">200个</el-radio-button>
-                <el-radio-button  label="500">500个</el-radio-button>
-                <el-radio-button  label="1000">1000个</el-radio-button>
+              <el-radio-group v-model="radio1" @change="getmoney(item.id,item.money)" border v-for="(item,index) in commodity" :key="index">
+                <el-radio-button  :label="item.id" >{{item.num}}{{Company}}</el-radio-button>
               </el-radio-group>
             </span>
           </div>
-          <!-- <router-link to="/confirmorder"> -->
-          <el-button type="primary" style="margin-left:176px;margin-bottom:50px" @click="openDetails()">立即购买</el-button>
-          <!-- </router-link> -->
+          <el-button type="primary" style="margin-left:148px;margin-bottom:50px" @click="openDetails()">立即购买</el-button>
           <div class="title">
             <i class="icon"></i>
             <span>商品详情</span>
@@ -114,7 +100,7 @@
           </ul>
           </div>
         </el-main>
-      </el-container>
+      <!-- </el-container> -->
     </el-container>
   </div>
 </template>
@@ -122,29 +108,42 @@
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import {insertOrder} from 'api/userAjax';
+import {selectByType} from 'api/userAjax';
 export default {
   data() {
     return {
       money:'',
-      radio1:'50',
+      radio1:'',
+      radioName:'',
       align:true,
       order:'',
+      Id:'',
+      commodity:[],
+      name:'',
+      productId:'',
+      Company:''
     };
   },
   created() {
+    this.getParams();
+    this.getdata();
   },
   methods: {
-    getmoney(val){
-        this.radio1 = val;
+    getmoney(id,val){
+      this.productId = id;
+      this.radioName = val;
+    },
+          //获取传值
+    getParams() {
+      var routerParams = this.$route.query.id;
+      this.Id = routerParams;
     },
     openDetails(){
-      insertOrder(localStorage.getItem('ex2'),this.radio1).then(res => {
-            this.order = res.data.data;
-      let money = this.radio1
+      insertOrder(localStorage.getItem('ex2'),this.productId).then(res => {
+      this.order = res.data.data;
+      let money = this.radioName
       let order = this.order
-      if (res.data.code == '0000') {
-        this.$message.success(res.data.msg)   
-      }else{
+      if (res.data.code != '0000') {
         this.$message.error(res.data.msg)
         return;
       }
@@ -152,6 +151,20 @@ export default {
         path: `/confirmorder`,
         query:{ money:money,order:order }
       });
+      })
+    },  
+        getdata(){
+      selectByType(this.Id).then(res => {
+         this.commodity = res.data.data;
+         this.name = res.data.data[0].name;
+         this.radio1 = res.data.data[0].id;
+         this.radioName = res.data.data[0].money
+         this.productId = res.data.data[0].id
+         if (this.Id == "4") {
+          this.Company = "个"          
+         }else if (this.Id == "5") {
+           this.Company = "年"
+         }
       })
     },  
     },
@@ -231,7 +244,7 @@ color:rgba(153,153,153,1);
   height: 50px;
 }
 .headers {
-  margin-top: 60px;
+  /* margin-top: 60px; */
   padding: 20px 500px 20px 20px;
   display: flex;
   align-items: center;
@@ -322,5 +335,46 @@ color:rgba(153,153,153,1);
 .Order {
   width: 80px;
   display: inline-block;
+}
+.el-main {
+  margin-top: 0;
+  padding-left: 50px;
+}
+.content {
+  width: 750px;
+  height: auto;
+  margin :auto;
+  padding-left: 100px;
+  padding: 10px;
+  border: 1px solid rgba(238, 238, 238, 1);
+}
+.el-container {
+  background: #fff;
+  width: 1000px;
+  /* height: 800px; */
+  margin: 80px auto;
+}
+.titles {
+  color: rgba(16, 16, 16, 1);
+  font-size: 28px;
+  text-align: left;
+  font-family: 方正兰亭黑-标准;
+  width: 20%;
+  float: left;
+  padding-left: 200px;
+}
+.titles img {
+  width: 130px;
+  height: 30px;
+  margin-top: 15px;
+}
+.heade-right{
+  float: right;
+  margin-right:300px; 
+  color: #409EFF;
+  font-size: 18px;
+  cursor: pointer;
+  height: 60px;
+  line-height: 60px;
 }
 </style>

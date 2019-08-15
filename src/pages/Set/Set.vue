@@ -1,7 +1,8 @@
 <template>
         <div class="box">
                 <el-container>
-                    <el-header>
+                    <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
                         <Header></Header>
                     </el-header>
                     <el-container>
@@ -28,11 +29,16 @@ import Header from '@/components/Header/Header.vue'
                 }
                 },
         created () {
+            this.reload();
       },
         methods:{
             handleClick(tab, event) {
         // console.log(tab, event);
       },
+          // 初始化回到顶部
+      reload() {
+     $('body,html').animate({scrollTop:0},200);
+    },
       handleClicks(row) {
         console.log(row);
       },

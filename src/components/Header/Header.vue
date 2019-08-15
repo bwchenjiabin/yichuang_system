@@ -53,7 +53,8 @@ import {tuichu} from 'api/userAjax';
     }
     </script>
     <style scoped>
- .header{text-align: left;padding-left: 80px;}
+ .header{text-align: left;padding-left: 80px;    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;}
  .title{color: rgba(16, 16, 16, 1);font-size: 28px;text-align: left;font-family: 方正兰亭黑-标准;width: 20%;float: left;}
  .title img{width: 130px;height: 30px;margin-top: 15px;}
  .info{float: right;margin-right: 100px;}

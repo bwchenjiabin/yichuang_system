@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header  style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -182,7 +183,7 @@ export default {
       videoname:'',
       delsectionID: "", //删除jieid
       delchapterID:'',  //删除章id
-      imageUrl: "http://192.168.0.103:8081/section/insertAudioOrVedio", // 上传地址
+      imageUrl: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", // 上传地址
       imageUrl1: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID

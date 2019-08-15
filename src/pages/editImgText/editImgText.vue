@@ -2,7 +2,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -11,11 +12,14 @@
         </el-aside>
         <el-main>
           <div>
-            <router-link to="/content">
+            <!-- <router-link to="/content">
               <span class="course">我的课程</span>&nbsp;&nbsp;&nbsp;
             </router-link>/&nbsp;&nbsp;&nbsp;
-            <span class="imgText">编辑图文</span>
-            <br />
+            <span class="imgText">编辑图文</span> -->
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/content' }">我的课程</el-breadcrumb-item>
+              <el-breadcrumb-item>编辑图文</el-breadcrumb-item>
+            </el-breadcrumb>
             <br />
             <div class="title">
               <i class="icon"></i>
@@ -40,7 +44,7 @@
             :data="{accountId: this.Ids}"   
             :on-success="handleAvatarSuccess"
             accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
-            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com'+this.imageUrl" class="avatar">
+            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
               <br />
@@ -183,8 +187,6 @@ export default {
     },
     assignment() {
       $(".sort").html(this.aaa);
-      // console.log(this.aaa);
-
     },
     //修改展示
     getdataedit() {
@@ -198,7 +200,6 @@ export default {
         this.input3 = res.data.lessonPriceNow;
         this.imageUrl = res.data.img;
         $(".sort").html(res.data.lessonKind);
-        // console.log(res);
         if (this.radios == "0") {
           this.disabled = true;
           this.input3 = "";

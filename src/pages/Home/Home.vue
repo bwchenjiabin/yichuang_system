@@ -1,7 +1,8 @@
 <template>
         <div class="box">
                 <el-container>
-                    <el-header>
+                    <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
                         <Header></Header>
                     </el-header>
                     <el-container>
@@ -12,18 +13,30 @@
                             <div class="title">
                                 <h3>{{this.phone}}</h3>
                                          <el-popover
-                                            placement="top-start"
-                                            width="200"
+                                            placement="bottom-start"
+                                            width="250"
                                             trigger="hover"
-                                            v-model="visible">
-                                              <p>{{this.title}}已到期，店铺已打烊</p>
-                                            <div style="text-align: right; margin: 0">
-                                                <el-button type="primary" size="mini" @click="visible = false">续费</el-button>
+                                            transition="el-zoom-in-bottom"
+                                            v-model="visible"
+                                            v-if="isExpire === true">
+                                              <p style="display: inline;">{{this.title}}已到期，店铺已打烊</p>
+                                            <div style="text-align: right; margin: 0;width: 55px;display: inline-block;float: right;">
+                                                <el-button type="primary" size="mini" @click="recharge">续费</el-button>
                                             </div>
-                                            <el-tag type="danger" slot="reference" v-if="isExpire == false">已到期</el-tag>
+                                            <el-tag slot="reference"  type="danger" style="cursor:pointer" >已到期</el-tag>                                            
                                         </el-popover>
-
-                                    <el-tag style="cursor:pointer;">{{title}}</el-tag>
+                                       <el-popover
+                                            placement="bottom-start"
+                                            width="380"
+                                            trigger="hover"
+                                            transition="el-zoom-in-top"
+                                            v-model="visibles">
+                                              <p style="display: inline;" >已订购{{this.title}}，有效期至&nbsp;&nbsp;:&nbsp;&nbsp;{{endtime}} </p>
+                                            <div style="text-align: right; margin: 0;width: 55px;display: inline-block;float: right;">
+                                                <el-button type="primary" size="mini" @click="recharge">续费</el-button>
+                                            </div>
+                                            <el-tag slot="reference" style="cursor:pointer">{{title}}</el-tag>
+                                        </el-popover>
                             </div>
                             <ul class="cont">
                                 <li>
@@ -49,6 +62,7 @@
                                 </li>
                             </ul>
                         </el-main>
+                        <router-view></router-view>
                     </el-container>
                 </el-container>
         </div>    
@@ -57,29 +71,50 @@
 import sidebar from '@/components/sidebar/sidebar.vue'
 import Header from '@/components/Header/Header.vue'
 import {Home} from 'api/userAjax';
+import {preview} from 'api/userAjax';
+
     export default {
         data(){
             return{
                 number:[],
                 phone:'',
                 title:'',
-                isExpire:'',
+                isExpire:false,
                 visible: false,
+                visibles: false,
+                endtime:'',
+                Id:5,
             }
         },
         created () {
+            this.reload();
             this.getdata();
+            this.getdatas();
             this.phone = localStorage.getItem('phone')
             this.title = localStorage.getItem('accountType');
-            this.isExpire = localStorage.getItem('isExpire');
       },
         methods:{
         getdata() {
         Home(localStorage.getItem('ex2')).then(res => {
             this.number = res.data
-        //    console.error("1123")
       })
     },
+            // 展示
+        getdatas () {
+        preview(localStorage.getItem('ex2')).then(res => {
+          this.endtime = res.data.expiretime
+          this.isExpire = res.data.expire
+            })
+        },
+            reload() {
+     $('body,html').animate({scrollTop:0},200);
+    },
+            recharge(){
+        this.$router.push({
+        path: `/Recharge`,
+        query:{id:this.Id}
+      });
+    }
         },
         components:{
             sidebar,

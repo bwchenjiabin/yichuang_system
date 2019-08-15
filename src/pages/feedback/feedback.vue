@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -15,6 +16,7 @@
 
           <el-table
             :data="tableData"
+            v-loading="loading"
             stripe
             style="width: 100%"
             :header-cell-style="{background:'#f5f5f5',color:'#000'}"
@@ -47,12 +49,14 @@ export default {
   data() {
     return {
       tableData: [],
+      loading:true,
       feedbacksize: 0,
       currentPage: 1, //图文当前页
       pagesize: 5,
     };
   },
   created() {
+    this.reload();
     this.getdata();
   },
   methods: {
@@ -67,8 +71,13 @@ export default {
       feedback(localStorage.getItem("ex2"),this.currentPage).then(res => {
         this.tableData = res.data.data.data;
         this.feedbacksize = res.data.data.total
+        this.loading = false;
       });
-    }
+    },
+        // 初始化回到顶部
+      reload() {
+     $('body,html').animate({scrollTop:0},200);
+    },
   },
   components: {
     sidebar,

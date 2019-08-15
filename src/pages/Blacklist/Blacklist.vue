@@ -1,7 +1,8 @@
 <template>
     <div class="box">
             <el-container>
-                <el-header>
+                <el-header  style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
                     <Header></Header>
                 </el-header>
                 <el-container>
@@ -13,6 +14,7 @@
                             
                             <el-tab-pane label="黑名单" name="second">
                                 <el-table
+                                v-loading="loading"
                                 ref="multipleTable"
                                 :data="list"
                                 tooltip-effect="dark"
@@ -147,9 +149,11 @@ export default {
       pagesize: 5,
       delVisible:false,
       delVisiblee:false,
+      loading:true,
             }
         },
     created () {
+      this.reload();
       this.getdata();
   },
     methods:{
@@ -158,6 +162,7 @@ export default {
         blacklist(localStorage.getItem('ex2'),this.currentPage).then(res => {
          this.list = res.data.data.data
          this.blacksize = res.data.data.total
+         this.loading = false;
       })
     },
       // 单条删除
@@ -184,6 +189,10 @@ export default {
           this.getdata();
           this.$message.success('操作成功');    
       })  
+    },
+    // 初始化回到顶部
+      reload() {
+     $('body,html').animate({scrollTop:0},200);
     },
       // 多条删除
     getdatadel () {

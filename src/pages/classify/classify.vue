@@ -1,7 +1,8 @@
 <template>
         <div class="box">
                 <el-container>
-                    <el-header>
+                    <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
                         <Header></Header>
                     </el-header>
                     <el-container>
@@ -12,7 +13,7 @@
                         <el-main v-show="addclas">
                             <h4>内容分类</h4><br><br>
                             <el-button type="primary" style="float:right;margin-right:100px" @click="addclass">新增分类</el-button>
-                              <el-table  ref="test" :data="tableData" tooltip-effect="dark" style="width: 100%">
+                              <el-table  ref="test" :data="tableData" tooltip-effect="dark" style="width: 100%" v-loading="loading">
                                 <!-- <el-table-column type="selection" label="" width="55">
                                 </el-table-column> -->
                                 <el-table-column label=""  width="120" > 
@@ -49,9 +50,7 @@
                         <el-button @click="Delete = false">取 消</el-button>
 
                         <el-button type="primary" @click="handleClicks()" >确 定</el-button>
-
                     </span>
-
                   </el-dialog>
                   <!-- 修改弹窗 -->
                 <el-dialog title="分类修改" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left" :close-on-click-modal="false">                                
@@ -104,6 +103,7 @@ import {sortshow} from 'api/userAjax';
           Delprompt:false,    //删除提示
           Delete:false,    //删除提示
           tableData: [],
+          loading:true,
           userid:'',
           input:''  ,//修改分类名字3
           delVisible:false, // 内容分类弹窗修改
@@ -148,6 +148,7 @@ import {sortshow} from 'api/userAjax';
                 }
             },
         created () {
+          this.reload();
           this.getdata();
       },
         methods:{
@@ -196,6 +197,10 @@ import {sortshow} from 'api/userAjax';
       del(){
         this.Delprompt = true;
       },
+      // 初始化回到顶部
+      reload() {
+     $('body,html').animate({scrollTop:0},200);
+    },
       // 进入分类详情
     openDetails(id){
       this.editTwid = id;
@@ -207,6 +212,7 @@ import {sortshow} from 'api/userAjax';
       getdata () {
         classe(localStorage.getItem('ex2')).then(res => {
           this.tableData = res.data
+          this.loading = false;
       })
     },
     //单选值
@@ -244,7 +250,7 @@ import {sortshow} from 'api/userAjax';
  .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
  .title{width: auto;display: block}.title span{margin-left: 10px;}
  .name{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);margin-right: 15px;}
- .number{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);width: 350px;height: 80px;margin: 10px 20px 10px 20px;}
+ .number{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);width: 300px;height: 130px;margin: 10px 20px 10px 20px;}
  .number .imga{width: 100%;height: 100%;}
  .text{font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);display: inline;}
  .cont{margin-top: 10px;margin-left: 40px;color: rgba(153, 153, 153, 1);font-size: 14px;text-align: left;font-family: SourceHanSansSC-regular;width: 70%;float: left;}
@@ -253,7 +259,7 @@ import {sortshow} from 'api/userAjax';
  .tit{padding: 0 20px 25px 20px;position: absolute;top: 0}
  .del-dialog-cnt li{display: flex;align-items: center;justify-content: center;position: relative;font-size:20px;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(20,85,250,1);}
  .del-dialog-cnt li .imga:hover{border:1px solid rgba(20,85,250,1);}
- .good{width: 15px;height: 15px;position: absolute;top: 12px;right: 67px;display: none} 
+ .good{width: 15px;height: 15px;position: absolute;top: 11px;right: 92px;display: none} 
  .addclass{border:1px solid rgba(20,85,250,1)}
  .goods{display: block}
  /deep/ .el-dialog__header{

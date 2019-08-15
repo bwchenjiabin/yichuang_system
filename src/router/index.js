@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 
-
-
 export default new Router({
   routes: [
     {
@@ -15,7 +13,7 @@ export default new Router({
       component: resolve => require(['@/pages/Home/Home'], resolve),    //首页   店铺概况
       meta:{
         requireAuth:true,
-      }
+      },
     },
     {
       path:'/content',
@@ -187,40 +185,89 @@ export default new Router({
     },    
     {
       path:'/wallet',
-      component:resolve => require(['@/pages/wallet/wallet.vue'], resolve),   //  素材管理页面       
+      component:resolve => require(['@/pages/wallet/wallet.vue'], resolve),   //  我的钱包页面       
       meta:{
         requireAuth:true,
       }     
     },    
     {
       path:'/Recharge',
-      component:resolve => require(['@/pages/Recharge/Recharge.vue'], resolve),   //  素材管理页面     
+      component:resolve => require(['@/pages/Recharge/Recharge.vue'], resolve),   //  商品页面     
       meta:{
         requireAuth:true,
       }     
     },    
     {
       path:'/confirmorder',
-      component:resolve => require(['@/pages/confirmorder/confirmorder.vue'], resolve),   //  素材管理页面       
+      component:resolve => require(['@/pages/confirmorder/confirmorder.vue'], resolve),   //  确认订单信息页面       
       meta:{
         requireAuth:true,
       }     
     },    
     {
       path:'/confirmpayment',
-      component:resolve => require(['@/pages/confirmpayment/confirmpayment.vue'], resolve),   //  素材管理页面        
+      component:resolve => require(['@/pages/confirmpayment/confirmpayment.vue'], resolve),   //  确认付款页面        
       meta:{
         requireAuth:true,
       }     
     },    
     {
-      path:'/payment',
-      component:resolve => require(['@/pages/payment/payment.vue'], resolve),   //  素材管理页面        
-      meta:{
+      path:'/payment',   
+      component:resolve => require(['@/pages/payment/payment.vue'], resolve),   //  付款成功页面          
+      meta:{   
         requireAuth:true,
       }     
-    },    
-    
+    },  
+    {
+      path:'/ServiceOrdering',   
+      component:resolve => require(['@/pages/ServiceOrdering/ServiceOrdering.vue'], resolve),   //  订购服务页面          
+      meta:{   
+        requireAuth:true,
+      }     
+    },{
+      path:'/addImgText',   
+      component:resolve => require(['@/pages/addImgText/addImgText.vue'], resolve),   //  订购服务页面          
+      meta:{   
+        requireAuth:true,
+      }     
+    },{
+      path:'/Navigation',   
+      component:resolve => require(['@/pages/Navigation/Navigation.vue'], resolve),   //  导航设置           
+      meta:{   
+        requireAuth:true,
+      }     
+    },{
+      path:'/editNav/:id',
+      component:resolve => require(['@/pages/editNav/editNav.vue'], resolve),   //修改轮播   
+      meta:{
+        requireAuth:true,
+      }
+    },{
+      path:'/advert',
+      component:resolve => require(['@/pages/advert/advert.vue'], resolve),   //专题
+      meta:{
+        requireAuth:true,
+      }
+    },{
+      path:'/direct',
+      component:resolve => require(['@/pages/direct/direct.vue'], resolve),   //新增直播 
+      meta:{
+        requireAuth:true,
+      }
+    },{
+      path:'/directlist',
+      component:resolve => require(['@/pages/directlist/directlist.vue'], resolve),   //直播列表
+      meta:{
+        requireAuth:true,
+      }
+    },
+    {
+      path:'/editdirect',
+      component:resolve => require(['@/pages/editdirect/editdirect.vue'], resolve),   //修改直播
+      meta:{
+        requireAuth:true,
+      }
+    },               
   ]
 })
 

@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -9,10 +10,14 @@
           <sidebar></sidebar>
         </el-aside>
         <el-main>
-          <router-link to="/content">
+          <!-- <router-link to="/content">
             <span class="course" style="cursor: pointer;">我的课程</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <span class="imgText">新增课程</span>
+          <span class="imgText">新增课程</span> -->
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/content' }">我的课程</el-breadcrumb-item>
+              <el-breadcrumb-item>新增课程</el-breadcrumb-item>
+            </el-breadcrumb><br>
           <div class="title">
             <i class="icon"></i>
             <span>课程信息</span>
@@ -122,28 +127,9 @@
   </div>
 </template>
     <script>
-// import { quillEditor } from "vue-quill-editor";
-// import "quill/dist/quill.core.css";
-// import "quill/dist/quill.snow.css";
-// import "quill/dist/quill.bubble.css";
+
 import UE from "@/components/ue/ue";
-// 工具栏配置
-// const toolbarOptions = [
-//   ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
-//   ["blockquote", "code-block"], // 引用  代码块
-//   [{ header: 1 }, { header: 2 }], // 1、2 级标题
-//   [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-//   [{ script: "sub" }, { script: "super" }], // 上标/下标
-//   [{ indent: "-1" }, { indent: "+1" }], // 缩进
-//   // [{'direction': 'rtl'}],                         // 文本方向
-//   [{ size: ["small", false, "large", "huge"] }], // 字体大小
-//   [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
-//   [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-//   [{ font: [] }], // 字体种类
-//   [{ align: [] }], // 对齐方式
-//   ["clean"], // 清除文本格式
-//   ["link", "image", "video"] // 链接、图片、视频
-// ];
+
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import { ceshi } from "api/userAjax";
@@ -192,32 +178,8 @@ export default {
       date3: [],
       content: this.value,
       content1: this.value,
-      // quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
-      // editorOption: {
-      //   placeholder: "",
-      //   theme: "snow", // or 'bubble'
-      //   placeholder: "",
-      //   modules: {
-      //     toolbar: {
-      //       container: toolbarOptions,
-      //       // container: "#toolbar",
-      //       handlers: {
-      //         image: function(value) {
-      //           if (value) {
-      //             // 触发input框选择图片文件
-      //             document.querySelector(".avatar-uploader input").click();
-      //           } else {
-      //             this.quill.format("image", false);
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // },
-      // serverUrl: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
-      // serverUrl1: "http://yckt.yichuangketang.com:8081/section/insertImg", // 这里写你要上传的图片服务器地址
+
       header: {
-        // token: sessionStorage.token
       } // 有的图片服务器要求请求头需要有token
     };
   },
@@ -344,7 +306,6 @@ export default {
       this.chapterid = val; //章id
       this.delVisible = true;
       localStorage.setItem('chapterId',this.chapterid);
-      // console.log(localStorage.getItem('chapterId'))
     },
     aa(val) {
       this.chapterId = val;

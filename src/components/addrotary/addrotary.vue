@@ -57,7 +57,6 @@
         <el-button type="primary" @click="keep();">保存</el-button>
       </div>
     </el-main>
-
     <!-- 弹窗 -->
     <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
@@ -88,8 +87,7 @@
                     ref="singleTable"
                     :data="tableData1"
                     highlight-current-row
-                    style="width: 100%"
-                  >
+                    style="width: 100%">
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column property="lessonName" label="名称" width="120"></el-table-column>
                     <el-table-column property="upperoffTime" label="创建时间" width="120"></el-table-column>
@@ -183,12 +181,15 @@ export default {
       currentPage: 1,   //图文当前页
       currentPage1: 1,  //音频当前页
       currentPage2: 1,  //视频当前页
-      pagesize: 8,
+      pagesize: 5,
       imgurl:'',
       twsize:'',
       ypsize:'',
       spsize:'',
       userid:'',
+      Jump:1,
+      currid:'',
+
     };
   },
   created() {
@@ -224,6 +225,7 @@ export default {
     },
     // 新增轮播
     getdataadd() {
+      this.currid = this.currentRow 
       this.delVisible = false;
     },
     // 图文查询
@@ -253,6 +255,20 @@ export default {
       this.$router.go(0);
     },
     keep() {
+      if (this.input == "") {
+        this.$message.error("轮播图名称不可为空");      
+        return;  
+      }
+      if (this.imageUrl == "") {
+        this.$message.error("轮播图图片不可为空");      
+        return;  
+      }
+      // else if (this.Jump == "1") {
+      //   if (this.currid == "") {
+      //     this.$message.error("轮播图跳转链接不可为空");       
+      //     return; 
+      //   }
+      // }
       if (this.courser == "imgText") {
         this.number = 1;
       }if (this.courser == "audio") {
@@ -261,12 +277,13 @@ export default {
       if (this.courser == "video") {
         this.number = 3;
       }
-      addrotary({name:this.input,owner:this.userid,lessonid:this.currentRow,img:this.imageUrl,extendtwo:this.valnum}).then(res => {
+      addrotary({name:this.input,owner:this.userid,lessonid:this.currid,img:this.imageUrl,extendtwo:this.valnum}).then(res => {
         this.$message.success(res.data.msg);
         this.switchss();
       })
     },
     radioq(val) {
+      this.Jump = val;
       let that = this;
       if (val == "1") {
         this.disabled = false;
@@ -276,6 +293,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentRow = val.lessonid;
+      console.log(val.lessonid)
     },
         // 分页
     handleSizeChange(size) {

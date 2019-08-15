@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -9,18 +10,18 @@
           <sidebar></sidebar>
         </el-aside>
         <el-main>
-          <span class="course" style="cursor: pointer;">我的钱包</span>
+          <!-- <span class="course" style="cursor: pointer;">我的钱包</span> -->
           <div class="headers">
             <i>
               <img src="../../../static/img/矢量智能对象_看图王.png" alt />
             </i>
             <div class="cont">
               <h4>我的壹创币</h4>
-              <span>0.00</span>
+              <span>{{count}}</span>
             </div>
-            <router-link to="/Recharge">
-              <el-button type="primary" style="float:right;">充值</el-button>
-            </router-link>
+            <!-- <router-link to="/Recharge"> -->
+              <el-button type="primary" style="float:right;" @click="recharge">充值</el-button>
+            <!-- </router-link> -->
           </div>
           <div class="footer">
             <span class="Explain">使用说明</span>
@@ -39,13 +40,37 @@
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
+import {preview} from 'api/userAjax';
+
 export default {
   data() {
-    return {};
+    return {
+      count:'',
+      Id:4
+    };
   },
   created() {
+    this.getdata();
+    this.reload();
   },
-  methods: {},
+  methods: {
+    // 查询商户
+        getdata(){
+      preview(localStorage.getItem('ex2')).then(res=>{
+        this.count = res.data.balance
+      })
+    },
+
+    recharge(){
+        this.$router.push({
+        path: `/Recharge`,
+        query:{ id:this.Id}
+      });
+    },
+    reload() {
+     $('body,html').animate({scrollTop:0},200);
+    }
+  },
   components: {
     sidebar,
     Header
@@ -84,7 +109,7 @@ export default {
   height: 50px;
 }
 .headers {
-  margin-top: 60px;
+  /* margin-top: 60px; */
   padding: 20px 500px 60px 20px;
   display: flex;
   align-items: center;

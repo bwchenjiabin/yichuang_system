@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header  style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -47,6 +48,7 @@
       </el-container>
     </el-container>
     <!-- 新增音频弹窗 -->
+    
     <el-dialog title :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <span class="namea">标题</span>
@@ -186,8 +188,8 @@ export default {
       editmodifys:false,  //修改章弹窗
       delsectionID: "", //删除jieid
       delchapterID: "", //删除章id
-      imageUrl: "http://192.168.0.103:8081/section/insertAudioOrVedio", // 上传地址
-      imageUrl1: "http://192.168.0.103:8081/section/insertAudioOrVedio", //修改地址
+      imageUrl: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", // 上传地址
+      imageUrl1: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID
       chapterId: "", //章ID
@@ -280,8 +282,8 @@ export default {
     },
     //修改
     submitUpload1() {
-      console.log(this.chapterId)
-      console.log(this.sectionid)
+      // console.log(this.chapterId)
+      // console.log(this.sectionid)
        fileupload(this.chapterId,this.input2,this.checkedss1,this.time1,this.audiourl1,this.sectionid).then(res => {
         this.$message.success(res.data.msg);
         this.delVisiblee = false;
@@ -301,7 +303,6 @@ export default {
         this.fileList = [];
         this.getdata();
       })
-
     },
     //文件上传成功
     handleAvatarSuccess(res, file) {
@@ -319,9 +320,7 @@ export default {
       }else{
       this.$message.error(res.msg)
       }
-
     },
-
     //测试
     getdata() {
       ceshi(this.Id).then(res => {

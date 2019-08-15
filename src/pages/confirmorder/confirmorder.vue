@@ -1,148 +1,231 @@
 <template>
   <div class="box">
+    <el-header
+      style="background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;"
+    >
+      <div class="titles">
+        <img src="../../../static/img/微信图片_20190610160537.png" alt />
+      </div>
+      <router-link to="/Home">
+      <div class="heade-right">
+        返回工作台
+      </div>
+      </router-link>
+    </el-header>
+
     <el-container>
-      <el-header>
-        <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
+      <!-- <el-header >
+        <Headers></Headers>
+      </el-header>-->
+
+      <!-- <el-container> -->
+        <!-- <el-aside width="200px">
           <sidebar></sidebar>
-        </el-aside>
+        </el-aside>-->
         <el-main>
-          <router-link to="/wallet">
+          <!-- <router-link to="/wallet">
             <span class="course" style="cursor: pointer;">我的钱包</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <span class="imgText">确认订单</span>
           <br />
           <br />
-          <br>
+          <br>-->
           <!-- <div class="ul-box"> -->
-        <!-- <ul>
+          <!-- <ul>
             <li>您的订单已生成，请及时付款</li>
-        </ul> -->
-        <br>
-        <el-steps :active="2" :align-center="align">
-          <el-step title="选择商品" description=""></el-step>
-          <el-step title="确认订单信息" description=""></el-step>
-          <el-step title="确认付款" description=""></el-step>
-          <el-step title="购买成功" description=""></el-step>
-       </el-steps><br><br><br>
-        <!-- </div> -->
-         <div class="title">
+          </ul>-->
+          <br />
+          <el-steps :active="1" :align-center="align">
+            <!-- <el-step title="选择商品" description=""></el-step> -->
+            <el-step title="确认订单信息" description></el-step>
+            <el-step title="确认付款" description></el-step>
+            <el-step title="购买成功" description></el-step>
+          </el-steps>
+          <br />
+          <br />
+          <br />
+          <!-- </div> -->
+          <div class="title">
             <i class="icon"></i>
             <span>支付方式</span>
             <p>*由于微信限额，购买超过3000元的服务建议您使用支付宝</p>
-          </div><br>
+          </div>
           <!-- <el-button plain>支付宝</el-button>
-          <el-button plain>微信</el-button><br><br><br> -->
-            <el-radio-group v-model="radio1" @change="getmoney" border>
-                <el-radio-button  label="支付宝" style="margin-left:30px;" >支付宝</el-radio-button>
-                <el-radio-button  label="微信">微信</el-radio-button>
-            </el-radio-group><br><br>
+          <el-button plain>微信</el-button><br><br><br>-->
+          <!-- <el-radio-group v-model="radio1" @change="getmoney" border>
+            <el-radio-button label="支付宝" style="margin-left:30px;">支付宝</el-radio-button>
+            <el-radio-button label="微信">微信</el-radio-button>
+          </el-radio-group> -->
+          <span v-for="(item,index) in state" :key="index" @click="leftChange(index)" :class="{ liBackground:changeLeftBackground == index}" class="buttons">
+                    {{item}}
+          </span>
+          <br />
+          <br /><br>
           <div class="title">
             <i class="icon"></i>
             <span>商品信息</span>
           </div>
-          <el-table
-      :data="tableData"
-      style="width: 100%">
-      <!-- <el-table-column type="selection" width="55"></el-table-column> -->
-      <el-table-column
-        prop="date"
-        label="商品名称"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="价格"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="数量">
-      </el-table-column>
-        <el-table-column
-        label="小计">
-         <template slot-scope="scope">
-            <span>{{scope.row.name*scope.row.address}}</span>
-        </template>
-      </el-table-column>
-    </el-table><br>
-    <div class="footers" style="line-height:30px;">
-        <span class="footerone">合计</span>
-        <span style="float:right;margin-right:500px;" class="footertwo">￥{{Id}}.00</span>
-    </div><br><br>
-     <!-- <router-link to="/confirmpayment"> -->
-     <el-button type="primary" @click="openDetails">立即付款</el-button>
-     <!-- </router-link> -->
+          <div class="content">
+            <el-table :data="tableData" style="width: 100%">
+              <!-- <el-table-column type="selection" width="55"></el-table-column> -->
+              <el-table-column prop="date" label="商品名称" width="180"></el-table-column>
+              <el-table-column prop="name" label="价格" width="180"></el-table-column>
+              <el-table-column prop="address" label="数量"></el-table-column>
+              <el-table-column label="小计">
+                <template slot-scope="scope">
+                  <span>{{scope.row.name*scope.row.address}}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <br />
+            <div class="footers" style="line-height:30px;">
+              <span class="footerone">合计</span>
+              <span style="float:right;margin-right:100px;" class="footertwo">￥{{Id}}.00</span>
+            </div>
+          </div>
+
+          <br />
+          <br />
+          <!-- <router-link to="/confirmpayment"> -->
+          <el-button type="primary" @click="openDetails" style="margin-right:100px;width:150px;float:right">立即付款</el-button>
+          <!-- </router-link> -->
         </el-main>
-      </el-container>
+      <!-- </el-container> -->
     </el-container>
   </div>
 </template>
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
-import Header from "@/components/Header/Header.vue";
-import {pay} from 'api/userAjax';
+import Headers from "@/components/Headers/Headers.vue";
+import { pay } from "api/userAjax";
 export default {
   data() {
     return {
-        tableData: [{
-            date: '壹创币',
-            name: '',
-            address: '1',
-            numbers:'200'
-          }] ,
-          radio1:'微信',
-          moneytype:'',
-          align:true,
-          Id:'',
-          order:'',
-          url:'',
-          time:'',
+      changeLeftBackground: 0,    //默认选中第一个
+      state:['微信','支付宝'],// 模拟数据 所有标签
+      tableData: [
+        {
+          date: "壹创币",
+          name: "",
+          address: "1",
+          numbers: "200"
+        }
+      ],
+      radio1: "微信",
+      moneytype: "",
+      align: true,
+      Id: "",
+      order: "",
+      url: "",
+      time: "",
+      payType:'wechat'
     };
   },
   created() {
     this.getParams();
   },
   methods: {
-        getmoney(val){
-        this.moneytype = val;
+    getmoney(val) {
+      this.moneytype = val;
     },
-        //获取传值
+    	  leftChange(index) {
+          if (index == 0) {
+          this.payType = 'wechat'
+          }else if (index == 1) {
+            this.payType = 'ali'
+          }
+	  //当前的背景颜色赋给当前点击的索引
+        this.changeLeftBackground = index;
+       },
+    //获取传值
     getParams() {
       var routerParams = this.$route.query.money;
       var routerParamsorder = this.$route.query.order;
       this.Id = routerParams;
-      this.order = routerParamsorder
-      this.tableData[0].name = this.Id
+      this.order = routerParamsorder;
+      this.tableData[0].name = this.Id;
     },
-
-    openDetails(){
-      pay(this.order).then(res => {
-            if (res.data.code == '0000') {
-            this.$message.success(res.data.data.msg)              
-            }else{
-            this.$message.error(res.data.msg)
-              return;
-            }
-            this.url = res.data.data.codeUrl
-            this.time = res.data.data.payStartTime
-          this.$router.push({
-        path: `/confirmpayment`,
-        query:{codeUrl:this.url,money:this.Id,order:this.order,payStartTime:this.time}
+    openDetails() {
+      pay(this.order,this.payType).then(res => {
+        if (res.data.code == "0000") {
+            this.url = res.data.data.codeUrl;
+            this.time = res.data.data.payStartTime;
+          if (res.data.data.codeUrl != null) {
+          this.$message.success(res.data.msg);
+        this.$router.push({
+          path: `/confirmpayment`,
+          query: {
+            codeUrl: this.url,
+            money: this.Id,
+            order: this.order,
+            payStartTime: this.time
+          }
+        });
+        } else {
+        const div = document.createElement('div') 
+        div.innerHTML = res.data.data // 将返回的form 放入div
+        document.body.appendChild(div)
+        document.forms[0].submit()
+          return;
+        }
+        }else{
+          this.$message.error(res.data.msg)
+          return;
+        }
       });
-      })
-    }, 
+    }
   },
   components: {
     sidebar,
-    Header
+    Headers
   }
 };
 </script>
 <style scoped>
+.buttons{    padding: 0;
+    margin-bottom: 5px;
+    margin-right: 6px;
+    height: 32px;
+    width: 120px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 2px!important;
+    text-align: center;
+    line-height: 32px;
+    display: inline-block;}
+.buttons:hover{
+    color: #3ca7ff;
+}
+.liBackground {
+    color: #3ca7ff;
+    background-color: #fafafa;
+    border-color: #3ca7ff;
+  }
+.titles {
+  color: rgba(16, 16, 16, 1);
+  font-size: 28px;
+  text-align: left;
+  font-family: 方正兰亭黑-标准;
+  width: 20%;
+  float: left;
+  padding-left: 200px;
+}
+.titles img {
+  width: 130px;
+  height: 30px;
+  margin-top: 15px;
+}
+.heade-right{
+  float: right;
+  margin-right:300px; 
+  color: #409EFF;
+  font-size: 18px;
+  cursor: pointer;
+  height: 60px;
+  line-height: 60px;
+}
 .course {
   font-size: 18px;
   font-family: PingFangSC-Medium;
@@ -152,11 +235,11 @@ export default {
 .footer {
   padding-bottom: 30px;
 }
-.imgText{
-    font-size:18px;
-font-family:PingFangSC-Medium;
-font-weight:500;
-color:rgba(153,153,153,1);
+.imgText {
+  font-size: 18px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(153, 153, 153, 1);
 }
 .moneys {
   display: inline-block;
@@ -169,24 +252,29 @@ color:rgba(153,153,153,1);
   display: inline;
   font-size: 18px;
 }
-.footerone{
-    font-size:16px;
-font-family:PingFangSC-Medium;
-font-weight:500;
-color:rgba(51,51,51,1);
+.footerone {
+  font-size: 16px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(51, 51, 51, 1);
+  flex: 1;
+  padding-left: 100px;
 }
-.footertwo{
-    font-size:16px;
-font-family:PingFangSC-Medium;
-font-weight:500;
-color:rgba(51,51,51,1);
+.footertwo {
+  font-size: 16px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  font-size: 20px;
+  color: rgba(51, 51, 51, 1);
 }
-.footers{
-   width: 100%;
-   height:30px;
-background:rgba(255,255,255,1);
-border:1px solid rgba(238,238,238,1);
-    padding: 10px;
+.footers {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(238, 238, 238, 1);
+  /* padding: 10px; */
 }
 .Explain {
   padding-left: 100px;
@@ -196,24 +284,24 @@ border:1px solid rgba(238,238,238,1);
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
 }
-.ul-box{
-    width:100%;
-    height: 150px;
-    text-align: center;
-    line-height: 150px;
+.ul-box {
+  width: 100%;
+  height: 150px;
+  text-align: center;
+  line-height: 150px;
 }
-.ul-box ul{
-    width: 350px;
-    height: auto;
-    margin: auto;
+.ul-box ul {
+  width: 350px;
+  height: auto;
+  margin: auto;
 }
 .ul-box li {
-    list-style:disc;
-    font-size:24px;
-font-family:PingFangSC-Medium;
-font-weight:500;
-color:rgba(51,51,51,1);
-width: auto;
+  list-style: disc;
+  font-size: 24px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(51, 51, 51, 1);
+  width: auto;
 }
 .conts {
   padding: 30px 150px 10px 35px;
@@ -225,9 +313,9 @@ width: auto;
   font-weight: 500;
   color: rgba(51, 51, 51, 1);
 }
-.conts ul li{
-    color:rgba(51,51,51,1);
-    padding: 10px;
+.conts ul li {
+  color: rgba(51, 51, 51, 1);
+  padding: 10px;
 }
 .names {
   padding-left: 30px;
@@ -235,13 +323,13 @@ width: auto;
   font-family: PingFangSC-Medium;
   color: rgba(51, 51, 51, 1);
 }
-.title p{
-    display: inline;
-    padding-left: 15px;
-    font-size:16px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(153,153,153,1);
+.title p {
+  display: inline;
+  padding-left: 15px;
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
 }
 .cont {
   height: 80px;
@@ -346,5 +434,23 @@ width: auto;
 .Order {
   width: 80px;
   display: inline-block;
+}
+.el-main {
+  margin-top: 0;
+  padding-left: 50px;
+}
+.content {
+  width: 750px;
+  height: auto;
+  margin :auto;
+  padding-left: 100px;
+  padding: 10px;
+  border: 1px solid rgba(238, 238, 238, 1);
+}
+.el-container {
+  background: #fff;
+  width: 1000px;
+  height: 800px;
+  margin: 80px auto;
 }
 </style>

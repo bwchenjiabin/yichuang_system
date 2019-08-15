@@ -1,10 +1,22 @@
 <template>
   <div class="box">
+      <!-- <el-container>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
+        <Header></Header>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <sidebar></sidebar>
+        </el-aside> -->
     <el-main>
       <div>
-        <span class="course" @click="switchss">我的课程</span>&nbsp;&nbsp;&nbsp;
+        <span class="course" @click="switchss">我的课程</span>&nbsp;&nbsp;&nbsp;/
         <span class="imgText">新增图文</span>
-        <br />
+        <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item  ><a href="javascript:;">我的课程</a></el-breadcrumb-item>
+              <el-breadcrumb-item>编辑图文</el-breadcrumb-item>
+        </el-breadcrumb> -->
         <br />
         <div class="title">
           <i class="icon"></i>
@@ -113,6 +125,8 @@
         </div>
       </div>
     </el-main>
+    <!-- </el-container>
+    </el-container> -->
     <!-- 弹窗 -->
     <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">
       <div class="del-dialog-cnt">

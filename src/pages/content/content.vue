@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header>
+      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
       </el-header>
       <el-container>
@@ -51,6 +52,7 @@
               <el-table
                 ref="test"
                 :data="tableData"
+                v-loading="loading"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @sort-change ="sortchange"
@@ -61,7 +63,7 @@
                 <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
-                      <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
+                      <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt />
                     </i>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
@@ -149,6 +151,7 @@
               <br />
               <el-table
                 ref="multipleTable"
+                v-loading="loading"
                 :data="tableData1"
                 tooltip-effect="dark"
                 style="width: 100%"
@@ -160,7 +163,7 @@
                <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
-                      <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
+                      <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt />
                     </i>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
@@ -205,7 +208,6 @@
                 layout="total, prev, pager, next"
                 :total="this.ypsize"
               ></el-pagination>
-
               <br />
               <br />
               <el-button @click="Upper1()">上架</el-button>
@@ -250,6 +252,7 @@
               <el-table
                 ref="multipleTable"
                 :data="tableData2"
+                v-loading="loading"
                 tooltip-effect="dark"
                 style="width: 100%"
                 :header-cell-style="{background:'#f5f5f5',color:'#000'}"
@@ -260,7 +263,7 @@
                 <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
-                      <img :src="'http://yckt.yichuangketang.com'+scope.row.img" alt />
+                      <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt />
                     </i>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
@@ -381,6 +384,7 @@ export default {
       input1: "",   //音频关键词
       input2: "",   //视频关键词
       sort:'',
+      loading:true,
       custom:true,
       Choice:'',
       delVisible: false,
@@ -447,10 +451,14 @@ export default {
     };
   },
   created() {
+    this.reload();
     this.getImgText();
     this.getaudio();
     this.getvideo();
     this.getdata();
+  },
+  mounted(){
+    
   },
   methods: {
     // 排序 
@@ -476,6 +484,10 @@ export default {
       this.$router.push({
         path: `/orderlist/${id}`
       });
+    },
+    // 初始化回到顶部
+      reload() {
+     $('body,html').animate({scrollTop:0},200);
     },
     //编辑音频
     editaudio(id) {
@@ -541,6 +553,16 @@ export default {
     switcht() {
       this.imgText = false;
       this.imgTexts = true;
+    // this.$router.push({
+    //       path: `/addImgText`,
+    //     });
+    },
+    switchtt() {
+      this.imgText = true;
+      this.imgTexts = false;
+    // this.$router.push({
+    //       path: `/addImgText`,
+    //     });
     },
     //新增音频
     switchy() {
@@ -741,6 +763,7 @@ export default {
     // 图文查询
     getImgText() {
       ImgText(localStorage.getItem("ex2"), "1", this.currentPage,this.property,this.order,this.selectId,this.sortid,this.input).then(res => {
+        this.loading = false;
         this.tableData = res.data.data.data;
         this.twsize = res.data.data.total;
       });
@@ -748,6 +771,7 @@ export default {
     // 音频查询
     getaudio() {
       audio(localStorage.getItem("ex2"), "2", this.currentPage1,this.property1,this.order1,this.selectId1,this.sortid1,this.input1).then(res => {
+        this.loading = false;
         this.tableData1 = res.data.data.data;
         this.ypsize = res.data.data.total;
       });
@@ -755,6 +779,7 @@ export default {
     // 视频查询
     getvideo() {
       video(localStorage.getItem("ex2"), "3", this.currentPage2,this.property2,this.order2,this.selectId2,this.sortid2,this.input2).then(res => {
+        this.loading = false;
         this.tableData2 = res.data.data.data;
         this.spsize = res.data.data.total;
       });

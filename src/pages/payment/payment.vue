@@ -1,25 +1,38 @@
 <template>
   <div class="box">
+      <el-header
+      style="background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;"
+    >
+      <div class="titles">
+        <img src="../../../static/img/微信图片_20190610160537.png" alt />
+      </div>
+      <router-link to="/Home">
+      <div class="heade-right">
+        返回工作台
+      </div>
+      </router-link>
+    </el-header>
     <el-container>
-      <el-header>
+      <!-- <el-header  style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
+      </el-header> -->
+      <!-- <el-container> -->
+        <!-- <el-aside width="200px">
           <sidebar></sidebar>
-        </el-aside>
+        </el-aside> -->
         <el-main>
-          <router-link to="/wallet">
+          <!-- <router-link to="/wallet">
             <span class="course" style="cursor: pointer;">我的钱包</span>
           </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
           <span class="imgText">确认订单</span>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
           <br />
-          <br />
+          <br /> -->
           <br>
           <br>
-            <el-steps :active="4" :align-center="align">
-          <el-step title="选择商品" description=""></el-step>
+            <el-steps :active="3" :align-center="align">
           <el-step title="确认订单信息" description=""></el-step>
           <el-step title="确认付款" description=""></el-step>
           <el-step title="购买成功" description=""></el-step>
@@ -34,7 +47,7 @@
             </div>
           </div>
         </el-main>
-      </el-container>
+      <!-- </el-container> -->
     </el-container>
   </div>
 </template>
@@ -313,5 +326,44 @@ width: auto;
 .Order {
   width: 80px;
   display: inline-block;
+}
+.el-main {
+  margin-top: 0;
+  padding-left: 50px;
+}
+.content {
+  width: 750px;
+  height: auto;
+  margin :auto;
+  padding-left: 100px;
+  padding: 10px;
+  border: 1px solid rgba(238, 238, 238, 1);
+}
+.el-container {
+  background: #fff;
+  width: 1000px;
+  height: 800px;
+  margin: 80px auto;
+}
+.titles {
+  color: rgba(16, 16, 16, 1);
+  font-size: 28px;
+  text-align: left;
+  font-family: 方正兰亭黑-标准;
+  width: 20%;
+  float: left;
+  padding-left: 200px;
+}
+.titles img {
+  width: 130px;
+  height: 30px;
+  margin-top: 15px;
+}
+.heade-right{
+  float: right;
+  margin-right:300px; 
+  color: #409EFF;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>
