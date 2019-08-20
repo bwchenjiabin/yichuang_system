@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+  <el-scrollbar style="height:100%">
+    <div class="box">
     <el-container>
       <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -36,6 +37,7 @@
       </el-container>
     </el-container>
   </div>
+  </el-scrollbar>
 </template>
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -207,4 +209,7 @@ export default {
   width: 80px;
   display: inline-block;
 }
+ .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

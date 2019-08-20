@@ -34,7 +34,7 @@
                     </template>
                             <el-menu-item index="/rotary"><i></i>轮播图</el-menu-item>
                             <el-menu-item index="/classify"><i></i>内容分类</el-menu-item>
-                            <!-- <el-menu-item index="/Vip"><i></i>店铺会员</el-menu-item> -->
+                            <el-menu-item index="/Vip"><i></i>店铺会员</el-menu-item>
                             <el-menu-item index="/feedback"><i></i>用户反馈</el-menu-item>
                             <el-menu-item index="/Navigation"><i></i>导航设置</el-menu-item>
                             <el-menu-item index="/advert"><i></i>广告位</el-menu-item>

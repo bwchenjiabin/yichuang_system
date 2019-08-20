@@ -1,5 +1,6 @@
 <template>
-        <div class="box">
+<el-scrollbar style="height:100%">
+      <div class="box">
                 <el-container>
                     <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -66,6 +67,8 @@
                     </el-container>
                 </el-container>
         </div>    
+</el-scrollbar>
+      
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
@@ -129,6 +132,9 @@ import {preview} from 'api/userAjax';
  .cont li{width: 300px;height: 200px;background:rgba(255,255,255,1);box-shadow:0px 0px 10px 0px rgba(20,85,250,0.08);float: left;margin-right: 20px;text-align: center;display: flex;align-items: center;justify-content: center;position: relative;}
  .bq{width: 60px;height: 24px;line-height: 20px;border-radius: 1px;text-align: center;border: 1px solid rgba(0, 101, 255, 1);color: #0065FF;font-size: 14px;margin-left: 10px;}
  .dd{margin-top: 70px;}.imgs{width: 60px;height: 60px;position: absolute;top: 20px;left: 120px;}
+  .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
     </style>
 
     

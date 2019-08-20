@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+    <el-scrollbar style="height:100%">
+        <div class="box">
       <el-header
       style="background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;"
@@ -14,22 +15,7 @@
       </router-link>
     </el-header>
     <el-container>
-      <!-- <el-header  style="    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px -10px #000;">
-        <Header></Header>
-      </el-header> -->
-      <!-- <el-container> -->
-        <!-- <el-aside width="200px">
-          <sidebar></sidebar>
-        </el-aside> -->
         <el-main>
-          <!-- <router-link to="/wallet">
-            <span class="course" style="cursor: pointer;">我的钱包</span>
-          </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <span class="imgText">确认订单</span>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<span class="imgText">确认付款</span>
-          <br />
-          <br /> -->
           <br>
           <br>
             <el-steps :active="3" :align-center="align">
@@ -47,9 +33,9 @@
             </div>
           </div>
         </el-main>
-      <!-- </el-container> -->
     </el-container>
   </div>
+    </el-scrollbar>
 </template>
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -365,5 +351,8 @@ width: auto;
   color: #409EFF;
   font-size: 18px;
   cursor: pointer;
+}
+.el-scrollbar__wrap {
+  overflow-x: hidden;
 }
 </style>

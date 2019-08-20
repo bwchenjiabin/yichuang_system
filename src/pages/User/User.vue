@@ -1,5 +1,6 @@
 <template>
-        <div class="box">
+  <el-scrollbar style="height:100%">
+    <div class="box">
                 <el-container>
                     <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -126,6 +127,7 @@
       </span>
     </el-dialog>
         </div>    
+  </el-scrollbar>
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
@@ -261,4 +263,7 @@ import {deluser} from 'api/userAjax';
  .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
  .title{width: auto;display: block}.title span{margin-left: 10px;}.search{margin-right: 20px;}.inp1{margin-right: 40px;}.vip{margin-right: 40px;}
  .screen{margin-right: 40px;}
+  .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

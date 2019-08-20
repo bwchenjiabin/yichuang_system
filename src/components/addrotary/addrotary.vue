@@ -333,7 +333,7 @@ export default {
     <style scoped>
 .box {
   background: #f5f5f5;
-  width: 1650px;
+  width: 100%;
 }
 .course {
   font-size: 18px;
@@ -407,9 +407,10 @@ export default {
   border-color: #409eff;
 }
 .avatar {
-  width: 178px;
-  height: 178px;
+  width: 277px;
+  height: 134px;
   display: block;
+  margin-left: 70px;
 }
 .name {
   font-size: 16px;

@@ -1,4 +1,5 @@
 <template>
+    <el-scrollbar style="height:100%">
         <div class="box">
                 <el-container>
                     <el-header style="    background-color: rgba(255, 255, 255, 0.95);
@@ -19,6 +20,8 @@
                     </el-container>
                 </el-container>
         </div>    
+    </el-scrollbar>
+
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
@@ -61,4 +64,7 @@ import Header from '@/components/Header/Header.vue'
  .bq{width: 60px;height: 24px;line-height: 20px;border-radius: 1px;text-align: center;border: 1px solid rgba(0, 101, 255, 1);color: #0065FF;font-size: 14px;margin-left: 10px;}
  .el-tabs__item{padding: 0 50px;}.el-input{width: auto;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
  .title{width: auto;display: block}.title span{margin-left: 10px;}
+  .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

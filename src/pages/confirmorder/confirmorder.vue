@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+    <el-scrollbar style="height:100%">
+        <div class="box">
     <el-header
       style="background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;"
@@ -15,30 +16,9 @@
     </el-header>
 
     <el-container>
-      <!-- <el-header >
-        <Headers></Headers>
-      </el-header>-->
-
-      <!-- <el-container> -->
-        <!-- <el-aside width="200px">
-          <sidebar></sidebar>
-        </el-aside>-->
         <el-main>
-          <!-- <router-link to="/wallet">
-            <span class="course" style="cursor: pointer;">我的钱包</span>
-          </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <router-link to="/Recharge"><span class="imgText">充值</span></router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <span class="imgText">确认订单</span>
-          <br />
-          <br />
-          <br>-->
-          <!-- <div class="ul-box"> -->
-          <!-- <ul>
-            <li>您的订单已生成，请及时付款</li>
-          </ul>-->
           <br />
           <el-steps :active="1" :align-center="align">
-            <!-- <el-step title="选择商品" description=""></el-step> -->
             <el-step title="确认订单信息" description></el-step>
             <el-step title="确认付款" description></el-step>
             <el-step title="购买成功" description></el-step>
@@ -46,18 +26,11 @@
           <br />
           <br />
           <br />
-          <!-- </div> -->
           <div class="title">
             <i class="icon"></i>
             <span>支付方式</span>
             <p>*由于微信限额，购买超过3000元的服务建议您使用支付宝</p>
           </div>
-          <!-- <el-button plain>支付宝</el-button>
-          <el-button plain>微信</el-button><br><br><br>-->
-          <!-- <el-radio-group v-model="radio1" @change="getmoney" border>
-            <el-radio-button label="支付宝" style="margin-left:30px;">支付宝</el-radio-button>
-            <el-radio-button label="微信">微信</el-radio-button>
-          </el-radio-group> -->
           <span v-for="(item,index) in state" :key="index" @click="leftChange(index)" :class="{ liBackground:changeLeftBackground == index}" class="buttons">
                     {{item}}
           </span>
@@ -69,7 +42,6 @@
           </div>
           <div class="content">
             <el-table :data="tableData" style="width: 100%">
-              <!-- <el-table-column type="selection" width="55"></el-table-column> -->
               <el-table-column prop="date" label="商品名称" width="180"></el-table-column>
               <el-table-column prop="name" label="价格" width="180"></el-table-column>
               <el-table-column prop="address" label="数量"></el-table-column>
@@ -88,13 +60,11 @@
 
           <br />
           <br />
-          <!-- <router-link to="/confirmpayment"> -->
           <el-button type="primary" @click="openDetails" style="margin-right:100px;width:150px;float:right">立即付款</el-button>
-          <!-- </router-link> -->
         </el-main>
-      <!-- </el-container> -->
     </el-container>
   </div>
+    </el-scrollbar>
 </template>
 <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -452,5 +422,8 @@ export default {
   width: 1000px;
   height: 800px;
   margin: 80px auto;
+}
+.el-scrollbar__wrap {
+  overflow-x: hidden;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+    <el-scrollbar style="height:100%">
+        <div class="box">
     <el-container>
       <el-header
         style="    background-color: rgba(255, 255, 255, 0.95);
@@ -34,7 +35,7 @@
               <br />
               <el-upload
                 class="avatar-uploader"
-                action="http://192.168.0.104:8081/section/insertImg"
+                action="http://yckt.yichuangketang.com:8081/section/insertImg"
                 :data="{accountId: this.Id}"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
@@ -42,7 +43,7 @@
               >
                 <img
                   v-if="imageUrl"
-                  :src="'http://192.168.0.104:8081'+this.imageUrl"
+                  :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
                   class="avatar"
                 />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -152,6 +153,7 @@
       </el-container>
     </el-container>
   </div>
+    </el-scrollbar>
 </template>
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -184,11 +186,12 @@ export default {
       checkBoxDataids: [],
       checkBoxDatas: [], //多选框选择的值
       Id: "",
+      status:'',
       list: "",
       value2: "",
       value3: "",
       type: "",
-      title: "新增语音直播",
+      title: "修改语音直播",
       currentPage: 1,
       usersize: 0,
       loading: true,
@@ -257,6 +260,7 @@ export default {
     },
     getdataedit() {
       editlive({id:this.editid}).then(res => {
+        console.log(res);
         this.value2 = res.data.data.createtime
         this.value3 = res.data.data.closetime
         this.textarea = res.data.data.info
@@ -265,6 +269,8 @@ export default {
         this.input4 = res.data.data.price
         this.input3 = res.data.data.nowprice
         this.radios = res.data.data.livevip + ""
+        this.opentype = res.data.data.opentype
+        this.status = res.data.data.status
         if (this.radios == "0") {
           this.disabled = true;
           this.input3 = "";
@@ -292,14 +298,17 @@ export default {
             price: this.input4,
             nowprice: this.input3,
             info: this.textarea,
+            status:this.status,
           })
             .then(res => {
-              this.switchss();
-              this.$message.success(res.data.msg);
+              if (res.data.code == "0000") {
+                this.switchss();
+                this.$message.success(res.data.msg);
+              }else{
+                this.$message.error(res.data.msg);
+              }
+              
             })
-            .catch(err => {
-              this.$message.error(res.data.msg);
-            });
         }
       } else {
         updatalive({
@@ -314,14 +323,17 @@ export default {
           price: this.input4,
           nowprice: this.input3,
           info: this.textarea,
+          status:this.status,
         })
-          .then(res => {
-            this.switchss();
-            this.$message.success(res.data.msg);
-          })
-          .catch(err => {
-            this.$message.error(res.data.msg);
-          });
+         .then(res => {
+              if (res.data.code == "0000") {
+                this.switchss();
+                this.$message.success(res.data.msg);
+              }else{
+                this.$message.error(res.data.msg);
+                return;
+              }
+        })
       }
     },
     handleAvatarSuccess(res) {
@@ -330,6 +342,7 @@ export default {
         this.$message.success(res.msg);
       } else {
         this.$message.error(res.msg);
+        return;
       }
     },
   },
@@ -603,5 +616,8 @@ export default {
 .list {
   width: 50%;
   height: auto;
+}
+.el-scrollbar__wrap {
+  overflow-x: hidden;
 }
 </style>

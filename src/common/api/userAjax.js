@@ -737,7 +737,7 @@ const updateacadvert = data => {
 // 会员查询
 const selectvip = data => {
   return new Promise((resolve, reject) => {
-    ajax.get('/acmember/selectByAccountAndLength',data).then(res => {
+    ajax.get('/acmember/selectByAccountLengthType',data).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -748,7 +748,7 @@ const selectvip = data => {
 // 会员修改
 const editvip = data => {
   return new Promise((resolve, reject) => {
-    ajax.get('/acmember/update',data).then(res => {
+    ajax.post('/acmember/update',data).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -851,6 +851,19 @@ const invitelecturer = data => {
 }
 
 
+// 直播用户搜索
+const serchuser = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/business/selectBySearch',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+
 
 
 
@@ -933,3 +946,4 @@ export {updatalive}
 export {addlecturer}
 export {dellecturer}
 export {invitelecturer}
+export {serchuser}

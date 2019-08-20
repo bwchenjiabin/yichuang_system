@@ -1,5 +1,6 @@
 <template>
-        <div class="box">
+    <el-scrollbar style="height:100%">
+         <div class="box">
                 <el-container>
                     <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -60,7 +61,8 @@
                         </el-main>
                     </el-container>
             </el-container>
-        </div>    
+        </div>  
+        </el-scrollbar>  
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
@@ -176,4 +178,7 @@ import {preview} from 'api/userAjax';
  .name{flex: .5;}.xiugai{width: 50px;color: rgba(0, 101, 255, 1);font-size: 16px;text-align: left;font-family: SourceHanSansSC-regular;cursor: pointer;margin-left: 20px;flex: .5;}.inp{flex: 1;height: 40px;border: 1px solid #ccc;line-height: 40px;padding-left:10px;color: rgba(16, 16, 16, 1);font-size: 14px;text-align: left;font-family: Roboto;border: 1px solid rgba(238, 238, 238, 1);}
  .xiu{width: 50px;font-size: 16px;text-align: left;font-family: SourceHanSansSC-regular;cursor: pointer;height: 40px;text-align: center;line-height: 40px;border: 1px solid rgba(238, 238, 238, 1);background-color: rgba(244, 244, 244, 1);font-size: 14px;}
  .content img{width: 180px;height: 180px;} .namee{flex: 0.35;}
+  .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

@@ -1,5 +1,6 @@
 <template>
-        <div class="box">
+  <el-scrollbar style="height:100%">
+      <div class="box">
                 <el-container>
                     <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -146,6 +147,7 @@
               </span>
           </el-dialog>
         </div>    
+  </el-scrollbar>
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
@@ -240,7 +242,6 @@ import {orderStatus} from 'api/userAjax';
     // 订单详情
       getdatad () {
         SearchPay(this.ordernum).then(res => {
-          console.log(res);
            this.details = res.data.data
       })
     },
@@ -288,7 +289,7 @@ import {orderStatus} from 'api/userAjax';
  .search-inp{    width: 326px;
     line-height: 30px;
     padding-left: 5px;}
-    .search-inner{width: auto;display: inline-block}
+ .search-inner{width: auto;display: inline-block}
  .el-tabs__item{padding: 0 50px;}.icon{width: 6px;height: 17px;background: blue;float: left;margin-top: 3px;}
  .title{width: auto;display: block}.title span{margin-left: 10px;}.inp1{margin-right: 40px;}.vip{margin-right: 40px;}
  .screen{margin-right: 40px;}
@@ -297,4 +298,7 @@ import {orderStatus} from 'api/userAjax';
  .money{width:34px;height:12px;font-size:16px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);line-height:24px;}
  .number{width: 300px;text-align: left;display: inline-block;}
  .Order{width: 80px;display: inline-block;}
+  .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

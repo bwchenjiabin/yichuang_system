@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+    <el-scrollbar style="height:100%">
+       <div class="box">
     <el-container>
       <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -125,6 +126,7 @@
       </span>
     </el-dialog>
   </div>
+    </el-scrollbar>
 </template>
     <script>
 
@@ -701,5 +703,8 @@ export default {
 .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
   content: "等宽字体";
+}
+.el-scrollbar__wrap {
+  overflow-x: hidden;
 }
 </style>

@@ -256,7 +256,7 @@ export default {
 height: 42px;}
 .box {
   background: #f5f5f5;
-  width: 1650px;
+  width: 100%;
 }
 .title {
   padding: 20px;
@@ -356,6 +356,7 @@ height: 42px;}
   width: 178px;
   height: 178px;
   display: block;
+  margin-left: 70px;
 }
 .update {
   font-size: 28px;

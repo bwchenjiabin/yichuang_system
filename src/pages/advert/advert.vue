@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+  <el-scrollbar style="height:100%">
+    <div class="box">
     <el-container>
       <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -65,6 +66,7 @@
                 </span>
             </el-dialog>
   </div>
+  </el-scrollbar>
 </template>
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -343,5 +345,8 @@ padding: 0px 20px 50px 10px;
  .good{width: 15px;height: 15px;position: absolute;top: 11px;right: 36px;display: none} 
  .addclass{border:1px solid rgba(20,85,250,1)}
  .goods{display: block}
-  .Order{width: 25px;height: 26px;}
+ .Order{width: 25px;height: 26px;}
+ .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

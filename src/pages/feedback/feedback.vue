@@ -1,4 +1,5 @@
 <template>
+<el-scrollbar style="height:100%">
   <div class="box">
     <el-container>
       <el-header style="    background-color: rgba(255, 255, 255, 0.95);
@@ -39,6 +40,8 @@
       </el-container>
     </el-container>
   </div>
+</el-scrollbar>
+  
 </template>
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -109,4 +112,7 @@ export default {
 .title span {
   margin-left: 10px;
 }
+ .el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

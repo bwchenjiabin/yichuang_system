@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+    <el-scrollbar style="height:100%">
+       <div class="box">
     <el-container>
       <el-header  style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -68,7 +69,7 @@
             accountId:this.accountId
           }"
           :limit="1"
-          accept=".mp4,.avi,.webm"
+          accept=".mp4,.avi,.webm,.flv,.rmvb,.mov"
           :auto-upload="true"
         >
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -102,7 +103,7 @@
             extend2:this.checkedss1
           }"
           :limit="1"
-          accept=".mp4,.avi,.webm"
+          accept=".mp4,.avi,.webm,.flv,.rmvb,.mov"
           :auto-upload="false">
           
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -140,6 +141,7 @@
     </el-dialog>
     
   </div>
+    </el-scrollbar>
 </template>
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -627,5 +629,8 @@ export default {
   border: 1px solid rgba(238, 238, 238, 1);
   height: 15px;
   padding: 20px;
+}
+.el-scrollbar__wrap {
+  overflow-x: hidden;
 }
 </style>

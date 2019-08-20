@@ -1,5 +1,6 @@
 <template>
-        <div class="box">
+    <el-scrollbar style="height:100%">
+       <div class="box">
                 <el-container>
                     <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
@@ -34,20 +35,40 @@
                                         </el-option>
                                     </el-select> 
                                     <span class="search">上架时间:</span>                                               
-                                    <el-date-picker
+                                    <!-- <el-date-picker
                                     v-model="value2"
                                     type="date"
                                     value-format="yyyy-MM-dd"
                                     range-separator="至"
                                     placeholder="开始日期">
+                                    </el-date-picker> -->
+                                    <el-date-picker
+                                      v-model="value2"
+                                      type="datetime"
+                                      range-separator="至"
+                                      placeholder="开始日期"
+                                      format="yyyy-MM-dd HH:mm:ss"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                      align="right"
+                                      :picker-options="pickerOptions">
                                     </el-date-picker>
                                     至
-                                     <el-date-picker
+                                     <!-- <el-date-picker
                                     v-model="value3"
                                     type="date"
                                     range-separator="至"
                                     value-format="yyyy-MM-dd"
                                     placeholder="结束日期">
+                                    </el-date-picker> -->
+                                    <el-date-picker
+                                      v-model="value3"
+                                      type="datetime"
+                                      range-separator="至"
+                                      placeholder="结束日期"
+                                      format="yyyy-MM-dd HH:mm:ss"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                      align="right"
+                                      :picker-options="pickerOptions">
                                     </el-date-picker>
                                     <el-button type="primary" @click="search">搜索</el-button>
                                     <el-button type="primary" @click="opens">新增直播</el-button>
@@ -65,7 +86,7 @@
                                             label="直播封面">
                                             <template slot-scope="scope">
                                                 <i class="img-box">
-                                                  <img :src="'http://192.168.0.104:8081'+scope.row.image" alt />
+                                                  <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.image" alt />
                                                 </i>
                                             </template>
                                             </el-table-column>
@@ -132,7 +153,7 @@
                     </el-container>
                 </el-container>
             <!-- 新增直播 -->
-           <el-dialog title="选择分类配图" :visible.sync="delVisiblee" width="600px" center style="z-index: 999;" :close-on-click-modal="false">     
+           <el-dialog title="选择直播类型" :visible.sync="delVisiblee" width="600px" center style="z-index: 999;" :close-on-click-modal="false">     
                 <div class="del-dialog-cnt" > 
                    <div class="select-list">
                       <div class="select-item" v-for="(item,index) in selectlist" :key="index">
@@ -191,12 +212,11 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="二维码邀请" name="second">
-              <img :src="'http://192.168.0.203:8081'+url" alt="">
+              <img :src="'http://yckt.yichuangketang.com:8081'+url" alt="">
             </el-tab-pane>
           </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <!-- <el-button >取 消</el-button> -->
         <el-button type="primary" @click="delVisibles = false">确 定</el-button>
       </span>
     </el-dialog>
@@ -214,7 +234,7 @@
           <el-input placeholder="搜索关键词" v-model="inputsearch" clearable class="search-inp"></el-input>
           <el-button type="primary" @click="liveSearchs">搜索</el-button>
         </div>
-        <br />
+        <br/>
         <div class="Choice">
           <el-table :data="lists" @selection-change="changeFun" style="width: 100%">
             <el-table-column type="selection" width="55"></el-table-column>
@@ -245,7 +265,9 @@
         <el-button type="primary" @click="delVisible = false,assignment()">保 存</el-button>
       </span>
     </el-dialog>
-        </div>    
+        </div>   
+    </el-scrollbar>
+        
     </template>
     <script>
 import sidebar from '@/components/sidebar/sidebar.vue'
@@ -253,7 +275,7 @@ import Header from '@/components/Header/Header.vue'
 import {selectlive} from 'api/userAjax';
 import {dellive} from 'api/userAjax';
 import { user } from "api/userAjax";
-import { ssuser } from "api/userAjax";
+import { serchuser } from "api/userAjax";
 import { editlive } from "api/userAjax";
 import { addlecturer } from "api/userAjax";
 import { dellecturer } from "api/userAjax";
@@ -310,10 +332,10 @@ import { invitelecturer } from "api/userAjax";
                 loading:true,
                 selectlist: [{
                 name: '语音直播',
-                icon: '../../../static/img/矢量智能对象(8).png'
+                icon: 'http://yckt.yichuangketang.com:8081/img/20190817095403.png'
                 },{
                 name: 'PPT直播',
-                icon: '../../../static/img/矢量智能对象(7).png'
+                icon: 'http://yckt.yichuangketang.com:8081/img/20190817095352.png'
                 }],
                 checkBoxDatas:[],
                 checkBoxData:[],
@@ -384,24 +406,20 @@ import { invitelecturer } from "api/userAjax";
           }else{
               this.$message.error(res.data.msg);            
           }
-      })
-      // this.checkBoxDatas = this.checkBoxData;
-      // this.getdatas();
+      })                                        
     },
   // 初始化回到顶部
       reload() {
      $('body,html').animate({scrollTop:0},200);
     },
     handleClick(tab, event) {
-        // console.log(tab, event);
       },
     changeFun(val) {
       this.checkBoxData = val.map(item => item.businessId);
-      // console.log(this.checkBoxData)
     },
         // 展示
     getdatas() {
-      user(localStorage.getItem("ex2"), this.currentPage).then(res => {
+      user(localStorage.getItem("ex2"), this.currentPages).then(res => {
         this.lists = res.data.data.data;
         this.usersize = res.data.data.total;
         this.loading = false;
@@ -432,10 +450,10 @@ import { invitelecturer } from "api/userAjax";
       })
           },
     liveSearchs() {
-      ssuser(
-        localStorage.getItem("ex2"),
-        this.inputsearch,
-        this.currentPage
+      serchuser(
+        {ex2:localStorage.getItem("ex2"),
+        businessName:this.inputsearch,
+        pageNum:this.currentPages}
       ).then(res => {
         this.$message.success(res.data.msg);
         this.lists = res.data.data.data;
@@ -455,7 +473,6 @@ import { invitelecturer } from "api/userAjax";
     invitelecturers(){
       invitelecturer({id:this.manageid,accountid:localStorage.getItem('ex2')}).then(res => {
         this.url = res.data.data.codepath
-          console.log(res);
       })
     },
     manages(){
@@ -594,4 +611,7 @@ import { invitelecturer } from "api/userAjax";
   width: 100%;
   height: 100%;
 }
+.el-scrollbar__wrap {
+   overflow-x: hidden;
+ }
 </style>

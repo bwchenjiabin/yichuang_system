@@ -1,157 +1,171 @@
 <template>
-  <div class="box">
-    <el-container>
-      <el-header
-        style="    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px -10px #000;"
-      >
-        <Header></Header>
-      </el-header>
+  <el-scrollbar style="height:100%">
+    <div class="box">
       <el-container>
-        <el-aside width="200px">
-          <sidebar></sidebar>
-        </el-aside>
-        <el-main>
-          <div>
-            <span class="course" @click="switchss">我的直播</span>&nbsp;&nbsp;&nbsp;/
-            <span class="imgText">{{title}}</span>
-            <br />
-            <div class="title">
-              <i class="icon"></i>
-              <span>基本信息</span>
+        <el-header
+          style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;"
+        >
+          <Header></Header>
+        </el-header>
+        <el-container>
+          <el-aside width="200px">
+            <sidebar></sidebar>
+          </el-aside>
+          <el-main>
+            <div>
+              <span class="course" @click="switchss">我的直播</span>&nbsp;&nbsp;&nbsp;/
+              <span class="imgText">{{title}}</span>
               <br />
-              <br />
-              <br />
-              <span class="name">直播名称</span>
-              <el-input placeholder="请输入名称，最多不超过12个字" v-model="input" clearable maxlength="30"></el-input>
-              <span class="number">{{this.input.length}}/30</span>
-              <br />
-              <br />
-              <br />
-              <span class="name">直播封面</span>
-              <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
-              <br />
-              <br />
-              <el-upload
-                class="avatar-uploader"
-                action="http://192.168.0.104:8081/section/insertImg"
-                :data="{accountId: this.Id}"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
-              >
-                <img
-                  v-if="imageUrl"
-                  :src="'http://192.168.0.104:8081'+this.imageUrl"
-                  class="avatar"
-                />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-              <br />
-              <br />
-              <span class="name">直播简介</span>
-              <br />
-              <br />
-              <el-input
-                type="textarea"
-                maxlength="500"
-                :rows="7"
-                placeholder="请输入内容"
-                v-model="textarea"
-                class="inp"
-              ></el-input>
-              <span class="number">{{this.textarea.length}}/500</span>
-              <br />
-              <br />
-              <span class="search">直播时间:</span>
-              <el-date-picker
-              v-model="value2"
-              type="datetime"
-              range-separator="至"
-              placeholder="开始日期"
-              format="yyyy-MM-dd HH:mm:ss"
-                value-format="yyyy-MM-dd HH:mm:ss"
-              align="right"
-              :picker-options="pickerOptions">
-            </el-date-picker>
-              至
-               <el-date-picker
-              v-model="value3"
-              type="datetime"
-              range-separator="至"
-              placeholder="结束日期"
-              format="yyyy-MM-dd HH:mm:ss"
-                value-format="yyyy-MM-dd HH:mm:ss"
-              align="right"
-              :picker-options="pickerOptions">
-            </el-date-picker>
-              <br />
-              <br />
-              <br />
-            </div>
-            <div class="title">
-              <i class="icon"></i>
-              <span>上架信息</span>
-              <br />
-              <br />
-              <br />
-              <!-- <span class="name">上架时间</span>&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-radio v-model="radio" label="1">立即上架</el-radio>
-              <el-radio v-model="radio" label="2">暂不上架</el-radio>
-              <br />
-              <br />
-              <br /> -->
-              <span>获取形式</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-radio v-model="radios" label="2" @change="radioq">收费</el-radio>
-              <el-radio v-model="radios" label="0" @change="radioq">所有人免费</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-radio v-model="radios" label="1" @change="radioq">会员免费</el-radio>
-              <br />
-              <br />
-              <br />
-              <div style="display:inline-block" class="hxj">
-                <span>
-                  现价
-                  <span class="bt">
-                    <br />(必填)
+              <div class="title">
+                <i class="icon"></i>
+                <span>基本信息</span>
+                <br />
+                <br />
+                <br />
+                <span class="name">直播名称</span>
+                <el-input placeholder="请输入名称，最多不超过12个字" v-model="input" clearable maxlength="30"></el-input>
+                <span class="number">{{this.input.length}}/30</span>
+                <br />
+                <br />
+                <br />
+                <span class="name">直播封面</span>
+                <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
+                <br />
+                <br />
+                <el-upload
+                  class="avatar-uploader"
+                  action="http://yckt.yichuangketang.com:8081/section/insertImg"
+                  :data="{accountId: this.Id}"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
+                >
+                  <img
+                    v-if="imageUrl"
+                    :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
+                    class="avatar"
+                  />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+                <br />
+                <br />
+                <span class="name">直播简介</span>
+                <br />
+                <br />
+                <el-input
+                  type="textarea"
+                  maxlength="500"
+                  :rows="7"
+                  placeholder="请输入内容"
+                  v-model="textarea"
+                  class="inp"
+                ></el-input>
+                <span class="number">{{this.textarea.length}}/500</span>
+                <br />
+                <br />
+                <span class="search">直播时间:</span>
+                <el-date-picker
+                  v-model="value2"
+                  type="datetime"
+                  range-separator="至"
+                  placeholder="开始日期"
+                  format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  align="right"
+                  :picker-options="pickerOptions"
+                ></el-date-picker>至
+                <el-date-picker
+                  v-model="value3"
+                  type="datetime"
+                  range-separator="至"
+                  placeholder="结束日期"
+                  format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  align="right"
+                  :picker-options="pickerOptions"
+                ></el-date-picker>
+                <br />
+                <br />
+                <div class="updatas" v-if="type==1">
+                  <span class="search">PPT上传:</span>
+                  <br />
+                  <br />
+                  <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :before-remove="beforeRemove"
+                    multiple
+                    :limit="1"
+                    :on-exceed="handleExceed"
+                    :file-list="fileList"
+                  >
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <el-button size="small" type="primary">点击预览</el-button>
+                  </el-upload>
+                </div>
+                <br />
+                <br />
+                <br />
+              </div>
+              <div class="title">
+                <i class="icon"></i>
+                <span>上架信息</span>
+                <br />
+                <br />
+                <br />
+                <span>获取形式</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-radio v-model="radios" label="2" @change="radioq">收费</el-radio>
+                <el-radio v-model="radios" label="0" @change="radioq">所有人免费</el-radio>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-radio v-model="radios" label="1" @change="radioq">会员免费</el-radio>
+                <br />
+                <br />
+                <br />
+                <div style="display:inline-block" class="hxj">
+                  <span>
+                    现价
+                    <span class="bt">
+                      <br />(必填)
+                    </span>
                   </span>
-                </span>
-              </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span
-                class="money"
-              >￥</span>
-              <el-input
-                placeholder="0.01-50000"
-                v-model="input3"
-                :disabled="disabled"
-                onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
-              ></el-input>
-              <br />
-              <br />
-              <br />
-              <div style="display:inline-block" class="hxj">
-                <span style="line-height:42px; display: block;height: 100%;">
-                  原价
-                  <span class="bt"></span>
-                </span>
-              </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span
-                class="money"
-              >￥</span>
-              <el-input
-                placeholder="0.01-50000"
-                v-model="input4"
-                :disabled="disabled"
-                onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
-              ></el-input>
-              <br />
-              <br />
-              <el-button type="submit" @click="adddata()">保存</el-button>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span
+                  class="money"
+                >￥</span>
+                <el-input
+                  placeholder="0.01-50000"
+                  v-model="input3"
+                  :disabled="disabled"
+                  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+                ></el-input>
+                <br />
+                <br />
+                <br />
+                <div style="display:inline-block" class="hxj">
+                  <span style="line-height:42px; display: block;height: 100%;">
+                    原价
+                    <span class="bt"></span>
+                  </span>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span
+                  class="money"
+                >￥</span>
+                <el-input
+                  placeholder="0.01-50000"
+                  v-model="input4"
+                  :disabled="disabled"
+                  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+                ></el-input>
+                <br />
+                <br />
+                <el-button type="submit" @click="adddata()">保存</el-button>
+              </div>
             </div>
-          </div>
-        </el-main>
+          </el-main>
+        </el-container>
       </el-container>
-    </el-container>
-  </div>
+    </div>
+  </el-scrollbar>
 </template>
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
@@ -198,6 +212,7 @@ export default {
       pagesize: 5,
       opentype: "",
       inputsearch: "",
+      fileList: [],
       tableData: [
         {
           img: "../../../static/img/矢量智能对象@2x_看图王.png",
@@ -206,27 +221,31 @@ export default {
         }
       ],
       pickerOptions: {
-          shortcuts: [{
-            text: '今天',
+        shortcuts: [
+          {
+            text: "今天",
             onClick(picker) {
-              picker.$emit('pick', new Date());
+              picker.$emit("pick", new Date());
             }
-          }, {
-            text: '昨天',
+          },
+          {
+            text: "昨天",
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
+              picker.$emit("pick", date);
             }
-          }, {
-            text: '一周前',
+          },
+          {
+            text: "一周前",
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
+              picker.$emit("pick", date);
             }
-          }]
-        },
+          }
+        ]
+      }
     };
   },
   created() {
@@ -235,7 +254,6 @@ export default {
     this.Id = localStorage.getItem("ex2");
   },
   methods: {
-
     //获取传值
     getParams() {
       var routerParams = this.$route.query.type;
@@ -266,11 +284,6 @@ export default {
         that.disabled = false;
       }
     },
-    // getdata() {
-    //   classe(localStorage.getItem("ex2")).then(res => {
-    //     this.Choice = res.data;
-    //   });
-    // },
     adddata() {
       this.checkBoxDataids = this.checkBoxDatas.map(item => item.businessId);
       if (this.disabled == false) {
@@ -290,14 +303,15 @@ export default {
             nowprice: this.input3,
             info: this.textarea,
             teacherid: this.checkBoxDataids
-          })
-            .then(res => {
+          }).then(res => {
+            if (res.data.code == "0000") {
               this.switchss();
               this.$message.success(res.data.msg);
-            })
-            .catch(err => {
+            } else {
               this.$message.error(res.data.msg);
-            });
+              return;
+            }
+          });
         }
       } else {
         addlive({
@@ -312,14 +326,15 @@ export default {
           nowprice: this.input3,
           info: this.textarea,
           teacherid: this.checkBoxDataids
-        })
-          .then(res => {
+        }).then(res => {
+          if (res.data.code == "0000") {
             this.switchss();
             this.$message.success(res.data.msg);
-          })
-          .catch(err => {
+          } else {
             this.$message.error(res.data.msg);
-          });
+            return;
+          }
+        });
       }
     },
     handleAvatarSuccess(res) {
@@ -330,6 +345,16 @@ export default {
         this.$message.error(res.msg);
       }
     },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    }
   },
   components: {
     sidebar,
@@ -386,6 +411,9 @@ export default {
   background: blue;
   float: left;
   margin-top: 3px;
+}
+.updatas {
+  width: 25%;
 }
 .title {
   width: auto;
@@ -602,4 +630,8 @@ export default {
   width: 50%;
   height: auto;
 }
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
 </style>

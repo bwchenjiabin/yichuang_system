@@ -124,7 +124,7 @@ import {addclass} from 'api/userAjax';
     }
     </script>
     <style scoped>
- .box{background: #f5f5f5;width: 1650px;}
+ .box{background: #f5f5f5;width: 100%}
  .course{font-size:18px;font-family:PingFangSC-Medium;font-weight:700;color:rgba(51,51,51,1);}
  .imgText{font-size:18px;font-family:PingFangSC-Medium;font-weight:500;color:rgba(153,153,153,1);}
  .title{padding: 20px;}
