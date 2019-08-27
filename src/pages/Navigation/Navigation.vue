@@ -101,7 +101,7 @@
           <br>
           <el-upload
                   class="avatar-uploader"
-                  action="http://yckt.yichuangketang.com:8081/section/insertImg"
+                  action="http://192.168.0.203:8081/section/insertImg"
                   :show-file-list="false"
                   :auto-upload="false"
                   :on-change='changeUpload'
@@ -109,7 +109,7 @@
                 >
                   <img
                     v-if="imageUrl"
-                    :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
+                    :src="'http://192.168.0.203:8081'+this.imageUrl"
                     class="avatar"
                   />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -239,7 +239,7 @@
         <el-button type="primary" @click="deleteRow()">确 定</el-button>
       </span>
     </el-dialog>
-     <el-dialog title="图片剪裁" :visible.sync="dialogVisible" append-to-body>
+     <el-dialog title="图片剪裁" :visible.sync="dialogVisible" append-to-body width="600px" :close-on-click-modal="false">
       <div class="cropper-content">
         <div class="cropper" style="text-align:center">
         <vueCropper
@@ -259,8 +259,8 @@
             :fixedNumber="option.fixedNumber"
             :centerBox="option.centerBox"
             :infoTrue="option.infoTrue"
-            :fixedBox="option.fixedBox"
-          ></vueCropper>
+            :fixedBox="option.fixedBox">
+          </vueCropper>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -343,16 +343,16 @@ export default {
         outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 500, // 默认生成截图框宽度
-        autoCropHeight: 500, // 默认生成截图框高度
-        fixedBox: false, // 固定截图框大小 不允许改变
+        autoCropWidth: 72, // 默认生成截图框宽度
+        autoCropHeight: 72, // 默认生成截图框高度
+        fixedBox: true, // 固定截图框大小 不允许改变
         fixed: false, // 是否开启截图框宽高固定比例
         fixedNumber: [5, 5], // 截图框的宽高比例
-        full: true, // 是否输出原图比例的截图
+        full: false, // 是否输出原图比例的截图
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: true, // 截图框是否被限制在图片里面
-        infoTrue: true, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+        infoTrue: false, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
         // enlarge:1,
       },
       picsList: [],  //页面显示的数组

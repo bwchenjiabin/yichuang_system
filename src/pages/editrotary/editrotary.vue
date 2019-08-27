@@ -10,7 +10,6 @@
         <el-aside width="200px">
           <sidebar></sidebar>
         </el-aside>
-
         <el-main>
           <div>
             <router-link to="/rotary">
@@ -109,15 +108,13 @@
                     <el-table-column property="upperoffTime" label="创建时间" width="120"></el-table-column>
                   </el-table>
                 </el-tab-pane>
-
                 <el-tab-pane label="视频" name="video">
                   <el-table
                     @current-change="handleCurrentChange"
                     ref="singleTable"
                     :data="tableData2"
                     highlight-current-row
-                    style="width: 100%"
-                  >
+                    style="width: 100%">
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column property="lessonName" label="名称" width="120"></el-table-column>
                     <el-table-column property="upperoffTime" label="创建时间" width="120"></el-table-column>
@@ -127,7 +124,6 @@
             </el-tab-pane>
             <br />
             <br />
-
             <!-- 图文分页 -->
             <el-pagination
               @size-change="handleSizeChange"
@@ -139,7 +135,6 @@
               :total="this.twsize"
               v-if="this.courser == 'imgText'"
             ></el-pagination>
-
             <!-- 音频分页 -->
             <el-pagination
               @size-change="handleSizeChange"
@@ -151,7 +146,6 @@
               :total="this.ypsize"
               v-if="this.courser == 'audio'"
             ></el-pagination>
-
             <!-- 视频分页 -->
             <el-pagination
               @size-change="handleSizeChange"
@@ -259,23 +253,22 @@ export default {
        dialogVisible: false,
       // 裁剪组件的基础配置option
       option: {
-        img: "", // 裁剪图片的地址
+        img: '', // 裁剪图片的地址
         info: true, // 裁剪框的大小信息
         outputSize: 1, // 裁剪生成图片的质量
-        outputType: "png", // 裁剪生成图片的格式
+        outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 500, // 默认生成截图框宽度
-        autoCropHeight: 500, // 默认生成截图框高度
-        fixedBox: false, // 固定截图框大小 不允许改变
+        autoCropWidth: 750, // 默认生成截图框宽度
+        autoCropHeight: 360, // 默认生成截图框高度
+        fixedBox: true, // 固定截图框大小 不允许改变
         fixed: false, // 是否开启截图框宽高固定比例
         fixedNumber: [5, 5], // 截图框的宽高比例
-        full: true, // 是否输出原图比例的截图
+        full: false, // 是否输出原图比例的截图
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: true, // 截图框是否被限制在图片里面
-        infoTrue: true // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
-        // enlarge:1,
+        infoTrue: false, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
       },
       picsList: [], //页面显示的数组
       // 防止重复提交

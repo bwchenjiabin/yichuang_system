@@ -11,8 +11,6 @@
         </el-aside>
     <el-main>
       <div>
-        <!-- <span class="course" @click="switchss">我的课程</span>&nbsp;&nbsp;&nbsp;
-        <span class="imgText">新增图文</span> -->
         <el-breadcrumb separator-class="el-icon-arrow-right">
               <el-breadcrumb-item :to="{ path: '/content' }" @click="switchss">我的课程</el-breadcrumb-item>
               <el-breadcrumb-item>编辑图文</el-breadcrumb-item>

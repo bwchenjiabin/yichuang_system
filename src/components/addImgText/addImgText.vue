@@ -1,23 +1,9 @@
 <template>
-  <!-- <el-scrollbar style="height:100%"> -->
   <div class="box">
-    <!-- <el-container>
-      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px -10px #000;">
-        <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside width="200px">
-          <sidebar></sidebar>
-    </el-aside>-->
     <el-main>
       <div>
         <span class="course" @click="switchss">我的课程</span>&nbsp;&nbsp;&nbsp;/
         <span class="imgText">新增图文</span>
-        <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item  ><a href="javascript:;">我的课程</a></el-breadcrumb-item>
-              <el-breadcrumb-item>编辑图文</el-breadcrumb-item>
-        </el-breadcrumb>-->
         <br />
         <div class="title">
           <i class="icon"></i>
@@ -41,13 +27,11 @@
                   :show-file-list="false"
                   :auto-upload="false"
                   :on-change='changeUpload'
-                  accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
-                >
+                  accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw">
                   <img
                     v-if="imageUrl"
                     :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
-                    class="avatar"
-                  />
+                    class="avatar"/>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           <br />
@@ -143,8 +127,6 @@
         </div>
       </div>
     </el-main>
-    <!-- </el-container>
-    </el-container>-->
     <!-- 弹窗 -->
     <el-dialog
       title="选择分类"
@@ -152,8 +134,7 @@
       width="600px"
       center
       style="z-index: 999"
-      :close-on-click-modal="false"
-    >
+      :close-on-click-modal="false">
       <div class="del-dialog-cnt">
         <div class="gray">注意：包含以下级分类的项目不可选择</div>
         <br />
@@ -234,24 +215,23 @@ export default {
       Id: "",
       dialogVisible: false,
       // 裁剪组件的基础配置option
-      option: {
+       option: {
         img: '', // 裁剪图片的地址
         info: true, // 裁剪框的大小信息
         outputSize: 1, // 裁剪生成图片的质量
         outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 500, // 默认生成截图框宽度
-        autoCropHeight: 500, // 默认生成截图框高度
-        fixedBox: false, // 固定截图框大小 不允许改变
+        autoCropWidth: 240, // 默认生成截图框宽度
+        autoCropHeight: 180, // 默认生成截图框高度
+        fixedBox: true, // 固定截图框大小 不允许改变
         fixed: false, // 是否开启截图框宽高固定比例
         fixedNumber: [5, 5], // 截图框的宽高比例
-        full: true, // 是否输出原图比例的截图
+        full: false, // 是否输出原图比例的截图
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: true, // 截图框是否被限制在图片里面
-        infoTrue: true, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
-        // enlarge:1,
+        infoTrue: false, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
       },
       picsList: [],  //页面显示的数组
       // 防止重复提交

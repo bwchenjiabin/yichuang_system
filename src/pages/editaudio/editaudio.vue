@@ -206,22 +206,22 @@ export default {
        dialogVisible: false,
       // 裁剪组件的基础配置option
       option: {
-        img: "", // 裁剪图片的地址
+        img: '', // 裁剪图片的地址
         info: true, // 裁剪框的大小信息
         outputSize: 1, // 裁剪生成图片的质量
-        outputType: "png", // 裁剪生成图片的格式
+        outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 500, // 默认生成截图框宽度
-        autoCropHeight: 500, // 默认生成截图框高度
-        fixedBox: false, // 固定截图框大小 不允许改变
+        autoCropWidth: 240, // 默认生成截图框宽度
+        autoCropHeight: 180, // 默认生成截图框高度
+        fixedBox: true, // 固定截图框大小 不允许改变
         fixed: false, // 是否开启截图框宽高固定比例
         fixedNumber: [5, 5], // 截图框的宽高比例
-        full: true, // 是否输出原图比例的截图
+        full: false, // 是否输出原图比例的截图
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: true, // 截图框是否被限制在图片里面
-        infoTrue: true // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+        infoTrue: false, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
         // enlarge:1,
       },
       picsList: [], //页面显示的数组
