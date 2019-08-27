@@ -1,8 +1,10 @@
 <template>
   <div class="box">
     <el-container>
-      <el-header style="    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px -10px #000;">
+      <el-header
+        style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;"
+      >
         <Header></Header>
       </el-header>
       <el-container>
@@ -34,17 +36,23 @@
               <p class="text">72*72像素，支持PNG、JPG、GIF格式，小于5M</p>
               <br />
               <br />
-           <el-upload
-            class="avatar-uploader"
-            action="http://yckt.yichuangketang.com:8081/section/insertImg"
-            :data="{accountId: this.userid}"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
-            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <br><br>
+              <el-upload
+                class="avatar-uploader"
+                action="http://yckt.yichuangketang.com:8081/section/insertImg"
+                :show-file-list="false"
+                :auto-upload="false"
+                :on-change="changeUpload"
+                accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
+              >
+                <img
+                  v-if="imageUrl"
+                  :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
+                  class="avatar"
+                />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+              <br />
+              <br />
               <br />
               <br />
               <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -60,8 +68,15 @@
         </el-main>
       </el-container>
     </el-container>
-  <!-- 弹窗 -->
-    <el-dialog title :visible.sync="delVisible" width="550px" center style="z-index: 999" :close-on-click-modal="false">
+    <!-- 弹窗 -->
+    <el-dialog
+      title
+      :visible.sync="delVisible"
+      width="550px"
+      center
+      style="z-index: 999"
+      :close-on-click-modal="false"
+    >
       <div class="del-dialog-cnt">
         <div class="tab">
           <el-tabs v-model="activeName" @tab-click="handleClickq">
@@ -111,57 +126,59 @@
                     <el-table-column property="upperoffTime" label="创建时间" width="120"></el-table-column>
                   </el-table>
                 </el-tab-pane>
-                 <!-- 图文分页 -->
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="current_change"
-              @current-page="currentPage"
-              :page-size="pagesize"
-              background
-              layout="total, prev, pager, next"
-              :total="this.twsize"
-              v-if="this.courser == 'imgText'"
-            ></el-pagination>
+                <!-- 图文分页 -->
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="current_change"
+                  @current-page="currentPage"
+                  :page-size="pagesize"
+                  background
+                  layout="total, prev, pager, next"
+                  :total="this.twsize"
+                  v-if="this.courser == 'imgText'"
+                ></el-pagination>
 
-            <!-- 音频分页 -->
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="current_change1"
-              :current-page="currentPage1"
-              :page-size="pagesize"
-              background
-              layout="total, prev, pager, next"
-              :total="this.ypsize"
-              v-if="this.courser == 'audio'"
-            ></el-pagination>
+                <!-- 音频分页 -->
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="current_change1"
+                  :current-page="currentPage1"
+                  :page-size="pagesize"
+                  background
+                  layout="total, prev, pager, next"
+                  :total="this.ypsize"
+                  v-if="this.courser == 'audio'"
+                ></el-pagination>
 
-            <!-- 视频分页 -->
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="current_change2"
-              :current-page="currentPage2"
-              :page-size="pagesize"
-              background
-              layout="total, prev, pager, next"
-              :total="this.spsize"
-              v-if="this.courser == 'video'"
-            ></el-pagination>
+                <!-- 视频分页 -->
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="current_change2"
+                  :current-page="currentPage2"
+                  :page-size="pagesize"
+                  background
+                  layout="total, prev, pager, next"
+                  :total="this.spsize"
+                  v-if="this.courser == 'video'"
+                ></el-pagination>
               </el-tabs>
             </el-tab-pane>
-             <el-tab-pane label="分类" name="type" style="height:400px;overflow:auto;">
+            <el-tab-pane label="分类" name="type" style="height:400px;overflow:auto;">
               <div class="Choice">
-          <ul>
-            <li v-for="(item,index) in Choice" :key="index">
-              <el-radio v-model="radio2" :label="item.kindId" @change="changeq">{{item.kindName}}</el-radio>
-              <br />
-            </li>
-          </ul>
-        </div>
-              </el-tab-pane>
+                <ul>
+                  <li v-for="(item,index) in Choice" :key="index">
+                    <el-radio
+                      v-model="radio2"
+                      :label="item.kindId"
+                      @change="changeq"
+                    >{{item.kindName}}</el-radio>
+                    <br />
+                  </li>
+                </ul>
+              </div>
+            </el-tab-pane>
             <br />
             <br />
-
-           
           </el-tabs>
         </div>
       </div>
@@ -169,6 +186,35 @@
         <el-button @click="delVisible = false">取 消</el-button>
         <el-button type="primary" @click="getdataadd">保 存</el-button>
       </span>
+    </el-dialog>
+    <el-dialog title="图片剪裁" :visible.sync="dialogVisible" append-to-body>
+      <div class="cropper-content">
+        <div class="cropper" style="text-align:center">
+          <vueCropper
+            ref="cropper"
+            :img="option.img"
+            :outputSize="option.size"
+            :outputType="option.outputType"
+            :info="true"
+            :full="option.full"
+            :canMove="option.canMove"
+            :canMoveBox="option.canMoveBox"
+            :original="option.original"
+            :autoCrop="option.autoCrop"
+            :autoCropWidth="option.autoCropWidth"
+            :autoCropHeight="option.autoCropHeight"
+            :fixed="option.fixed"
+            :fixedNumber="option.fixedNumber"
+            :centerBox="option.centerBox"
+            :infoTrue="option.infoTrue"
+            :fixedBox="option.fixedBox"
+          ></vueCropper>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="finish" :loading="loading">确认</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -180,8 +226,9 @@ import { ImgText } from "api/userAjax";
 import { audio } from "api/userAjax";
 import { video } from "api/userAjax";
 import { oneinsertNav } from "api/userAjax";
-import {editNav} from 'api/userAjax';
-import {checkclass} from 'api/userAjax';
+import { editNav } from "api/userAjax";
+import { checkclass } from "api/userAjax";
+import { uploadImg } from "api/userAjax";
 
 export default {
   data() {
@@ -199,7 +246,7 @@ export default {
       disab: true, //按钮禁用
       disabled: false, //按钮禁用
       headerMsg: { "Content-Type": "multipart/form-data" },
-      imgurl:'',
+      imgurl: "",
       Choice: [],
       tableData: [],
       tableData1: [],
@@ -207,20 +254,43 @@ export default {
       currentPage: 1, //图文当前页
       currentPage1: 1, //音频当前页
       currentPage2: 1, //视频当前页
-      value: true, // 
-      valnum:1,
+      value: true, //
+      valnum: 1,
       pagesize: 5,
       twsize: "",
       ypsize: "",
       spsize: "",
       Id: "",
       number: "",
-      userid:'',
-      currid:null,
-      pointtype:'lesson',
-      pointtypes:'lesson',
-      targetids:null,
-      classid:'',
+      userid: "",
+      currid: null,
+      pointtype: "lesson",
+      pointtypes: "lesson",
+      targetids: null,
+      classid: "",
+      dialogVisible: false,
+      // 裁剪组件的基础配置option
+      option: {
+        img: "", // 裁剪图片的地址
+        info: true, // 裁剪框的大小信息
+        outputSize: 1, // 裁剪生成图片的质量
+        outputType: "png", // 裁剪生成图片的格式
+        canScale: false, // 图片是否允许滚轮缩放
+        autoCrop: true, // 是否默认生成截图框
+        autoCropWidth: 500, // 默认生成截图框宽度
+        autoCropHeight: 500, // 默认生成截图框高度
+        fixedBox: false, // 固定截图框大小 不允许改变
+        fixed: false, // 是否开启截图框宽高固定比例
+        fixedNumber: [5, 5], // 截图框的宽高比例
+        full: true, // 是否输出原图比例的截图
+        canMoveBox: true, // 截图框能否拖动
+        original: false, // 上传图片按照原始比例渲染
+        centerBox: true, // 截图框是否被限制在图片里面
+        infoTrue: true // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+      },
+      picsList: [], //页面显示的数组
+      // 防止重复提交
+      loading: false,
     };
   },
   created() {
@@ -232,55 +302,76 @@ export default {
     this.keep();
     this.getdataClass();
 
-    // this.currid = this.Id;
     this.userid = localStorage.getItem("ex2");
   },
   methods: {
-      changeq(val){
-        this.classid = val;
+    changeUpload(file, fileList) {
+      const isLt5M = file.size / 1024 / 1024 < 5;
+      if (!isLt5M) {
+        this.$message.error("上传文件大小不能超过 5MB!");
+        return false;
+      }
+      this.imgurl = URL.createObjectURL(file.raw);
+      this.option.img = this.imgurl;
+      this.dialogVisible = true;
+    },
+    // 点击裁剪，这一步是可以拿到处理后的地址
+    finish() {
+      this.$refs.cropper.getCropBlob(data => {
+        let formData = new FormData();
+        formData.append("file", data);
+        formData.append("accountId", this.userid);
+        uploadImg(formData).then(res => {
+          res = JSON.parse(res);
+          this.dialogVisible = false;
+          this.imageUrl = res.data;
+          if (res.code == "0000") {
+            this.$message.success("上传成功");
+          } else {
+            this.$message.error(res.msg);
+          }
+        });
+      });
+    },
+    changeq(val) {
+      this.classid = val;
     },
     getdataadd() {
-      console.log(this.pointtype)
-      console.log(this.pointtypes)
-       this.pointtypes = this.pointtype
-      if(this.pointtypes == 'lesson'){
+      this.pointtypes = this.pointtype;
+      if (this.pointtypes == "lesson") {
         this.targetids = this.currentRow;
-      }else if(this.pointtypes == 'type'){
+      } else if (this.pointtypes == "type") {
         this.targetids = this.classid;
       }
       this.delVisible = false;
     },
-          // 查询分类
+    // 查询分类
     getdataClass() {
-        checkclass(localStorage.getItem('ex2')).then(res => {
-            this.Choice = res.data;
-      })
+      checkclass(localStorage.getItem("ex2")).then(res => {
+        this.Choice = res.data;
+      });
     },
     handleClickq(tab, event) {
-        this.pointtype = tab.name;
-
-      },
+      this.pointtype = tab.name;
+    },
     getdata() {
-      oneinsertNav({id:this.Id}).then(res => {
-        console.log(res);
-        this.pointtypes = res.data.data.pointtype
+      oneinsertNav({ id: this.Id }).then(res => {
+        this.pointtypes = res.data.data.pointtype;
         this.input = res.data.data.name;
         this.imageUrl = res.data.data.img;
         this.number = res.data.data.targetid;
       });
     },
-    changes(val){
+    changes(val) {
       if (val == true) {
-        this.valnum = 1
-      }else{
-        this.valnum = 2
+        this.valnum = 1;
+      } else {
+        this.valnum = 2;
       }
-      console.log(this.valnum)
     },
-
-      submitUpload() {
-        this.$refs.upload.submit();
-      },
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
     //获取传值
     getParams() {
       var routerParams = this.$route.params.id;
@@ -290,21 +381,21 @@ export default {
     getImgText() {
       ImgText(localStorage.getItem("ex2"), "1", this.currentPage).then(res => {
         this.tableData = res.data.data.data;
-        this.twsize = res.data.data.total
+        this.twsize = res.data.data.total;
       });
     },
     // 音频查询
     getaudio() {
       audio(localStorage.getItem("ex2"), "2", this.currentPage1).then(res => {
-         this.tableData1 = res.data.data.data;
-            this.ypsize = res.data.data.total
+        this.tableData1 = res.data.data.data;
+        this.ypsize = res.data.data.total;
       });
     },
     // 视频查询
     getvideo() {
       video(localStorage.getItem("ex2"), "3", this.currentPage2).then(res => {
         this.tableData2 = res.data.data.data;
-            this.spsize = res.data.data.total
+        this.spsize = res.data.data.total;
       });
     },
     // 刷新页面
@@ -313,14 +404,21 @@ export default {
     },
     //编辑轮播
     updatar() {
-      editNav({accountid:localStorage.getItem("ex2"),name:this.input,pointtype:this.pointtypes,targetid:this.targetids,img:this.imageUrl,id:this.Id}).then(res => {
+      editNav({
+        accountid: localStorage.getItem("ex2"),
+        name: this.input,
+        pointtype: this.pointtypes,
+        targetid: this.targetids,
+        img: this.imageUrl,
+        id: this.Id
+      }).then(res => {
         this.$message.success(res.data.msg);
         this.$router.push({
           path: `/Navigation`
         });
       });
     },
-    
+
     keep() {
       if (this.courser == "imgText") {
         this.number = 1;
@@ -411,8 +509,8 @@ export default {
   padding: 20px;
 }
 .img-box {
-    width: 150px;
-    height: 150px;
+  width: 150px;
+  height: 150px;
 }
 .img-box img {
   width: 100%;
@@ -501,11 +599,15 @@ export default {
   font-size: 28px;
   color: #8c939d;
   width: 72px;
-  height: 72px; 
+  height: 72px;
   line-height: 75px;
   text-align: center;
   background: rgba(251, 251, 251, 1);
   border: 1px dashed #d9d9d9;
   margin-left: 70px;
+}
+.cropper {
+  width: auto;
+  height: 300px;
 }
 </style>

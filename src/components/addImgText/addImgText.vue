@@ -1,7 +1,7 @@
 <template>
   <!-- <el-scrollbar style="height:100%"> -->
-     <div class="box">
-      <!-- <el-container>
+  <div class="box">
+    <!-- <el-container>
       <el-header style="    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 0 20px -10px #000;">
         <Header></Header>
@@ -9,7 +9,7 @@
       <el-container>
         <el-aside width="200px">
           <sidebar></sidebar>
-        </el-aside> -->
+    </el-aside>-->
     <el-main>
       <div>
         <span class="course" @click="switchss">我的课程</span>&nbsp;&nbsp;&nbsp;/
@@ -17,7 +17,7 @@
         <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
               <el-breadcrumb-item  ><a href="javascript:;">我的课程</a></el-breadcrumb-item>
               <el-breadcrumb-item>编辑图文</el-breadcrumb-item>
-        </el-breadcrumb> -->
+        </el-breadcrumb>-->
         <br />
         <div class="title">
           <i class="icon"></i>
@@ -36,15 +36,20 @@
           <br />
           <br />
           <el-upload
-            class="avatar-uploader"
-            action="http://yckt.yichuangketang.com:8081/section/insertImg"
-            :data="{accountId: this.Id}"   
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
-            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+                  class="avatar-uploader"
+                  action="http://yckt.yichuangketang.com:8081/section/insertImg"
+                  :show-file-list="false"
+                  :auto-upload="false"
+                  :on-change='changeUpload'
+                  accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
+                >
+                  <img
+                    v-if="imageUrl"
+                    :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
+                    class="avatar"
+                  />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
           <br />
           <br />
           <span class="name">课程简介</span>
@@ -100,26 +105,38 @@
           <div style="display:inline-block" class="hxj">
             <span>
               现价
-              <span class="bt"><br />(必填)
+              <span class="bt">
+                <br />(必填)
               </span>
             </span>
           </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <span
             class="money"
           >￥</span>
-          <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
+          <el-input
+            placeholder="0.01-50000"
+            v-model="input3"
+            :disabled="disabled"
+            onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+          ></el-input>
           <br />
           <br />
           <br />
           <div style="display:inline-block" class="hxj">
             <span style="line-height:42px; display: block;height: 100%;">
               原价
-              <span class="bt">
-              </span>
+              <span class="bt"></span>
             </span>
           </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="money">￥</span>
-          <el-input placeholder="0.01-50000" v-model="input4" :disabled="disabled" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
+          <span
+            class="money"
+          >￥</span>
+          <el-input
+            placeholder="0.01-50000"
+            v-model="input4"
+            :disabled="disabled"
+            onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+          ></el-input>
           <br />
           <br />
           <el-button type="submit" @click="adddata()">保存</el-button>
@@ -127,9 +144,16 @@
       </div>
     </el-main>
     <!-- </el-container>
-    </el-container> -->
+    </el-container>-->
     <!-- 弹窗 -->
-    <el-dialog title="选择分类" :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">
+    <el-dialog
+      title="选择分类"
+      :visible.sync="delVisible"
+      width="600px"
+      center
+      style="z-index: 999"
+      :close-on-click-modal="false"
+    >
       <div class="del-dialog-cnt">
         <div class="gray">注意：包含以下级分类的项目不可选择</div>
         <br />
@@ -147,6 +171,36 @@
         <el-button type="primary" @click="delVisible = false,assignment()">保 存</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="图片剪裁" :visible.sync="dialogVisible" append-to-body>
+      <div class="cropper-content">
+        <div class="cropper" style="text-align:center">
+        <vueCropper
+            ref="cropper"
+            :img="option.img"
+            :outputSize="option.size"
+            :outputType="option.outputType"
+            :info="true"
+            :full="option.full"
+            :canMove="option.canMove"
+            :canMoveBox="option.canMoveBox"
+            :original="option.original"
+            :autoCrop="option.autoCrop"
+            :autoCropWidth="option.autoCropWidth"
+            :autoCropHeight="option.autoCropHeight"
+            :fixed="option.fixed"
+            :fixedNumber="option.fixedNumber"
+            :centerBox="option.centerBox"
+            :infoTrue="option.infoTrue"
+            :fixedBox="option.fixedBox"
+          ></vueCropper>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="finish" :loading="loading">确认</el-button>
+      </div>
+    </el-dialog>
+
   </div>
   <!-- </el-scrollbar> -->
 </template>
@@ -177,7 +231,31 @@ export default {
       delVisible: false,
       radio: "1",
       Choice: [],
-      Id:'',
+      Id: "",
+      dialogVisible: false,
+      // 裁剪组件的基础配置option
+      option: {
+        img: '', // 裁剪图片的地址
+        info: true, // 裁剪框的大小信息
+        outputSize: 1, // 裁剪生成图片的质量
+        outputType: 'png', // 裁剪生成图片的格式
+        canScale: false, // 图片是否允许滚轮缩放
+        autoCrop: true, // 是否默认生成截图框
+        autoCropWidth: 500, // 默认生成截图框宽度
+        autoCropHeight: 500, // 默认生成截图框高度
+        fixedBox: false, // 固定截图框大小 不允许改变
+        fixed: false, // 是否开启截图框宽高固定比例
+        fixedNumber: [5, 5], // 截图框的宽高比例
+        full: true, // 是否输出原图比例的截图
+        canMoveBox: true, // 截图框能否拖动
+        original: false, // 上传图片按照原始比例渲染
+        centerBox: true, // 截图框是否被限制在图片里面
+        infoTrue: true, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+        // enlarge:1,
+      },
+      picsList: [],  //页面显示的数组
+      // 防止重复提交
+      loading: false
     };
   },
   created() {
@@ -185,6 +263,34 @@ export default {
     this.Id = localStorage.getItem("ex2");
   },
   methods: {
+        changeUpload(file, fileList) {
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
+        this.$message.error('上传文件大小不能超过 5MB!')
+        return false
+      }
+      this.imgurl = URL.createObjectURL(file.raw)
+      this.option.img = this.imgurl
+      this.dialogVisible = true
+    },
+    // 点击裁剪，这一步是可以拿到处理后的地址
+    finish() {
+      this.$refs.cropper.getCropBlob((data) => {
+        let formData = new FormData();
+        formData.append('file',data);
+        formData.append('accountId',this.Id);
+        uploadImg(formData).then(res => {
+            res = JSON.parse(res)
+            this.dialogVisible = false
+            this.imageUrl = res.data;
+            if (res.code == "0000") {
+              this.$message.success('上传成功');
+            } else {
+              this.$message.error(res.msg);
+            }
+        })
+      })
+    },
     //类型名字获取
     abv(val) {
       this.aaa = val;
@@ -199,7 +305,7 @@ export default {
     //判断如果选择收费，输入框可以输入
     radioq(val) {
       let that = this;
-      if (val == "0") { 
+      if (val == "0") {
         that.disabled = true;
         that.input3 = "";
         that.input4 = "";
@@ -213,16 +319,27 @@ export default {
       });
     },
     adddata() {
-          if(this.aaa == ""){
-            this.$message.error('分类不可为空')
-            return;
-          }
-          if(this.disabled == false){
-            if (this.input3 == 0 || this.input4 == 0) {
-              this.$message.error('价钱不可以小于0元')
-              return;
-            }else{
-                addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imageUrl)
+      if (this.aaa == "") {
+        this.$message.error("分类不可为空");
+        return;
+      }
+      if (this.disabled == false) {
+        if (this.input3 == 0 || this.input4 == 0) {
+          this.$message.error("价钱不可以小于0元");
+          return;
+        } else {
+          addlesson(
+            this.input,
+            this.lessonType,
+            this.aaa,
+            localStorage.getItem("ex2"),
+            this.radio,
+            this.textarea,
+            this.input4,
+            this.input3,
+            this.radios,
+            this.imageUrl
+          )
             .then(res => {
               this.switchss();
               this.$message.success(res.data);
@@ -230,17 +347,28 @@ export default {
             .catch(err => {
               this.$message.error(err);
             });
-              }
-          }else{
-              addlesson(this.input,this.lessonType,this.aaa,localStorage.getItem("ex2"),this.radio,this.textarea,this.input4,this.input3,this.radios,this.imageUrl)
-            .then(res => {
-              this.switchss();
-              this.$message.success(res.data);
-            })
-            .catch(err => {
-              this.$message.error(err);
-            });
-          }
+        }
+      } else {
+        addlesson(
+          this.input,
+          this.lessonType,
+          this.aaa,
+          localStorage.getItem("ex2"),
+          this.radio,
+          this.textarea,
+          this.input4,
+          this.input3,
+          this.radios,
+          this.imageUrl
+        )
+          .then(res => {
+            this.switchss();
+            this.$message.success(res.data);
+          })
+          .catch(err => {
+            this.$message.error(err);
+          });
+      }
     },
     submitUpload() {
       this.$refs.upload.submit();
@@ -248,15 +376,15 @@ export default {
     handleAvatarSuccess(res) {
       this.imageUrl = res.data;
       if (res.code == "0000") {
-      this.$message.success(res.msg);
-      }else{
-      this.$message.error(res.msg)
+        this.$message.success(res.msg);
+      } else {
+        this.$message.error(res.msg);
       }
     },
     //弹窗
     Popup() {
       this.delVisible = true;
-    },
+    }
   },
   components: {
     sidebar,
@@ -265,11 +393,13 @@ export default {
 };
 </script>
     <style scoped>
-.hxj{position: absolute;
-height: 42px;}
+.hxj {
+  position: absolute;
+  height: 42px;
+}
 .box {
   background: #f5f5f5;
-  width: 100%;  
+  width: 100%;
 }
 .title {
   padding: 20px;
@@ -490,37 +620,41 @@ height: 42px;}
   font-size: 16px;
 }
 .img-box {
-    width: 150px;
-    height: 150px;
+  width: 150px;
+  height: 150px;
 }
 .img-box img {
   width: 100%;
   height: 100%;
 }
- .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-  .el-scrollbar__wrap {
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.el-scrollbar__wrap {
   overflow-x: hidden;
+}
+.cropper {
+  width: auto;
+  height: 300px;
 }
 </style>

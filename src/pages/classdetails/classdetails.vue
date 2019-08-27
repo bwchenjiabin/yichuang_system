@@ -104,7 +104,7 @@ this.getdata();
     },
     current_change: function(currentPage) {
       this.currentPage = currentPage;
-      this.getImgText();
+      this.getdata();
     },
   },
   components: {

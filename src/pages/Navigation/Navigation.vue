@@ -25,12 +25,12 @@
             ref="multipleTable"
             :data="list"
             v-loading="loading"
+            element-loading-text="拼命加载中"
             tooltip-effect="dark"
             style="width: 100%"
             :header-cell-style="{background:'#f5f5f5',color:'#000'}"
             @selection-change="changeFun"
           >
-            <!-- <el-table-column type="selection" width="55"></el-table-column> -->
             <el-table-column  label="导航图标" >
                <template slot-scope="scope">
                  <i class="img-boxx"><img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img"  alt=""></i>
@@ -100,16 +100,20 @@
           <br>
           <br>
           <el-upload
-            class="avatar-uploader"
-            action="http://yckt.yichuangketang.com:8081/section/insertImg"
-            :data="{accountId: this.userid}"   
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            :on-success="handleAvatarSuccess"
-            accept=".jpg, .png, .gif,.svg,.jpeg,.tif,.raw" >
-            <img v-if="imageUrl" :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+                  class="avatar-uploader"
+                  action="http://yckt.yichuangketang.com:8081/section/insertImg"
+                  :show-file-list="false"
+                  :auto-upload="false"
+                  :on-change='changeUpload'
+                  accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
+                >
+                  <img
+                    v-if="imageUrl"
+                    :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
+                    class="avatar"
+                  />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
           <br>
           <br>
           <br>
@@ -235,6 +239,35 @@
         <el-button type="primary" @click="deleteRow()">确 定</el-button>
       </span>
     </el-dialog>
+     <el-dialog title="图片剪裁" :visible.sync="dialogVisible" append-to-body>
+      <div class="cropper-content">
+        <div class="cropper" style="text-align:center">
+        <vueCropper
+            ref="cropper"
+            :img="option.img"
+            :outputSize="option.size"
+            :outputType="option.outputType"
+            :info="true"
+            :full="option.full"
+            :canMove="option.canMove"
+            :canMoveBox="option.canMoveBox"
+            :original="option.original"
+            :autoCrop="option.autoCrop"
+            :autoCropWidth="option.autoCropWidth"
+            :autoCropHeight="option.autoCropHeight"
+            :fixed="option.fixed"
+            :fixedNumber="option.fixedNumber"
+            :centerBox="option.centerBox"
+            :infoTrue="option.infoTrue"
+            :fixedBox="option.fixedBox"
+          ></vueCropper>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="finish" :loading="loading">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </el-scrollbar>
   
@@ -252,6 +285,8 @@ import {DelNav} from 'api/userAjax';
 import {sortNav} from 'api/userAjax';
 import {Choicenav} from 'api/userAjax';
 import {checkclass} from 'api/userAjax';
+import { uploadImg } from "api/userAjax";
+
 
 export default {
   data() {
@@ -301,6 +336,29 @@ export default {
     pointtypes:'lesson',
     targetids:'',
     classid:'',
+    option: {
+        img: '', // 裁剪图片的地址
+        info: true, // 裁剪框的大小信息
+        outputSize: 1, // 裁剪生成图片的质量
+        outputType: 'png', // 裁剪生成图片的格式
+        canScale: false, // 图片是否允许滚轮缩放
+        autoCrop: true, // 是否默认生成截图框
+        autoCropWidth: 500, // 默认生成截图框宽度
+        autoCropHeight: 500, // 默认生成截图框高度
+        fixedBox: false, // 固定截图框大小 不允许改变
+        fixed: false, // 是否开启截图框宽高固定比例
+        fixedNumber: [5, 5], // 截图框的宽高比例
+        full: true, // 是否输出原图比例的截图
+        canMoveBox: true, // 截图框能否拖动
+        original: false, // 上传图片按照原始比例渲染
+        centerBox: true, // 截图框是否被限制在图片里面
+        infoTrue: true, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+        // enlarge:1,
+      },
+      picsList: [],  //页面显示的数组
+      // 防止重复提交
+      loading: false,
+      dialogVisible: false,
     };
   },
   created() {
@@ -313,6 +371,34 @@ export default {
     this.userid = localStorage.getItem('ex2')
   },
   methods: {
+        changeUpload(file, fileList) {
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
+        this.$message.error('上传文件大小不能超过 5MB!')
+        return false
+      }
+      this.imgurl = URL.createObjectURL(file.raw)
+      this.option.img = this.imgurl
+      this.dialogVisible = true
+    },
+    // 点击裁剪，这一步是可以拿到处理后的地址
+    finish() {
+      this.$refs.cropper.getCropBlob((data) => {
+        let formData = new FormData();
+        formData.append('file',data);
+        formData.append('accountId',this.userid);
+        uploadImg(formData).then(res => {
+            res = JSON.parse(res)
+            this.dialogVisible = false
+            this.imageUrl = res.data;
+            if (res.code == "0000") {
+              this.$message.success('上传成功');
+            } else {
+              this.$message.error(res.msg);
+            }
+        })
+      })
+    },
     changeq(val){
         this.classid = val;
     },
@@ -666,4 +752,8 @@ padding: 0px 20px 50px 10px;
  .el-scrollbar__wrap {
    overflow-x: hidden;
  }
+ .cropper {
+  width: auto;
+  height: 300px;
+}
 </style>

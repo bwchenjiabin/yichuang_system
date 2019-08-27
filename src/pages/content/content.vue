@@ -54,6 +54,7 @@
                 ref="test"
                 :data="tableData"
                 v-loading="loading"
+                element-loading-text="拼命加载中"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @sort-change ="sortchange"
@@ -153,6 +154,7 @@
               <el-table
                 ref="multipleTable"
                 v-loading="loading"
+                element-loading-text="拼命加载中"
                 :data="tableData1"
                 tooltip-effect="dark"
                 style="width: 100%"
@@ -254,6 +256,7 @@
                 ref="multipleTable"
                 :data="tableData2"
                 v-loading="loading"
+                element-loading-text="拼命加载中"
                 tooltip-effect="dark"
                 style="width: 100%"
                 :header-cell-style="{background:'#f5f5f5',color:'#000'}"

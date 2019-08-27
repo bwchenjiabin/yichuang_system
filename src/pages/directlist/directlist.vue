@@ -16,7 +16,6 @@
                                   <div class="search-inner">
                                     <span class="search" style="margin-right: 32px;">搜索:&nbsp;</span><el-input placeholder="搜索" v-model="input" clearable class="search-inp"></el-input>
                                   </div>
-                                      
                                    <span class="search" style="margin-left:20px;">直播类型:</span><el-select v-model="value1" clearable placeholder="全部类型" class="vip" @change="changes1">
                                         <el-option
                                           v-for="item in options1"
@@ -35,13 +34,6 @@
                                         </el-option>
                                     </el-select> 
                                     <span class="search">上架时间:</span>                                               
-                                    <!-- <el-date-picker
-                                    v-model="value2"
-                                    type="date"
-                                    value-format="yyyy-MM-dd"
-                                    range-separator="至"
-                                    placeholder="开始日期">
-                                    </el-date-picker> -->
                                     <el-date-picker
                                       v-model="value2"
                                       type="datetime"
@@ -50,16 +42,10 @@
                                       format="yyyy-MM-dd HH:mm:ss"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                       align="right"
-                                      :picker-options="pickerOptions">
+                                      
+                                      :picker-options="pickerOptionsStart">
                                     </el-date-picker>
                                     至
-                                     <!-- <el-date-picker
-                                    v-model="value3"
-                                    type="date"
-                                    range-separator="至"
-                                    value-format="yyyy-MM-dd"
-                                    placeholder="结束日期">
-                                    </el-date-picker> -->
                                     <el-date-picker
                                       v-model="value3"
                                       type="datetime"
@@ -68,7 +54,7 @@
                                       format="yyyy-MM-dd HH:mm:ss"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                       align="right"
-                                      :picker-options="pickerOptions">
+                                      :picker-options="pickerOptionsEnd">
                                     </el-date-picker>
                                     <el-button type="primary" @click="search">搜索</el-button>
                                     <el-button type="primary" @click="opens">新增直播</el-button>
@@ -76,6 +62,7 @@
                             <br><br><br>
                                     <el-table
                                             v-loading="loading"
+                                            element-loading-text="拼命加载中"
                                             ref="multipleTable"
                                             :data="list"
                                             tooltip-effect="dark"
@@ -94,19 +81,12 @@
                                             prop="title"
                                             label="直播名称">
                                             </el-table-column>
-                                            <!-- <el-table-column
-                                            label="直播状况"
-                                            >
-                                              <template slot-scope="scope">
-                                                <span>{{scope.row.orderType==4?"壹创币":"系统续费"}}</span>
-                                              </template>
-                                            </el-table-column> -->
+
                                             <el-table-column
                                             prop="payAmount"
                                             label="直播类型"
                                             >
                                              <template slot-scope="scope">
-                                                <!-- <span>{{scope.row.opentype==1?"语音":"PPT"}}</span> -->
                                                 <span>{{scope.row.opentype==1?'语音':scope.row.opentype== 2 ? 'PPT':''}}</span>
                                               </template>
                                             </el-table-column>
@@ -120,15 +100,12 @@
                                             prop="buycount"
                                             label="销量"
                                             show-overflow-tooltip>
-                                            <!-- <template slot-scope="scope" >
-                                             <span>{{scope.row.payType==1?'微信支付':scope.row.payType== 2 ? '支付宝支付':''}}</span>
-                                          </template> -->
                                             </el-table-column>
                                             <el-table-column
                                             label="状态"
                                             show-overflow-tooltip>
                                             <template slot-scope="scope" >
-                                             <span>{{scope.row.status==0?"未开播":scope.row.status==1?"开播中":scope.row.status==2?"已结束":''}}</span>
+                                             <span>{{scope.row.status==0?"未开播":scope.row.status==1?"开播中":scope.row.status==2?"已结束":scope.row.status==3?"暂无讲师":''}}</span>
                                           </template>
                                             </el-table-column>
                                             <el-table-column
@@ -212,14 +189,17 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="二维码邀请" name="second">
-              <img :src="'http://yckt.yichuangketang.com:8081'+url" alt="">
+              <span>微信扫描二维码邀请微信好友为讲师</span>
+              <i>
+                <img :src="'http://yckt.yichuangketang.com:8081'+url" alt="">
+              </i>
             </el-tab-pane>
           </el-tabs>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="delVisibles = false">确 定</el-button>
-      </span>
-    </el-dialog>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="delVisibles = false">关 闭</el-button>
+          </span>
+        </el-dialog>
      <!-- 弹窗 -->
     <el-dialog
       title="添加人员"
@@ -261,7 +241,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="delVisible = false">取 消</el-button>
+        <el-button @click="delVisible = false,liveSearch()">取 消</el-button>
         <el-button type="primary" @click="delVisible = false,assignment()">保 存</el-button>
       </span>
     </el-dialog>
@@ -284,6 +264,24 @@ import { invitelecturer } from "api/userAjax";
     export default {
         data(){
             return{
+                pickerOptionsStart: {
+                    disabledDate: time => {
+                        let endDateVal = this.value3;
+                        if (endDateVal) {
+                            return time.getTime() > new Date(endDateVal).getTime();
+                        }
+                    }
+                },
+                pickerOptionsEnd: {
+                    disabledDate: time => {
+                        let beginDateVal = this.value2;
+                        if (beginDateVal) {
+                            return (
+                                time.getTime() < new Date(beginDateVal).getTime()
+                            );
+                        }
+                    },
+                },
                 activeName: 'first',
                 input:'',
                 options: [{
@@ -368,12 +366,12 @@ import { invitelecturer } from "api/userAjax";
               },
                 details: null,
                 delVisiblee:false,
-            delVisiblelive:false,
-            delVisibles:false,
-            delVisible:false,
-            list:[],
-            lists:[],
-            ordernum:[]
+                delVisiblelive:false,
+                delVisibles:false,
+                delVisible:false,
+                list:[],
+                lists:[],
+                ordernum:[]
                 }
             },
         created () {
@@ -402,8 +400,10 @@ import { invitelecturer } from "api/userAjax";
           this.manages();
           this.getdatas();
           if(res.data.code == "0000"){
+            this.liveSearch();
               this.$message.success(res.data.msg);
           }else{
+            this.liveSearch();
               this.$message.error(res.data.msg);            
           }
       })                                        
@@ -436,7 +436,6 @@ import { invitelecturer } from "api/userAjax";
     getdatae () {
         selectlive({accountid:localStorage.getItem('ex2'),pageNum:this.currentPage,pageSize:this.pagesize,createtimestart:this.value2,createtimeend:this.value3,opentype:this.change1,status:this.change,title:this.input}).then(res => {
            this.list = res.data.data.list;
-        this.$message.success(res.data.msg);
            this.ordersize = res.data.data.total
            this.loading = false;
       })
@@ -456,6 +455,17 @@ import { invitelecturer } from "api/userAjax";
         pageNum:this.currentPages}
       ).then(res => {
         this.$message.success(res.data.msg);
+        this.lists = res.data.data.data;
+        this.usersize = res.data.data.total;
+      });
+    },
+    liveSearch() {
+        this.inputsearch = ''
+      serchuser(
+        {ex2:localStorage.getItem("ex2"),
+        businessName:'',
+        pageNum:this.currentPages}
+      ).then(res => {
         this.lists = res.data.data.data;
         this.usersize = res.data.data.total;
       });

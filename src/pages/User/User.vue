@@ -43,6 +43,7 @@
                                     <el-button type="primary" @click="getdataphone()">搜索</el-button><br><br><br>
                                     <el-table
                                             v-loading="loading"
+                                            element-loading-text="拼命加载中"
                                             ref="multipleTable"
                                             :data="list"
                                             tooltip-effect="dark"

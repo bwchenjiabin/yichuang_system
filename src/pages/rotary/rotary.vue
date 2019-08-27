@@ -30,6 +30,7 @@
             ref="multipleTable"
             :data="list"
             v-loading="loading"
+            element-loading-text="拼命加载中"
             tooltip-effect="dark"
             style="width: 100%"
             :header-cell-style="{background:'#f5f5f5',color:'#000'}"

@@ -18,6 +18,7 @@
           <el-table
             :data="tableData"
             v-loading="loading"
+            element-loading-text="拼命加载中"
             stripe
             style="width: 100%"
             :header-cell-style="{background:'#f5f5f5',color:'#000'}"

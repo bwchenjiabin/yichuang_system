@@ -36,9 +36,9 @@
                 <el-upload
                   class="avatar-uploader"
                   action="http://yckt.yichuangketang.com:8081/section/insertImg"
-                  :data="{accountId: this.Id}"
                   :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
+                  :auto-upload="false"
+                  :on-change='changeUpload'
                   accept=".jpg, .png, .gif, .svg, .jpeg, .tif, .raw"
                 >
                   <img
@@ -64,6 +64,7 @@
                 <span class="number">{{this.textarea.length}}/500</span>
                 <br />
                 <br />
+                <br>
                 <span class="search">直播时间:</span>
                 <el-date-picker
                   v-model="value2"
@@ -73,18 +74,9 @@
                   format="yyyy-MM-dd HH:mm:ss"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   align="right"
-                  :picker-options="pickerOptions"
-                ></el-date-picker>至
-                <el-date-picker
-                  v-model="value3"
-                  type="datetime"
-                  range-separator="至"
-                  placeholder="结束日期"
-                  format="yyyy-MM-dd HH:mm:ss"
-                  value-format="yyyy-MM-dd HH:mm:ss"
-                  align="right"
-                  :picker-options="pickerOptions"
+                  :picker-options="pickerOptions0"
                 ></el-date-picker>
+                <span class="Tips">嘉宾（原讲师）可以在 直播间-操作 主动结束直播</span>
                 <br />
                 <br />
                 <div class="updatas" v-if="type==1">
@@ -93,16 +85,18 @@
                   <br />
                   <el-upload
                     class="upload-demo"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="http://yckt.yichuangketang.com:8081/file/uploadppt"
+                    :data="{accountId: this.Id}"
                     :before-remove="beforeRemove"
+                    :on-success="handleAvatarSucces"
                     multiple
                     :limit="1"
                     :on-exceed="handleExceed"
                     :file-list="fileList"
-                  >
+                    accept=".ppt,.pptx">
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <el-button size="small" type="primary">点击预览</el-button>
-                  </el-upload>
+                  </el-upload><br>
+                    <el-button size="small" type="primary" plain @click="serchppts">点击预览</el-button>
                 </div>
                 <br />
                 <br />
@@ -164,6 +158,51 @@
           </el-main>
         </el-container>
       </el-container>
+       <!-- 弹窗 -->
+              <el-dialog title="PPT预览" :visible.sync="delVisible" width="700px" center style="z-index: 999;text-align: left" :close-on-click-modal="false">   
+                <el-scrollbar style="height:100%">
+                  <div class="del-dialog-cnt" style="height:500px;overflow:auto;">
+                    <span v-text="Tips" v-show="Tipss" class="tipse"></span>
+                      <div class="img-box"  v-for="(item,index) in PPTlist" :key="index">
+                        <img :src="'http://yckt.yichuangketang.com:8081'+item.imgpath" alt="">
+                      </div>
+                  </div>
+                  </el-scrollbar>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary"  @click="Close">关 闭</el-button>
+                </span>
+            </el-dialog>
+
+    <el-dialog title="图片剪裁" :visible.sync="dialogVisible" append-to-body>
+      <div class="cropper-content">
+        <div class="cropper" style="text-align:center">
+        <vueCropper
+            ref="cropper"
+            :img="option.img"
+            :outputSize="option.size"
+            :outputType="option.outputType"
+            :info="true"
+            :full="option.full"
+            :canMove="option.canMove"
+            :canMoveBox="option.canMoveBox"
+            :original="option.original"
+            :autoCrop="option.autoCrop"
+            :autoCropWidth="option.autoCropWidth"
+            :autoCropHeight="option.autoCropHeight"
+            :fixed="option.fixed"
+            :fixedNumber="option.fixedNumber"
+            :centerBox="option.centerBox"
+            :infoTrue="option.infoTrue"
+            :fixedBox="option.fixedBox"
+          ></vueCropper>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="finish" :loading="loading">确认</el-button>
+      </div>
+    </el-dialog>
+
     </div>
   </el-scrollbar>
 </template>
@@ -172,9 +211,11 @@ import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import { classe } from "api/userAjax";
 import { addlive } from "api/userAjax";
-import { uploadImg } from "api/userAjax";
+// import { uploadImg } from "api/userAjax";
 import { user } from "api/userAjax";
 import { ssuser } from "api/userAjax";
+import { serchppt } from "api/userAjax";
+import { uploadImg } from "api/userAjax";
 export default {
   data() {
     return {
@@ -184,7 +225,11 @@ export default {
       input3: "", // 收费价格
       input4: "", // 划线价
       fileList: [],
-      imageUrl: "", // 上传地址
+      imageUrl: "",
+      PPTUrl: "", 
+      myCroppa:{},
+      pptpath:'',
+      PPTlist:[],
       textarea: "", // 课程简介
       radio: "1", // 上架时间
       radios: "0", // 获取形式
@@ -213,13 +258,13 @@ export default {
       opentype: "",
       inputsearch: "",
       fileList: [],
-      tableData: [
-        {
-          img: "../../../static/img/矢量智能对象@2x_看图王.png",
-          name: "王小虎",
-          address: "讲师"
-        }
-      ],
+      Tips:'',
+      Tipss:false,
+      pickerOptions0: {
+          disabledDate(time) {
+            return time.getTime() < Date.now() - 8.64e7//如果没有后面的-8.64e6就是不可以选择今天的
+          }
+        },  
       pickerOptions: {
         shortcuts: [
           {
@@ -245,8 +290,32 @@ export default {
             }
           }
         ]
-      }
-    };
+      },
+      dialogVisible: false,
+      // 裁剪组件的基础配置option
+      option: {
+        img: '', // 裁剪图片的地址
+        info: true, // 裁剪框的大小信息
+        outputSize: 1, // 裁剪生成图片的质量
+        outputType: 'png', // 裁剪生成图片的格式
+        canScale: false, // 图片是否允许滚轮缩放
+        autoCrop: true, // 是否默认生成截图框
+        autoCropWidth: '100%', // 默认生成截图框宽度
+        autoCropHeight: '100%', // 默认生成截图框高度
+        fixedBox: false, // 固定截图框大小 不允许改变
+        // fixed: true, // 是否开启截图框宽高固定比例
+        // fixedNumber: [7, 5], // 截图框的宽高比例
+        full: true, // 是否输出原图比例的截图
+        canMoveBox: true, // 截图框能否拖动
+        original: false, // 上传图片按照原始比例渲染
+        centerBox: true, // 截图框是否被限制在图片里面
+        infoTrue: true, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+        // enlarge:1,
+      },
+      picsList: [],  //页面显示的数组
+      // 防止重复提交
+      loading: false
+    }
   },
   created() {
     this.getParams();
@@ -254,6 +323,34 @@ export default {
     this.Id = localStorage.getItem("ex2");
   },
   methods: {
+    changeUpload(file, fileList) {
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
+        this.$message.error('上传文件大小不能超过 5MB!')
+        return false
+      }
+      this.imgurl = URL.createObjectURL(file.raw)
+      this.option.img = this.imgurl
+      this.dialogVisible = true
+    },
+    // 点击裁剪，这一步是可以拿到处理后的地址
+    finish() {
+      this.$refs.cropper.getCropBlob((data) => {
+        let formData = new FormData();
+        formData.append('file',data);
+        formData.append('accountId',this.Id);
+        uploadImg(formData).then(res => {
+            res = JSON.parse(res)
+            this.dialogVisible = false
+            this.imageUrl = res.data;
+            if (res.code == "0000") {
+              this.$message.success('上传成功');
+            } else {
+              this.$message.error(res.msg);
+            }
+        })
+      })
+    },
     //获取传值
     getParams() {
       var routerParams = this.$route.query.type;
@@ -295,14 +392,14 @@ export default {
             title: this.input,
             image: this.imageUrl,
             opentime: this.value2,
-            closetime: this.value3,
             opentype: this.opentype,
             accountid: this.Id,
             livevip: this.radios,
             price: this.input4,
             nowprice: this.input3,
             info: this.textarea,
-            teacherid: this.checkBoxDataids
+            teacherid: this.checkBoxDataids,
+            filepath:this.PPTUrl
           }).then(res => {
             if (res.data.code == "0000") {
               this.switchss();
@@ -318,14 +415,14 @@ export default {
           title: this.input,
           image: this.imageUrl,
           opentime: this.value2,
-          closetime: this.value3,
           opentype: this.opentype,
           accountid: this.Id,
           livevip: this.radios,
           price: this.input4,
           nowprice: this.input3,
           info: this.textarea,
-          teacherid: this.checkBoxDataids
+          teacherid: this.checkBoxDataids,
+          filepath:this.PPTUrl
         }).then(res => {
           if (res.data.code == "0000") {
             this.switchss();
@@ -337,10 +434,10 @@ export default {
         });
       }
     },
-    handleAvatarSuccess(res) {
-      this.imageUrl = res.data;
+    handleAvatarSucces(res) {
+      this.PPTUrl = res.data;
       if (res.code == "0000") {
-        this.$message.success(res.msg);
+        this.$message.success('上传成功');
       } else {
         this.$message.error(res.msg);
       }
@@ -354,7 +451,23 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    }
+    },
+    serchppts(){
+      serchppt({pptpath:this.PPTUrl}).then(res => {
+        if (res.data.data == '') {
+          this.Tips = '暂无PPT'
+          this.Tipss = true;
+        }else{
+          this.Tips = ''
+          this.Tipss = false;
+        }
+          this.delVisible = true; 
+          this.PPTlist = res.data.data
+      })
+    },
+    Close() {
+      this.delVisible = false;
+    }  
   },
   components: {
     sidebar,
@@ -398,6 +511,11 @@ export default {
   color: #0065ff;
   font-size: 14px;
   margin-left: 10px;
+}
+.tipse{
+  width:100%;
+  display: block;
+  text-align: center;
 }
 .el-tabs__item {
   padding: 0 50px;
@@ -594,14 +712,16 @@ export default {
   font-size: 16px;
 }
 .img-box {
-  width: 50px;
-  height: 50px;
+  width: 630px;
 }
 .img-box img {
+  border: 1px solid #ccc;
   width: 100%;
   height: 100%;
 }
-
+.Tips{
+  color: rgba(153, 153, 153, 1);
+}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -632,6 +752,10 @@ export default {
 }
 .el-scrollbar__wrap {
   overflow-x: hidden;
+  overflow-y: hidden;
 }
-
+.cropper {
+  width: auto;
+  height: 300px;
+}
 </style>

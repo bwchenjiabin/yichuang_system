@@ -11,6 +11,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
+//引用Croppa图片裁剪
+import VueCropper from 'vue-cropper' 
+
+Vue.use(VueCropper)
+
 import Vuex from 'vuex' //引入状态管理
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = ''

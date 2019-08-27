@@ -47,6 +47,7 @@
                             <br><br><br>
                                     <el-table
                                             v-loading="loading"
+                                            element-loading-text="拼命加载中"
                                             ref="multipleTable"
                                             :data="list"
                                             tooltip-effect="dark"
@@ -213,14 +214,14 @@ import {orderStatus} from 'api/userAjax';
     },
     // 订单搜索
       orderSearchs () {
-        orderSearch(localStorage.getItem('ex2'),this.input,this.change,this.value2,this.value3).then(res => {
+        orderSearch(localStorage.getItem('ex2'),this.input,this.change,this.value2,this.value3,'1').then(res => {
           this.list = res.data.list;
            this.ordersize = res.data.total          
       })
     },
     //通过状态查询订单
       orderSearchss () {
-        orderStatus(localStorage.getItem('ex2'),this.change).then(res => {
+        orderStatus(localStorage.getItem('ex2'),this.change,'1').then(res => {
           this.list = res.data.list;
            this.ordersize = res.data.total          
         this.$message.success("搜索成功")    

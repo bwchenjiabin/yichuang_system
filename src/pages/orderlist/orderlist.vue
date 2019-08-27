@@ -20,28 +20,29 @@
             <span>课程订单</span>
           </div>
           <el-table
+              v-loading="loading"
+              element-loading-text="拼命加载中"
               ref="multipleTable"
               :data="list"
               tooltip-effect="dark"
               order: string
               style="width: 100%"
-              :header-cell-style="{background:'#f5f5f5',color:'#000'}">
-                            
-              <!-- <el-table-column
-              type="selection"
-              width="55">
-              </el-table-column> -->
+              :header-cell-style="{background:'#f5f5f5',color:'#000'}">              
               <el-table-column
-              label="商品"
+              label="商品封面"
               width="250">
               <template slot-scope="scope" >
                   <i class="img-box"><img :src="'http://yckt.yichuangketang.com'+scope.row.lesson.img" alt=""></i>
-                    <span class="name">{{scope.row.lesson.lessonName}}</span><br>
                     <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
               </template>
               </el-table-column>
               <el-table-column
-              prop="businessUser.businessName"
+              prop="lesson.lessonName"
+              label="商品名称"
+              width="250">
+              </el-table-column>
+              <el-table-column
+              prop="buyerId"
               label="买家"
               width="250">
               </el-table-column>
@@ -89,9 +90,9 @@
       </el-container>
     </el-container>
       <!-- 弹窗 -->
-                <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left" :close-on-click-modal="false">
-                                            
-              <div class="del-dialog-cnt"><ul>
+                <el-dialog title="订单详情" :visible.sync="delVisible" width="500px" center style="z-index: 999;text-align: left" :close-on-click-modal="false">                              
+              <div class="del-dialog-cnt" v-loading="loading"
+                                            element-loading-text="拼命加载中"><ul>
                   <li >
                       <span class="Order">订单编号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.orderNumber}}</span><br><br>
                       <span class="Order">支付订单号</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">{{this.details.escrowTradeNo}}</span><br><br>
@@ -125,7 +126,7 @@ export default {
         ordersize:0,
         pagesize: 5,
         ordernum:[],
-        
+        loading:true,
     };
   },
   created() {
@@ -144,6 +145,7 @@ this.getdata();
             this.ordersize = res.data.data.total
             if (res.data.code == "0000") {
               this.list = res.data.data.data
+              this.loading = false;
             }
             // console.log(this.list);
       })
@@ -152,6 +154,7 @@ this.getdata();
       getdatad () {
         orderdeteils(this.ordernum).then(res => {
            this.details = res.data
+           this.loading = false;
       })
     },
     open(row) {

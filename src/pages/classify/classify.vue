@@ -14,7 +14,7 @@
                         <el-main v-show="addclas">
                             <h4>内容分类</h4><br><br>
                             <el-button type="primary" style="float:right;margin-right:100px" @click="addclass">新增分类</el-button>
-                              <el-table  ref="test" :data="tableData" tooltip-effect="dark" style="width: 100%" v-loading="loading">
+                              <el-table  ref="test" :data="tableData" tooltip-effect="dark" style="width: 100%" v-loading="loading" element-loading-text="拼命加载中">
                                 <!-- <el-table-column type="selection" label="" width="55">
                                 </el-table-column> -->
                                 <el-table-column label=""  width="120" > 

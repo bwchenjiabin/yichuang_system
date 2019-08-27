@@ -1,4 +1,5 @@
 import ajax from 'utils/ajax'
+import {baseURL} from 'common/config.js'
 //登录
 const login = (accountId, accountPwd) => {
   return new Promise((resolve, reject) => {
@@ -133,9 +134,9 @@ const ssuser = (ex2,businessPhone,businessStatus,businessConsumption,memberEndTi
   })
 }
 //订单搜索
-const orderSearch = (ex2,orderNumber,orderStatus,payTime,payEndTime) => {
+const orderSearch = (ex2,orderNumber,orderStatus,payTime,payEndTime,pageNum) => {
   return new Promise((resolve, reject) => {
-    ajax.get('order/selectBySearch',{ex2,orderNumber,orderStatus,payTime,payEndTime}).then(res => {
+    ajax.get('order/selectBySearch',{ex2,orderNumber,orderStatus,payTime,payEndTime,pageNum}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -143,9 +144,9 @@ const orderSearch = (ex2,orderNumber,orderStatus,payTime,payEndTime) => {
   })
 }
 //通过状态查询订单
-const orderStatus = (ex2,orderStatus) => {
+const orderStatus = (ex2,orderStatus,pageNum) => {
   return new Promise((resolve, reject) => {
-    ajax.get('order/selectBySearch',{ex2,orderStatus}).then(res => {
+    ajax.get('order/selectBySearch',{ex2,orderStatus,pageNum}).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -864,10 +865,33 @@ const serchuser = data => {
 
 
 
+// PPT 预览查询   
 
+const serchppt = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/lilive/pptimg',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
 
-
-
+// 文件上传  
+const uploadImg = (data,headers) => {
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+    resolve(xhr.responseText);
+    } else if (xhr.readyState == 4 && xhr.status != 200) {
+    reject(xhr.responseText);
+    }
+    }
+    xhr.open('POST', baseURL + '/section/insertImg');
+    xhr.send(data)
+    })
+}
 export {classlesson}
 export {login}
 export {tuichu}
@@ -947,3 +971,5 @@ export {addlecturer}
 export {dellecturer}
 export {invitelecturer}
 export {serchuser}
+export {serchppt}
+export {uploadImg}

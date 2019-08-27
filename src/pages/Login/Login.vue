@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+  <div class="box" v-loading="loading"
+   element-loading-text="拼命加载中">
     <div class="content">
       <i class="icon">
         <img src="~img/微信图片_20190704205529.png" alt />
@@ -27,21 +28,23 @@ export default {
   data() {
     return {
       input: "",
-      input1: ""
+      input1: "",
+      loading:false,
     };
   },
   created() {},
   methods: {
         getdata() {
+        this.loading = true;
         login(this.input, this.input1).then(res => {
+           this.loading = false;
           localStorage.setItem('ex2',res.data.date.accountid)
           localStorage.setItem('phone',res.data.date.accountTitle)
-          localStorage.setItem('portrait',res.data.date.Codepath)  
+          // localStorage.setItem('portrait',res.data.date.Codepath)  
           localStorage.setItem('accountType',res.data.date.accountType)
           localStorage.setItem('expiretime',res.data.date.expiretime)
           localStorage.setItem('isExpire',res.data.date.isExpire)
             if (res.data.status == "success") {
-              
                 this.$message.success('登录成功')
                   this.$router.push({
                     path: `/Home`
