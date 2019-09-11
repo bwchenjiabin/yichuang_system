@@ -315,7 +315,6 @@
         this.videos = true
       },
       handleClick(tab, event) {
-        // console.log(tab, event);
       },
       handleClicks(row) {
           $('.sort').css('display','block');
@@ -329,7 +328,6 @@
         },
       //多条删除
       deleteRow(){
-          console.log(this.number)
       for(let item in this.$refs.test.selection){
         this.tableData.splice(item.date - 1,1);
         
@@ -341,7 +339,6 @@
           url,
           params
           }).then(res => {
-          console.log(res)
           })
         }
         this.Delprompt = false;
@@ -355,13 +352,10 @@
       }
       new Set(aa);
       this.number = aa
-      // console.log(this.number)
   },
   // 分页
       handleSizeChange(size) {
         this.pagesize = size;
-        console.log(this.pagesize)  //每页下拉显示数据
-        // console.log(`每页 ${val} 条`);
       },
       // 展示
       getdata () {
@@ -374,7 +368,6 @@
         params
       }).then(res => {
         //  this.list = res.data.date
-         console.log(res)
         })
     },
       current_change:function(currentPage){

@@ -9,12 +9,15 @@ import 'jquery'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueClipboard from 'vue-clipboard2'
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
 Vue.use(VueClipboard)
 
 //引用Croppa图片裁剪
 import VueCropper from 'vue-cropper' 
 
 Vue.use(VueCropper)
+Vue.use(MintUI)
 
 import Vuex from 'vuex' //引入状态管理
 Vue.prototype.$axios = axios

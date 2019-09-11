@@ -11,10 +11,6 @@
           <sidebar></sidebar>
         </el-aside>
         <el-main>
-          <!-- <router-link to="/content">
-            <span class="course" style="cursor: pointer;">我的课程</span>
-          </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <span class="imgText">新增课程</span> -->
             <el-breadcrumb separator-class="el-icon-arrow-right">
               <el-breadcrumb-item :to="{ path: '/content' }">我的课程</el-breadcrumb-item>
               <el-breadcrumb-item>新增课程</el-breadcrumb-item>
@@ -196,11 +192,9 @@ export default {
     },
     changes(val) {
       this.checked = val;
-      // console.log(this.checked);
     },
     changes1(val) {
       this.checked1 = val;
-      // console.log(this.checked1);
     },
     onEditorChange({ editor, html, text }) {
       //内容改变事件
@@ -344,63 +338,12 @@ export default {
         } else {
           this.checked1 = false;
         }
-        // console.log(res);
       });
     },
-    // // 富文本图片上传前
-    // beforeUpload() {
-    //   // 显示loading动画
-    //   this.quillUpdateImg = true;
-    // },
-    // beforeUpload1() {
-    //   // 显示loading动画
-    //   this.quillUpdateImg = true;
-    // },
-    // uploadSuccess(res, file) {
-    //   let quill = this.$refs.myQuillEditor.quill;
-    //   // 获取光标所在位置
-    //   let length = quill.getSelection().index;
-    //   // 插入图片  res.url为服务器返回的图片地址
-    //   console.log(res)
-    //   quill.insertEmbed(
-    //     length,
-    //     "image",
-    //     "http://yckt.yichuangketang.com:8081" + res.data
-    //   );
-    //   // 调整光标到最后
-    //   quill.setSelection(length + 1);
-    //   this.quillUpdateImg = false;
-    // },
-    // uploadSuccess1(res, file) {
-    //   let quill = this.$refs.myQuillEditor.quill;
-    //   // 获取光标所在位置
-    //   let length = quill.getSelection().index;
-    //   // 插入图片  res.url为服务器返回的图片地址
-    //   quill.insertEmbed(
-    //     length,
-    //     "image",
-    //     "http://yckt.yichuangketang.com:8081" + res.data
-    //   );
-    //   // 调整光标到最后
-    //   quill.setSelection(length + 1);
-    //   this.quillUpdateImg = false;
-    // },
-    // // 富文本图片上传失败
-    // uploadError() {
-    //   // loading动画消失
-    //   this.quillUpdateImg = false;
-    //   this.$message.error("图片插入失败");
-    // },
-    // uploadError1() {
-    //   // loading动画消失
-    //   this.quillUpdateImg = false;
-    //   this.$message.error("图片插入失败");
-    // }
   },
   components: {
     sidebar,
     Header,
-    // quillEditor,
     UE
   }
 };

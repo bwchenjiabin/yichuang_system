@@ -22,7 +22,7 @@
           <br />
           <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-radio v-model="radios" label="1" @change="radioq">跳转到</el-radio>
-          <el-button plain @click="Popup" :disabled="disabled">选择</el-button>
+          <el-button plain @click="Popup" :disabled="disabled">选择</el-button>    <span class="text">已选：{{this.lessoname}}</span>
           <br />
           <br />
           <br />
@@ -32,7 +32,7 @@
           <br />
         </div>
         <span class="name">上传图片</span>
-        <p class="text">240*180像素，支持PNG、JPG、GIF格式，小于5M</p>
+        <p class="text">750*360像素，支持PNG、JPG、GIF格式，小于5M</p>
         <br />
         <br />
         <el-upload
@@ -234,6 +234,8 @@ export default {
       ypsize: "",
       spsize: "",
       userid: "",
+      lessonname:'',
+      lessoname:'',
       Jump: 1,
       currid: "",
       dialogVisible: false,
@@ -255,7 +257,6 @@ export default {
         original: false, // 上传图片按照原始比例渲染
         centerBox: true, // 截图框是否被限制在图片里面
         infoTrue: false, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
-        // enlarge:1,
       },
       picsList: [], //页面显示的数组
       // 防止重复提交
@@ -323,6 +324,7 @@ export default {
     // 新增轮播
     getdataadd() {
       this.currid = this.currentRow;
+      this.lessoname = this.lessonname;
       this.delVisible = false;
     },
     // 图文查询
@@ -359,12 +361,12 @@ export default {
         this.$message.error("轮播图图片不可为空");
         return;
       }
-      // else if (this.Jump == "1") {
-      //   if (this.currid == "") {
-      //     this.$message.error("轮播图跳转链接不可为空");
-      //     return;
-      //   }
-      // }
+      else if (this.Jump == "1") {
+        if (this.currid == "") {
+          this.$message.error("轮播图跳转链接不可为空");
+          return;
+        }
+      }
       if (this.courser == "imgText") {
         this.number = 1;
       }
@@ -396,6 +398,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentRow = val.lessonid;
+      this.lessonname = val.lessonName
     },
     // 分页
     handleSizeChange(size) {

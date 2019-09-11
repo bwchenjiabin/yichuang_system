@@ -101,7 +101,7 @@
           <br>
           <el-upload
                   class="avatar-uploader"
-                  action="http://192.168.0.203:8081/section/insertImg"
+                  action="http://yckt.yichuangketang.com:8081/section/insertImg"
                   :show-file-list="false"
                   :auto-upload="false"
                   :on-change='changeUpload'
@@ -109,7 +109,7 @@
                 >
                   <img
                     v-if="imageUrl"
-                    :src="'http://192.168.0.203:8081'+this.imageUrl"
+                    :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
                     class="avatar"
                   />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>

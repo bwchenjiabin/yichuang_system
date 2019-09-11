@@ -284,8 +284,6 @@ export default {
     },
     //修改
     submitUpload1() {
-      // console.log(this.chapterId)
-      // console.log(this.sectionid)
        fileupload(this.chapterId,this.input2,this.checkedss1,this.time1,this.audiourl1,this.sectionid).then(res => {
         this.$message.success(res.data.msg);
         this.delVisiblee = false;
@@ -412,7 +410,6 @@ export default {
                     sec = "0" + sec;
                     }
                     this.time = times + isM0 + minute + isM0 + sec
-                    // console.log(this.time);
                 });
             },
       beforeAvatarUpload1(file) {
@@ -438,7 +435,6 @@ export default {
                     sec = "0" + sec;
                     }
                     this.time1 = minute + isM0 + sec
-                    // console.log(this.time);
                 });
             },
   },

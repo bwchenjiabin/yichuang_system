@@ -57,7 +57,7 @@
               <br />
               <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <el-radio v-model="radios" label="1" @change="radioq">跳转到</el-radio>
-              <el-button plain @click="Popup" :disabled="disabled">重新选择</el-button>
+              <el-button plain @click="Popup" :disabled="disabled">重新选择</el-button><span class="text">已选：{{this.lessonname}}</span>
               <br />
               <br />
               <br />
@@ -162,7 +162,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delVisible = false">取 消</el-button>
-        <el-button type="primary" @click="delVisible = false">保 存</el-button>
+        <el-button type="primary" @click="delVisible = false,getdataadd()">保 存</el-button>
       </span>
     </el-dialog>
      <el-dialog title="图片剪裁" :visible.sync="dialogVisible" append-to-body>
@@ -221,6 +221,7 @@ export default {
       tabPosition: "left", // 方向
       courser: "imgText", //默认选择
       currentRow: null,
+      currentRows:null,
       disab: true, //按钮禁用
       disabled: false, //按钮禁用
       headerMsg: { "Content-Type": "multipart/form-data" },
@@ -250,6 +251,8 @@ export default {
       Id: "",
       number: "",
       userid:'',
+      lessonname:'',
+      lessoname:'',
        dialogVisible: false,
       // 裁剪组件的基础配置option
       option: {
@@ -313,13 +316,17 @@ export default {
         });
       });
     },
+    getdataadd(){
+      this.currentRows = this.currentRow
+      this.lessonname = this.lessoname
+    },
     getdata() {
       updataId(this.Id).then(res => {
         this.input = res.data.name;
         this.imageUrl = res.data.img;
         this.number = res.data.type;
-        this.currentRow = res.data.lessonid;
-        console.log(res);
+        this.currentRows = res.data.lessonid;
+        this.lessonname = res.data.extendthree
       });
     },
     changes(val){
@@ -328,9 +335,7 @@ export default {
       }else{
         this.valnum = 2
       }
-      console.log(this.valnum)
     },
-
         //单条删除
     deleteRow() {
       this.delVisible = false;      
@@ -375,7 +380,7 @@ export default {
     },
     //编辑轮播
     updatar() {
-      addrotary({name:this.input,owner:localStorage.getItem("ex2"),lessonid:this.currentRow,img:this.imageUrl,id:this.Id,extendtwo:this.valnum}).then(res => {
+      addrotary({name:this.input,owner:localStorage.getItem("ex2"),lessonid:this.currentRows,img:this.imageUrl,id:this.Id,extendtwo:this.valnum}).then(res => {
         this.$message.success(res.data.msg);
         this.$router.push({
           path: `/rotary`
@@ -417,6 +422,8 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentRow = val.lessonid;
+      this.lessoname = val.lessonName;
+
     },
     // 分页
     handleSizeChange(size) {

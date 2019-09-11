@@ -220,12 +220,10 @@ import Header from '@/components/Header/Header.vue'
       },
         methods:{
         keep(){
-            console.log(this.imageUrl)
 
            if (this.activeName == "courser") {
            console.log(this.activeName);
            console.log(this.courser);       
-           console.log(this.currentRow)
            }else{
            console.log(this.activeName);
            console.log(this.radio2)

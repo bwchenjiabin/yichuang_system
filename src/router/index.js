@@ -256,7 +256,7 @@ export default new Router({
       }
     },{
       path:'/directlist',
-      component:resolve => require(['@/pages/directlist/directlist.vue'], resolve),   //直播列表
+      component:resolve => require(['@/pages/directlist/directlist.vue'], resolve),   //直播列表  
       meta:{
         requireAuth:true,
       }
@@ -267,7 +267,14 @@ export default new Router({
       meta:{
         requireAuth:true,
       }
-    },               
+    },
+    {
+      path:'/ShopHome',
+      component:resolve => require(['@/pages/ShopHome/ShopHome.vue'], resolve),   //店铺首页
+      meta:{
+        requireAuth:true,
+      }
+    },                  
   ]
 })
 
