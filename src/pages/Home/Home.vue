@@ -98,8 +98,8 @@
             </div>
             <div class="tips">
               <i class="el-icon-bell"></i>
-              <p>AI微课 全新的线上课堂正在内测中</p>
-              <span>2019-09-10 17:20:11</span>
+              <p>{{Notice.dicValue}}</p>
+              <span>{{Notice.createtime}}</span>
             </div>
             <div class="overview">
               <p>常用功能</p>
@@ -172,6 +172,7 @@ import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
 import { Home } from "api/userAjax";
 import { preview } from "api/userAjax";
+import { Notice } from "api/userAjax";
 
 export default {
   data() {
@@ -179,6 +180,7 @@ export default {
       number: [],
       phone: "",
       title: "",
+      Notice:'',
       isExpire: false,
       visible: false,
       visibles: false,
@@ -232,6 +234,7 @@ export default {
     this.reload();
     this.getdata();
     this.getdatas();
+    this.getNotice();
     this.phone = localStorage.getItem("phone");
     this.title = localStorage.getItem("accountType");
   },
@@ -239,7 +242,6 @@ export default {
     getdata() {
       Home(localStorage.getItem("ex2")).then(res => {
         this.number = res.data;
-        console.log(res.data);
       });
     },
     // 展示
@@ -247,6 +249,12 @@ export default {
       preview(localStorage.getItem("ex2")).then(res => {
         this.endtime = res.data.expiretime;
         this.isExpire = res.data.expire;
+      });
+    },
+    //公告
+    getNotice() {
+      Notice().then(res => {
+        this.Notice = res.data.data[0]
       });
     },
     reload() {

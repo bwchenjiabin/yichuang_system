@@ -890,6 +890,20 @@ const uploadImg = (data,headers) => {
     xhr.send(data)
     })
 }
+
+
+
+// 公告
+const Notice = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/dic/selectByType?type=notice',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export {classlesson}
 export {login}
 export {tuichu}
@@ -971,3 +985,4 @@ export {invitelecturer}
 export {serchuser}
 export {serchppt}
 export {uploadImg}
+export {Notice}
