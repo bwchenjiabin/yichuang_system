@@ -40,7 +40,6 @@ export default {
            this.loading = false;
           localStorage.setItem('ex2',res.data.date.accountid)
           localStorage.setItem('phone',res.data.date.accountTitle)
-          // localStorage.setItem('portrait',res.data.date.Codepath)  
           localStorage.setItem('accountType',res.data.date.accountType)
           localStorage.setItem('expiretime',res.data.date.expiretime)
           localStorage.setItem('isExpire',res.data.date.isExpire)

@@ -217,8 +217,6 @@ const Home = (accountId) => {
   })
 }
 
-
-
 //分类展示
 const classe = (owner) => {
   return new Promise((resolve, reject) => {
