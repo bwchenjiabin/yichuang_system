@@ -101,16 +101,26 @@
               <p>{{Notice.dicValue}}</p>
               <span>{{Notice.createtime}}</span>
             </div>
-            <div class="overview">
-              <p>常用功能</p>
+            <div class="overviews">
+              <p>推荐功能</p>
               <ul class="conts">
                 <li v-for="(item,index) in list" :key="index">
-                  <i>
-                    <img :src="item.img" alt />
-                  </i>
-                  <span>{{item.name}}</span>
+                  <router-link :to="item.url">
+                    <i>
+                      <img :src="item.img" alt />
+                    </i>
+                    <span>{{item.name}}</span>
+                  </router-link>
                 </li>
               </ul>
+            </div>
+            <div class="activitys">
+              <div class="img_box img_one">
+                <img src="static/img/home_img1.png" alt />
+              </div>
+              <div class="img_box">
+                <img src="static/img/home_img2.png" alt />
+              </div>
             </div>
             <div class="problem">
               <p>常见问题</p>
@@ -180,7 +190,7 @@ export default {
       number: [],
       phone: "",
       title: "",
-      Notice:'',
+      Notice: "",
       isExpire: false,
       visible: false,
       visibles: false,
@@ -189,43 +199,53 @@ export default {
       list: [
         {
           name: "发布内容",
-          img: "../../../static/img/icon_4.png"
+          img: "static/img/icon_4.png",
+          url: ""
         },
         {
           name: "轮播导航",
-          img: "../../../static/img/icon_7.png"
+          img: "static/img/icon_7.png",
+          url: "/rotary"
         },
         {
           name: "订单流水",
-          img: "../../../static/img/icon_3.png"
+          img: "static/img/icon_3.png",
+          url: "/Order"
         },
         {
           name: "店铺装修",
-          img: "../../../static/img/icon_6.png"
+          img: "static/img/icon_6.png",
+          url: ""
         },
         {
           name: "我的资产",
-          img: "../../../static/img/icon_10.png"
+          img: "static/img/icon_10.png",
+          url: "/wallet"
         },
         {
           name: "评论管理",
-          img: "../../../static/img/icon_2.png"
+          img: "static/img/icon_2.png",
+          url: ""
         },
         {
           name: "发票管理",
-          img: "../../../static/img/icon_8.png"
+          img: "static/img/icon_8.png",
+          url: ""
         },
         {
           name: "群发消息",
-          img: "../../../static/img/icon_9.png"
+          img: "static/img/icon_9.png",
+          url: ""
         },
         {
           name: "用户反馈",
-          img: "../../../static/img/icon_5.png"
+          img: "static/img/icon_5.png",
+          url: "/feedback"
         },
         {
           name: "分类管理",
-          img: "../../../static/img/icon_1.png"
+          img: "static/img/icon_1.png",
+          url: ""
         }
       ]
     };
@@ -254,7 +274,7 @@ export default {
     //公告
     getNotice() {
       Notice().then(res => {
-        this.Notice = res.data.data[0]
+        this.Notice = res.data.data[0];
       });
     },
     reload() {
@@ -282,31 +302,44 @@ h3 {
   background: #fff;
 }
 .cont {
-  display: inline-block;
+  display: flex;
 }
 .conts {
   display: flex;
   flex-wrap: wrap;
-  padding-left: 75px;
+  padding-left: 70px;
+  margin-top: 30px;
 }
 .conts li {
-  flex: 0 0 20%;
+  padding: 5px 0px 5px 0px;
+  flex: 0 0 17%;
   height: 50px;
-  padding-bottom: 15px;
-  padding-top: 15px;
+  font-size: 13px;
   line-height: 50px;
+  padding-left: 15px;
+  background-color: #fafafa;
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+}
+.conts li a {
+  color:#333; 
+  display: contents;
+  width: 100%;
+  height: 100%;
 }
 .conts li:hover {
   cursor: pointer;
+  background-color: #f0f0f0;
 }
 .dd h3:hover {
   cursor: pointer;
   color: #105cfb;
 }
 .conts i {
-  float: left;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
 }
 .conts i img {
   width: 100%;
@@ -319,10 +352,11 @@ h3 {
   padding: 0;
 }
 .cont li {
-  width: 250px;
+  width: 100%;
   height: 170px;
   background: rgba(255, 255, 255, 1);
   float: left;
+  box-sizing: border-box;
   text-align: center;
   display: flex;
   align-items: center;
@@ -358,11 +392,26 @@ h3 {
   background: #fff;
   box-sizing: border-box;
 }
-.problem {
+.overviews {
+  padding-bottom: 45px;
+  float: left;
+  width: 72%;
   margin-top: 30px;
   background: #fff;
-  width: 65%;
+  box-sizing: border-box;
+}
+.overviews p {
+  font-size: 16px;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: rgba(51, 51, 51, 1);
+  padding: 0 0 0 30px;
+}
+.problem {
   float: left;
+  margin-top: 30px;
+  background: #fff;
+  width: 72%;
   padding-bottom: 20px;
 }
 .activity ul li {
@@ -391,22 +440,40 @@ h3 {
   font-family: PingFang SC;
   font-weight: 500;
   color: rgba(51, 51, 51, 1);
-  padding: 20px 0 0 30px;
+  padding: 0 0 0 30px;
 }
 .activity {
-  width: 30%;
+  width: 24%;
+  margin-right: 2%;
   float: right;
-  margin-left: 30px;
   margin-top: 30px;
   background: #fff;
   padding-bottom: 20px;
+}
+.activitys {
+  margin-top: 30px;
+  margin-right: 2%;
+  width: 24%;
+  height: 240px;
+  float: right;
+}
+.img_box {
+  height: 45%;
+  cursor: pointer;
+}
+.img_one {
+  padding-bottom: 5%;
+}
+.img_box img {
+  width: 100%;
+  height: 100%;
 }
 .activity p {
   font-size: 16px;
   font-family: PingFang SC;
   font-weight: 500;
   color: rgba(51, 51, 51, 1);
-  padding: 20px 0 0 30px;
+  padding: 0 0 0 30px;
 }
 
 .overview p {
