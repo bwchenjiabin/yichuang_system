@@ -38,3 +38,48 @@
     height: 0;
     clear: both;
 }
+
+
+body > .el-container {
+    margin-bottom: 40px;
+}
+.el-header,
+.el-footer {
+    background-color: #fff;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+}
+.el-header {
+    margin-bottom: 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+.el-aside {
+    margin-left: 20px;
+    margin-right: 20px;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+    background: #fff;
+    margin-top: 80px;
+}
+.el-main {
+    background-color: #fff;
+    color: #333;
+    margin-top: 80px;
+}
+.el-menu-item.is-active i {
+    width: 5px;
+    height: 50px;
+    background: blue;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 0;
+}
+.el-menu-item.is-active {
+    background: #fbfbfb;
+}
