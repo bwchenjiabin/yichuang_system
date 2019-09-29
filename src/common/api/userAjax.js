@@ -904,6 +904,29 @@ const Notice = data => {
   })
 }
 
+
+// 侧边栏
+const asideNav = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/help/select',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 常见问题查询
+const problem = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/help/selectById',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export {classlesson}
 export {login}
 export {tuichu}
@@ -986,3 +1009,5 @@ export {serchuser}
 export {serchppt}
 export {uploadImg}
 export {Notice}
+export {asideNav}
+export {problem}

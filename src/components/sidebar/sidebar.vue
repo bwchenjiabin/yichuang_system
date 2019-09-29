@@ -63,14 +63,14 @@
                             <el-menu-item index="/wallet"><i></i>我的钱包</el-menu-item>
                             <el-menu-item index="/ServiceOrdering"><i></i>服务订购</el-menu-item>
             </el-submenu>
-              <el-submenu index="8">
+              <!-- <el-submenu index="8">
                     <template slot="title">
                         <i class="el-icon-money"></i>
                         <span>店铺管理</span>
                     </template>
                             <el-menu-item index="/ShopHome"><i></i>店铺主页</el-menu-item>
                             <el-menu-item index=""><i></i>店铺导航</el-menu-item>
-            </el-submenu>
+            </el-submenu> -->
             </el-menu>
                   
     </template>
@@ -97,7 +97,7 @@
     </script>
     <style scoped>
 
- .el-aside ul{       width: 199px; margin-bottom: 20px;}
+ .el-aside ul{width: 199px; margin-bottom: 20px;}
  .el-aside li{text-align: left;}
  .el-aside span{text-align: right;}
  .el-submenu__title{padding: 0;}

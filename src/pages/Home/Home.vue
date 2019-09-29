@@ -49,7 +49,7 @@
                 </div>
                 <el-tag slot="reference" style="cursor:pointer">{{title}}</el-tag>
               </el-popover>
-              <el-tag effect="plain">平台代收</el-tag>
+              <el-tag effect="plain" style="cursor:pointer">平台代收</el-tag>
             </div>
             <div class="overview">
               <p>数据概览</p>
@@ -92,6 +92,8 @@
                     <br />
                     <br />
                     <h3>{{this.number.platformBalance}}</h3>
+                    <br><br>
+                    <el-button plain>提 现</el-button>
                   </div>
                 </li>
               </ul>

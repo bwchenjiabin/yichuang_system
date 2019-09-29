@@ -263,7 +263,7 @@ export default new Router({
     },
     {
       path:'/editdirect',
-      component:resolve => require(['@/pages/editdirect/editdirect.vue'], resolve),   //修改直播
+      component:resolve => require(['@/pages/editdirect/editdirect.vue'], resolve),   //修改直播 
       meta:{
         requireAuth:true,
       }
@@ -271,6 +271,13 @@ export default new Router({
     {
       path:'/ShopHome',
       component:resolve => require(['@/pages/ShopHome/ShopHome.vue'], resolve),   //店铺首页
+      meta:{
+        requireAuth:true,
+      }
+    },      
+    {
+      path:'/problem',
+      component:resolve => require(['@/pages/problem/problem.vue'], resolve),   //常见问题解决
       meta:{
         requireAuth:true,
       }
