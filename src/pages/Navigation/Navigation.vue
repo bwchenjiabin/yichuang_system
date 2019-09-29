@@ -120,6 +120,7 @@
           <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-radio v-model="radios" label="1" @change="radioq">跳转到</el-radio>
           <el-button plain @click="Popup" :disabled="disabled">选择</el-button>
+          <span>已选：{{type}}&nbsp;&nbsp;{{lessonName}}</span>
         </div> 
           <br>
           <br>
@@ -217,7 +218,7 @@
               <div class="Choice">
           <ul>
             <li v-for="(item,index) in Choice" :key="index">
-              <el-radio v-model="radio2" :label="item.kindId" @change="changeq">{{item.kindName}}</el-radio>
+              <el-radio v-model="radio2" :label="item.kindId" @change="changeq(item.kindName,item.kindId)">{{item.kindName}}</el-radio>
               <br />
             </li>
           </ul>
@@ -359,6 +360,9 @@ export default {
       // 防止重复提交
       loading: false,
       dialogVisible: false,
+      lessonName:'',
+      lessonNames:'',
+      type:'',
     };
   },
   created() {
@@ -399,8 +403,9 @@ export default {
         })
       })
     },
-    changeq(val){
-        this.classid = val;
+    changeq(val,res){
+        this.classid = res;
+        this.lessonNames = val;
     },
       // 查询分类
     getdataClass() {
@@ -489,10 +494,14 @@ beforeAvatarUpload (file) {
       this.delVisible = true;
     },
         getdataadd() {   
+          console.log(this.lessonName)
+      this.lessonName = this.lessonNames;
       this.pointtypes = this.pointtype
       if(this.pointtypes == 'lesson'){
+        this.type = '课程-'
         this.targetids = this.currentRow;
       }else if(this.pointtypes == 'type'){
+        this.type = '分类-'
         this.targetids = this.classid;
       }
       this.delVisible = false;
@@ -514,6 +523,7 @@ beforeAvatarUpload (file) {
       this.pagesize = size;
     },
     handleCurrentChange(val) {
+      this.lessonNames = val.lessonName; 
       this.currentRow = val.lessonid;
     },
     current_change: function(currentPage) {

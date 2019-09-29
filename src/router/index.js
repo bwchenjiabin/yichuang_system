@@ -282,6 +282,27 @@ export default new Router({
         requireAuth:true,
       }
     },                  
+    {
+        path:'/designHome',
+        component:resolve => require(['@/pages/designHome/designHome.vue'], resolve),   //首页编辑页
+        meta:{
+          requireAuth:true,
+        }
+    },
+    {
+        path:'/showHome',
+        component:resolve => require(['@/pages/showHome/showHome.vue'], resolve),   //首页展示页
+        meta:{
+          requireAuth:true,
+        }
+    },
+    {
+        path:'/sortable',
+        component:resolve => require(['@/pages/sortable/sortable.vue'], resolve),   //首页编辑页
+        meta:{
+          requireAuth:true,
+        }
+    }
   ]
 })
 

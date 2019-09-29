@@ -33,8 +33,4 @@ html{width: 100%;height: 100%;background: #f5f5f5;}
     background-color: #1455FA;
 
   }
-  /* .el-button--primary:blur{
-    background-color: #1455FA;
-
-   } */
 </style>

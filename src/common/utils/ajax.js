@@ -27,6 +27,15 @@ const ajax = {
       params: data,
       headers:headers || null
     })
+  },
+  post2: (url, data = {},headers) => {
+    return axios({
+      method: 'post',
+      baseURL: baseURL,
+      url: url,
+      data: data,
+      headers:headers || null
+    })
   }
 }
 
