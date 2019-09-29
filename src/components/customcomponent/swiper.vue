@@ -1,7 +1,7 @@
 <template>
     <div class="swiper_box">
         <div class="block">
-            <el-carousel height="150px" :autoplay="true" arrow="never" trigger="click">
+            <el-carousel height="150px" :autoplay="true" arrow="never" trigger="click" :class="config.itemList.length>1?'':'cancel_active'">
                 <el-carousel-item v-for="(item, index) in config.itemList" :key="index">
                     <h3 class="small">
                         <img :src="item.img" alt />
@@ -18,8 +18,8 @@ export default {
     data() {
         return {
             swiper: null
-        }
-    },
+        };
+    }
 };
 </script>
 <style lang='scss' scoped>
@@ -38,7 +38,7 @@ export default {
         line-height: 150px;
         margin: 0;
         text-align: center;
-        img{
+        img {
             width: 100%;
             height: 100%;
         }
@@ -57,7 +57,20 @@ export default {
                 width: 6px;
                 height: 6px;
                 border-radius: 50%;
+                background: #ededed;
             }
+        }
+        .is-active {
+            .el-carousel__button {
+                width: 15px;
+                background: #ff9000;
+                border-radius: 3px;
+            }
+        }
+    }
+    /deep/ .cancel_active {
+        .el-carousel__indicators {
+            display: none;
         }
     }
 }
