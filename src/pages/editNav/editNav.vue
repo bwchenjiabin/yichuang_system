@@ -58,7 +58,7 @@
               <span class="name">跳转设置</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <el-radio v-model="radios" label="1" @change="radioq">跳转到</el-radio>
               <el-button plain @click="Popup" :disabled="disabled">重新选择</el-button>
-              <span>已选：{{number}}</span>
+              <span>已选：{{type}}  {{lessonName}}</span>
               <br />
               <br />
               <br />
@@ -170,7 +170,7 @@
                     <el-radio
                       v-model="radio2"
                       :label="item.kindId"
-                      @change="changeq"
+                      @change="changeq(item.kindName,item.kindId)"
                     >{{item.kindName}}</el-radio>
                     <br />
                   </li>
@@ -291,6 +291,9 @@ export default {
       picsList: [], //页面显示的数组
       // 防止重复提交
       loading: false,
+      type:'',
+      lessonName:'',
+      lessonNames:'',
     };
   },
   created() {
@@ -333,14 +336,18 @@ export default {
         });
       });
     },
-    changeq(val) {
-      this.classid = val;
+    changeq(val,res) {
+      this.classid = res;
+      this.lessonNames = val;
     },
     getdataadd() {
+      this.lessonName = this.lessonNames;
       this.pointtypes = this.pointtype;
       if (this.pointtypes == "lesson") {
+        this.type = '课程-'
         this.targetids = this.currentRow;
       } else if (this.pointtypes == "type") {
+        this.type = '分类-'
         this.targetids = this.classid;
       }
       this.delVisible = false;
@@ -359,7 +366,12 @@ export default {
         this.pointtypes = res.data.data.pointtype;
         this.input = res.data.data.name;
         this.imageUrl = res.data.data.img;
-        this.number = res.data.data.targetid;
+        this.lessonName = res.data.data.targetid;
+        if (this.pointtypes == 'type') {
+          this.type = '分类-'
+        }else{
+          this.type = '课程-'
+        }
       });
     },
     changes(val) {
@@ -448,6 +460,7 @@ export default {
       this.$message.success(res.msg);
     },
     handleCurrentChange(val) {
+      this.lessonNames = val.lessonName; 
       this.currentRow = val.lessonid;
     },
     // 分页

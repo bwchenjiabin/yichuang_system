@@ -42,7 +42,8 @@ module.exports = {
       'api': resolve('src/common/api'),
       'common': resolve('src/common'),
       'img': resolve('src/assets/img'),
-      'static': resolve('static')
+      'static': resolve('static'),
+      'assets': resolve('src/assets')
     }
   },
   plugins: [
