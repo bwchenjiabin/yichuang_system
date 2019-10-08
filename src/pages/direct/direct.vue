@@ -117,14 +117,15 @@
                 <br />
                 <br />
                 <br />
-                <div style="display:inline-block" class="hxj">
+                <div class="shuru">
+                  <div style="display:inline-block" class="hxj">
                   <span>
                     现价
                     <span class="bt">
                       <br />(必填)
                     </span>
                   </span>
-                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
                 <span
                   class="money"
                 >￥</span>
@@ -134,15 +135,17 @@
                   :disabled="disabled"
                   onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
                 ></el-input>
+                </div>
                 <br />
                 <br />
                 <br />
-                <div style="display:inline-block" class="hxj">
+                <div class="shuru">
+                  <div style="display:inline-block" class="hxj">
                   <span style="line-height:42px; display: block;height: 100%;">
                     原价
                     <span class="bt"></span>
                   </span>
-                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
                 <span
                   class="money"
                 >￥</span>
@@ -152,6 +155,8 @@
                   :disabled="disabled"
                   onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
                 ></el-input>
+                </div>
+                
                 <br />
                 <br />
                 <el-button type="submit" @click="adddata()">保存</el-button>
@@ -486,8 +491,13 @@ export default {
   align-items: center;
 }
 .hxj {
-  position: absolute;
   height: 42px;
+}
+.shuru{
+  height:50px;
+  width: 50%;
+  display: flex;
+  align-items: center;
 }
 .box {
   background: #f5f5f5;

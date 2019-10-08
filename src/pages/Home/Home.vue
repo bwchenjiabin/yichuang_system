@@ -92,7 +92,8 @@
                     <br />
                     <br />
                     <h3>{{this.number.platformBalance}}</h3>
-                    <br><br>
+                    <br />
+                    <br />
                     <el-button plain>提 现</el-button>
                   </div>
                 </li>
@@ -127,32 +128,48 @@
             <div class="problem">
               <p>常见问题</p>
               <ul>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp; 如何发布小程序
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;为什么很多时候轮播图更换不了
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
+                <router-link :to="{path:'/problem',query:{id:1}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp; 壹创介绍
+                  </li>
+                </router-link>
+                <router-link :to="{path:'/problem',query:{id:2}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp;发布规范
+                  </li>
+                </router-link>
+                <router-link :to="{path:'/problem',query:{id:7}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp;如何创建直播
+                  </li>
+                </router-link>
+                <router-link :to="{path:'/problem',query:{id:8}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp;PPT直播操作流程
+                  </li>
+                </router-link>
               </ul>
               <ul>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;为什么很多时候轮播图更换不了
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
+                <router-link :to="{path:'/problem',query:{id:1}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp; 壹创介绍
+                  </li>
+                </router-link>
+                <router-link :to="{path:'/problem',query:{id:2}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp;发布规范
+                  </li>
+                </router-link>
+                <router-link :to="{path:'/problem',query:{id:6}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp;店铺装修使用说明
+                  </li>
+                </router-link>
+                <router-link :to="{path:'/problem',query:{id:10}}">
+                  <li>
+                    <span class="round"></span>&nbsp;&nbsp;&nbsp;如何使用课程
+                  </li>
+                </router-link>
               </ul>
             </div>
             <div class="activity">
@@ -200,16 +217,6 @@ export default {
       Id: 5,
       list: [
         {
-          name: "发布内容",
-          img: "static/img/icon_4.png",
-          url: ""
-        },
-        {
-          name: "轮播导航",
-          img: "static/img/icon_7.png",
-          url: "/rotary"
-        },
-        {
           name: "订单流水",
           img: "static/img/icon_3.png",
           url: "/Order"
@@ -217,27 +224,12 @@ export default {
         {
           name: "店铺装修",
           img: "static/img/icon_6.png",
-          url: ""
+          url: "/showHome"
         },
         {
           name: "我的资产",
           img: "static/img/icon_10.png",
           url: "/wallet"
-        },
-        {
-          name: "评论管理",
-          img: "static/img/icon_2.png",
-          url: ""
-        },
-        {
-          name: "发票管理",
-          img: "static/img/icon_8.png",
-          url: ""
-        },
-        {
-          name: "群发消息",
-          img: "static/img/icon_9.png",
-          url: ""
         },
         {
           name: "用户反馈",
@@ -247,7 +239,7 @@ export default {
         {
           name: "分类管理",
           img: "static/img/icon_1.png",
-          url: ""
+          url: "/classify"
         }
       ]
     };
@@ -326,7 +318,7 @@ h3 {
   align-items: center;
 }
 .conts li a {
-  color:#333; 
+  color: #333;
   display: contents;
   width: 100%;
   height: 100%;
@@ -407,13 +399,13 @@ h3 {
   font-family: PingFang SC;
   font-weight: 500;
   color: rgba(51, 51, 51, 1);
-  padding: 0 0 0 30px;
+  padding: 20px 0 0 30px;
 }
 .problem {
   float: left;
   margin-top: 30px;
   background: #fff;
-  width: 72%;
+  width: 45%;
   padding-bottom: 20px;
 }
 .activity ul li {
@@ -430,6 +422,9 @@ h3 {
   width: 35%;
   display: inline-block;
 }
+.problem ul a{
+  color:  rgba(51, 51, 51, 1)
+}
 .problem ul li {
   padding: 10px 10px 10px 90px;
   width: 100%;
@@ -442,12 +437,12 @@ h3 {
   font-family: PingFang SC;
   font-weight: 500;
   color: rgba(51, 51, 51, 1);
-  padding: 0 0 0 30px;
+  padding: 20px 0 0 30px;
 }
 .activity {
   width: 24%;
-  margin-right: 2%;
-  float: right;
+  margin-left: 3%;
+  float: left;
   margin-top: 30px;
   background: #fff;
   padding-bottom: 20px;
@@ -456,15 +451,15 @@ h3 {
   margin-top: 30px;
   margin-right: 2%;
   width: 24%;
-  height: 240px;
+  height: 220px;
   float: right;
 }
 .img_box {
-  height: 45%;
+  height: 90%;
   cursor: pointer;
 }
 .img_one {
-  padding-bottom: 5%;
+  padding-bottom: 6%;
 }
 .img_box img {
   width: 100%;
@@ -475,7 +470,7 @@ h3 {
   font-family: PingFang SC;
   font-weight: 500;
   color: rgba(51, 51, 51, 1);
-  padding: 0 0 0 30px;
+  padding: 20px 0 0 30px;
 }
 
 .overview p {

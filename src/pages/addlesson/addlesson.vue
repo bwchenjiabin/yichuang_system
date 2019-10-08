@@ -27,7 +27,7 @@
           <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content">
             <div class="cont-title">
               <span class="chapter">第{{index1+1}}章</span>
-              <span class="chapter_name txt-cut">{{item.name}}</span>
+              <span class="chapter_name">{{item.name}}</span>
               <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button>
               <i class="el-icon-delete icona" @click="delchapters(item.id)"></i>
               <i class="el-icon-edit-outline icona" @click="editmodify(item.id)"></i>

@@ -32,7 +32,16 @@ export default {
       loading:false,
     };
   },
-  created() {},
+  created() {
+    let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.getdata();// 登录方法名
+         return false;
+      }
+    };
+  },
   methods: {
         getdata() {
         this.loading = true;

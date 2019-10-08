@@ -100,20 +100,35 @@
               <el-radio v-model="radios" label="1" @change="radioq">会员免费</el-radio>
               <br />
               <br />
-              <br />&nbsp;&nbsp;现价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="money">￥</span>
-              <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled"></el-input>
               <br />
-              <br />
-              <br />
-
-              <div style="display:inline-block" class="hxj">
-                <span>
-                  原价
-                </span>
-              </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span class="money">￥</span>
-              <el-input placeholder="0.01-50000" v-model.number="input4" :disabled="disabled"></el-input>
+              <div class="shuru">
+            <div style="display:inline-block" class="hxj">
+            <span>
+              现价
+              <span class="bt"><br />(必填)
+                
+              </span>
+            </span>
+          </div>
+          <span
+            class="money"
+          >￥</span>
+          <el-input placeholder="0.01-50000" v-model="input3" :disabled="disabled" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
+          </div>
+            <br />
+            <br />
+            <br />
+            <div class="shuru">
+            <div style="display:inline-block" class="hxj">
+            <span style="line-height:42px; display: block;height: 100%;">
+              原价
+              <span class="bt">
+              </span>
+            </span>
+          </div>
+          <span class="money">￥</span>
+          <el-input placeholder="0.01-50000" v-model="input4" :disabled="disabled" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
+          </div>
               <br />
               <br />
               <el-button type="submit" @click="updateLessons()">保存</el-button>
@@ -377,6 +392,8 @@ export default {
 .box {
   background: #f5f5f5;
 }
+.hxj{
+height: 42px;}
 .title {
   padding: 20px;
 }
@@ -389,6 +406,11 @@ export default {
   text-align: center;
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.shuru{
+  width: 50%;height: 50px;
+  display: flex;
   align-items: center;
 }
 .bq {

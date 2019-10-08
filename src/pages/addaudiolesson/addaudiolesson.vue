@@ -27,7 +27,7 @@
           <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content">
             <div class="cont-title">
               <span class="chapter">第{{index1+1}}章</span>
-              <span class="chapter_name txt-cut">{{item.name}}</span>
+              <span class="chapter_name">{{item.name}}</span>
               <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button>
               <i class="el-icon-delete icona" @click="delchapters(item.id)"></i>
               <i class="el-icon-edit-outline icona" @click="editmodify(item.id)"></i>
@@ -64,7 +64,9 @@
         >是否试听</el-checkbox>
         <br />
         <br />
-        <br />音频上传：&nbsp;&nbsp;&nbsp;
+        <br />
+        <span class="upload_span">音频上传:</span>
+        &nbsp;&nbsp;&nbsp;
         <el-upload
           class="upload-demo"
           ref="upload"
@@ -100,7 +102,9 @@
         <el-checkbox v-model="checked1" @change="changes1" value="0"  @click="this.value=(this.value==0)?1:0"  >是否试听</el-checkbox>
         <br />
         <br />
-        <br />音频上传：&nbsp;&nbsp;&nbsp;
+        <br />
+        <span class="upload_span">音频上传:</span>
+        &nbsp;&nbsp;&nbsp;
         <el-upload
           class="upload-demo"
           ref="upload1"
@@ -115,6 +119,7 @@
           accept=".mp3, .wav, .ogg"
           :auto-upload="true"
         >
+        
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
         </el-upload>
       </div>
@@ -448,8 +453,17 @@ export default {
 .box {
   background: #f5f5f5;
 }
+.upload_span{
+  float: left;
+}
 .title {
   padding: 20px;
+}
+.upload-demo{
+  display: flex;
+  align-items: center;
+  /* width: 150px; */
+  display: inline-block
 }
 .cont li {
   width: 300px;

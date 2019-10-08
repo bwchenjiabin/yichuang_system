@@ -20,6 +20,6 @@ export default [
     // getComponent(8),
     // getComponent(4),
     // getComponent(5),
-    // getComponent(7),
+    getComponent(7),
 ]
 
