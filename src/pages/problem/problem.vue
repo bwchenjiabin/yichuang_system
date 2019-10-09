@@ -37,11 +37,14 @@
             >{{time}}</span>
           </h2>
         </div>
-        <div class="content" v-html="content"></div>
+        <div class="content" v-html="content">
+    <h1>{{this.$store.state.count}}</h1>
+        </div>
       </div>
       <!-- <introduce></introduce> -->
     </el-container>
   </el-container>
+  
 </template>
 
 <script>
@@ -71,18 +74,24 @@ export default {
 
   mounted() {},
   methods: {
+
+    addfun(){
+      this.$store.commit('add');
+    },
+    reductionfun(){
+      this.$store.commit("reduction");
+    },
+
+
+    
     handleOpen(key) {
       problem({ id: key }).then(res => {
         this.content = res.data.data.content;
         this.title = res.data.data.title;
         this.time = res.data.data.createtime;
         let time = res.data.data.createtime;
-        let timearr = time
-          .replace(" ", ":")
-          .replace(/\:/g, "-")
-          .split("-");
-        let timestr =
-          timearr[0] + "年" + timearr[1] + "月" + timearr[2] + "日\t";
+        let timearr = time.replace(" ", ":").replace(/\:/g, "-").split("-");
+        let timestr = timearr[0] + "年" + timearr[1] + "月" + timearr[2] + "日\t";
         this.time = timestr;
       });
     },
