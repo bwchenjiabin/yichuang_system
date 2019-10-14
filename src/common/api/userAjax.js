@@ -1163,7 +1163,64 @@ const problem = data => {
     })
   })
 }
+
+const Myaccount = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('store/selectBalance',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+// 我的账户
+const acctionDetailed = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/bill/selectpage',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+// 提现管理
+const cashDetailed = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acBalanceChange/selectPage',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+// 提现方式
+
+const CashMethod = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acCashoutConfig/select',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 提现申请
+const Cashwithdrawal = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/acBalanceChange/insert',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export {
+  Cashwithdrawal,
+  CashMethod,
+  acctionDetailed,
+  cashDetailed,
   getNewCourse,
   classlesson,
   login,
@@ -1250,6 +1307,6 @@ export {
   loadDesignHomeData,
   Notice,
   problem,
-  asideNav
-
+  asideNav,
+  Myaccount
 }

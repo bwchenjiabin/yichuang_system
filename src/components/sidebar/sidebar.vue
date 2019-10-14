@@ -15,7 +15,6 @@
                 <i></i>店铺首页
             </el-menu-item>
         </el-submenu>
-
         <el-submenu index="2">
             <template slot="title">
                 <i class="el-icon-s-shop"></i>
@@ -29,6 +28,9 @@
             </el-menu-item> -->
             <el-menu-item index="/showHome">
                 <i></i>店铺装修
+            </el-menu-item>
+            <el-menu-item index="/accountSeting">
+                <i></i>支付设置
             </el-menu-item>
         </el-submenu>
 
@@ -101,6 +103,9 @@
             </template>
             <el-menu-item index="/wallet">
                 <i></i>我的钱包
+            </el-menu-item>
+            <el-menu-item index="/account">
+                <i></i>我的账户
             </el-menu-item>
             <el-menu-item index="/ServiceOrdering">
                 <i></i>服务订购

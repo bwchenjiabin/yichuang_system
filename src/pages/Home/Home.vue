@@ -43,7 +43,7 @@
                   style="display: inline;"
                 >已订购{{this.title}}，有效期至&nbsp;&nbsp;:&nbsp;&nbsp;{{endtime}}</p>
                 <div
-                  style="text-align: right; margin: 0;width: 55px;display: inline-block;float: right;"
+                  style="text-align: right; margin: 0;width: 55px;display: inline-block;float:right;"
                 >
                   <el-button type="primary" size="mini" @click="recharge">续费</el-button>
                 </div>
@@ -94,7 +94,7 @@
                     <h3>{{this.number.platformBalance}}</h3>
                     <br />
                     <br />
-                    <el-button plain>提 现</el-button>
+                    <router-link to="/account"><el-button plain>提 现</el-button></router-link>
                   </div>
                 </li>
               </ul>
@@ -255,6 +255,7 @@ export default {
   methods: {
     getdata() {
       Home(localStorage.getItem("ex2")).then(res => {
+        console.log(res)
         this.number = res.data;
       });
     },
@@ -353,7 +354,7 @@ h3 {
   box-sizing: border-box;
   text-align: center;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   position: relative;
 }
@@ -478,7 +479,7 @@ h3 {
   font-family: PingFang SC;
   font-weight: 500;
   color: rgba(51, 51, 51, 1);
-  padding: 20px 0 0 30px;
+  padding: 20px 0 30px 30px;
 }
 .tips {
   padding: 20px 20px 20px 30px;

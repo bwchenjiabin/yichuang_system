@@ -302,7 +302,55 @@ export default new Router({
         meta:{
           requireAuth:true,
         }
+    },
+    {
+      path:'/account',
+      component:resolve => require(['@/pages/account/account.vue'], resolve),   //首页编辑页  
+      meta:{
+        requireAuth:true,
+      }
+  },
+  {
+    path:'/accountSeting',
+    component:resolve => require(['@/pages/accountSeting/accountSeting.vue'], resolve),   //首页编辑页
+    meta:{
+      requireAuth:true,   
     }
+  },
+  {
+    path:'/warrant',
+    component:resolve => require(['@/pages/warrant/warrant.vue'], resolve),   //首页编辑页  
+    meta:{
+      requireAuth:true,
+    }
+  },
+  {
+    path:'/config',
+    component:resolve => require(['@/pages/config/config.vue'], resolve),   //首页编辑页  
+    meta:{
+      requireAuth:true,
+    }
+  },
+  {
+    path:'/SetPayment',
+    component:resolve => require(['@/pages/SetPayment/SetPayment.vue'], resolve),   //首页编辑页  
+    meta:{
+      requireAuth:true,
+    }
+  },
+  {
+    path:'/verifyPayment',
+    component:resolve => require(['@/pages/verifyPayment/verifyPayment.vue'], resolve),   //首页编辑页  
+    meta:{
+      requireAuth:true,
+    }
+  },
+  {
+    path:'/complete',
+    component:resolve => require(['@/pages/complete/complete.vue'], resolve),   //首页编辑页  
+    meta:{
+      requireAuth:true,
+    }
+  },
   ]
 })
-

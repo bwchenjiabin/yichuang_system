@@ -7,7 +7,6 @@
             <div class="photo">
             </div>
             <span class="phone">{{this.phone}}</span>
-            <!-- <el-tag type="danger"  @click="open2" style="cursor:pointer;" v-if="isExpire == false">已到期</el-tag> -->
             <el-tag style="cursor:pointer;">{{title}}</el-tag>
             <div class="quit" @click="getdata()">退出登录</div>
         </div>

@@ -11,7 +11,6 @@
           <sidebar></sidebar>
         </el-aside>
         <el-main>
-          <!-- <span class="course" style="cursor: pointer;">我的钱包</span> -->
           <div class="headers">
             <i>
               <img src="../../../static/img/矢量智能对象_看图王.png" alt />
@@ -20,9 +19,7 @@
               <h4>我的壹创币</h4>
               <span>{{count}}</span>
             </div>
-            <!-- <router-link to="/Recharge"> -->
               <el-button type="primary" style="float:right;" @click="recharge">充值</el-button>
-            <!-- </router-link> -->
           </div>
           <div class="footer">
             <span class="Explain">使用说明</span>
