@@ -43,7 +43,7 @@
                   <el-button type="primary">立即授权</el-button>
               </div>
               <div class="warrant_right">
-                <p class="r_title">您授权的服务号必须满足一下条件：</p>
+                <p class="r_title">您授权的服务号必须满足以下条件：</p>
                 <p class="r_content" style="margin-bottom:10px;">
                   1.该服务号为“已认证服务号”
                   <a href="javascript:;">如何认证微信服务号？</a>

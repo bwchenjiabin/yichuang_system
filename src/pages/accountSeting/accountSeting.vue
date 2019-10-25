@@ -23,10 +23,10 @@
                 <p>前提条件：你需要在微信公众平台申请开通“维信认证号”，且此服务号需要向微信申请开通“微信支付权限”</p>
                 <p>你可以在此配置，使用自己的微信支付。收入直接进入你的微信支付对应的账号。微信将收取每笔0.6%的交易手续费。</p>
                 <br />
-                <a href="javascript:;">查看配置教程</a>
+                <router-link :to="{path:'/problem',query:{id:14}}"><a href="javascript:;">查看配置教程</a></router-link>
               </div>
               <div class="have_right">
-                <router-link to="/warrant"><el-button type="primary">立即配置</el-button></router-link>
+                <router-link to="/config"><el-button type="primary">立即配置</el-button></router-link>
               </div>
             </div>
             <div class="have">

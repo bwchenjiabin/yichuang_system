@@ -32,22 +32,13 @@
                     <qrcode-vue :value="url" :size="size" level="H" style="padding-left: 213px;width: 150px;float: left;">
                     </qrcode-vue>
                     <div class="imgfoot">
-                    <p>
-                            扫描上方二维码支付0.001元，此费用为支
-付信息配置是否正确所用，不予退还
-                        </p>
+                      <p>扫描上方二维码支付0.001元，此费用为支付信息配置是否正确所用，不予退还</p>
                     </div>
                 </div>
               </div>
               <div class="warrant_right">
-                <p class="r_title">
-                            支付信息配置正确：
-扫码后点击支付按钮可正常输入密码支付
-                        </p>
-                 <p class="r_content" style="margin-bottom:10px;">
-                            支付信息有误：
-点击支付后提示长按二维码支付——请检查授权目录配置是否有误
-                </p>
+                <p class="r_title">支付信息配置正确：扫码后点击支付按钮可正常输入密码支付</p>
+                 <p class="r_content" style="margin-bottom:10px;">支付信息有误：点击支付后提示长按二维码支付——请检查授权目录配置是否有误</p>
               </div>
             </div>
             <div class="warrant_footer">
@@ -76,7 +67,7 @@ export default {
       radio:'1',
       radio1:'1',
       checked: false,
-      url:'斌哥666',
+      url:'',
       size:150,
     };
   },

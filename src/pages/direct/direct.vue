@@ -445,6 +445,7 @@ export default {
       }
     },
     handleAvatarSucces(res) {
+      console.log(this.fileList)
       this.PPTUrl = res.data;
       if (res.code == "0000") {
         this.$message.success("上传成功");

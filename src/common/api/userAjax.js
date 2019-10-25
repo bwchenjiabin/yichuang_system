@@ -1216,7 +1216,32 @@ const Cashwithdrawal = data => {
   })
 }
 
+// 获取域名
+const getdomain = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/account/getUrl',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 修改商户信息
+const editaccount = data => {
+  return new Promise((resolve, reject) => {
+    ajax.get('/account/updateMsg',data).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
 export {
+  editaccount,
+  getdomain,
   Cashwithdrawal,
   CashMethod,
   acctionDetailed,

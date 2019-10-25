@@ -18,12 +18,13 @@
             <br />
             <br />
             <br />
-            <el-steps :active="2" :align-center="align">
-              <el-step title="1 授权服务号" description></el-step>
-              <el-step title="2 配置业务域名" description></el-step>
-              <el-step title="3 设置支付信息" description></el-step>
-              <el-step title="4 验证支付信息" description></el-step>
-              <el-step title="5 完成" description></el-step>
+            <el-steps :active="1" :align-center="align">
+              <!-- <el-step title=" 授权服务号" description></el-step> -->
+              <el-step title="1 配置业务域名" description></el-step>
+              <el-step title="2 设置支付信息" description></el-step>
+              <el-step title="3 完成" description></el-step>
+
+              <!-- <el-step title="3 验证支付信息" description></el-step> -->
             </el-steps>
             <div class="warrant">
               <div class="warrant_left">
@@ -32,16 +33,27 @@
                   <div class="l_box" style="display: block;">
                       <p><span>业务域名文件：</span> 登录微信公众号后台下载业务域名文件，在此上传</p>
                       <p class="l_select" style="margin-top:25px;">
-                          <a href="javascript:;" style="margin-right: 100px;">点击查看详细教程</a>
-                          <el-button type="primary">选择文件</el-button>
+                          <router-link :to="{path:'/problem',query:{id:15}}"><a href="javascript:;" style="margin-right: 100px;">点击查看详细教程</a></router-link>
+                          <!-- <el-button type="primary">选择文件</el-button> -->
+                            <el-upload
+                              class="upload-demo"
+                              action="http://192.168.0.203:8081/upload"
+                              :before-remove="beforeRemove"
+                              :on-success="handleAvatarSucces"
+                              :limit="1"
+                              :on-exceed="handleExceed"
+                              accept=".txt">
+                              <el-button type="primary">选择文件</el-button>
+                            </el-upload>
                       </p>
                   </div><br>
                   <div class="l_box" style="display: block;">
                       <p><span>业务域名：</span> 点击获取业务域名，登录微信公众号后台填写保存</p>
                       <p class="l_select" style="margin-top:25px;">
-                          <a href="javascript:;" style="margin-right: 100px;">点击查看详细教程</a>
-                          <el-button type="primary">点击获取</el-button>
-                      </p>
+                          <router-link :to="{path:'/problem',query:{id:16}}"><a href="javascript:;" style="margin-right: 100px;">点击查看详细教程</a></router-link>
+                          <el-button type="primary" @click="getdata">点击获取</el-button>
+                      </p><br><br><br>
+                      <p style="color:red" class="l_select">{{domainpath}}</p>
                   </div><br>
               </div>
               <div class="warrant_right">
@@ -60,13 +72,12 @@
             </div>
             <div class="warrant_footer">
                 <div class="warrant_foot">
-                    <el-checkbox v-model="checked" style="display:block;margin:auto;text-align:center">我已完成上述配置</el-checkbox><br>
+                    <el-checkbox v-model="checked" style="display:block;margin:auto;text-align:center" @change="change">我已完成上述配置</el-checkbox><br>
                     <div class="warran_button">
                         <router-link to="/warrant"><el-button plain >上一步</el-button></router-link>
-                        <router-link to="/SetPayment"><el-button type="primary">下一步</el-button></router-link>
+                        <el-button type="primary" @click="judge" :disabled="disabled">下一步</el-button>
                     </div>
                 </div>
-                
             </div>
           </el-main>
         </el-container>
@@ -77,23 +88,69 @@
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
+import {getdomain} from 'api/userAjax';
+
 export default {
   data() {
     return {
       align: true,
       radio:'1',
       radio1:'1',
-      checked: false
+      checked: false,
+      Id: "",
+      domainpath:'',
+      disabled:true,
+      fileList: [],
     };
   },
   created() {
     this.reload();
+    this.Id = localStorage.getItem("ex2");
   },
   methods: {
+    getdata(){
+      getdomain({accountId:this.Id}).then(res => {
+        this.domainpath = res.data.data;     
+        this.$message.success("业务域名获取成功，请前往微信公众号后台配置");      
+      })
+    },
+    judge(){
+      if (this.fileList != '' && this.domainpath != '') {
+        this.$router.push({path:'/SetPayment'})
+      }else{
+        this.$message.error('您还没有完成上述配置')
+        return;
+      }
+    },
+    change(){
+        if (this.checked == true) {
+          this.disabled = false;
+        }else{
+          this.disabled = true;
+        }
+    },
     // 初始化回到顶部
     reload() {
       $("body,html").animate({ scrollTop: 0 }, 200);
-    }
+    },
+    handleAvatarSucces(res,file) {
+      this.fileList = file
+      if (res.code == "0000") {
+        this.$message.success("上传成功");
+      } else {
+        this.$message.error(res.msg);
+      }
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
   },
   components: {
     sidebar,
@@ -109,7 +166,10 @@ h3 {
   display: inline;
 }
 .warran_button{
-    text-align: center;
+  text-align: center;
+}
+.upload-demo{
+  display: inline-block;
 }
 .warrant{
   min-height: 400px;

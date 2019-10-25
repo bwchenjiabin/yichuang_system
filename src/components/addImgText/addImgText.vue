@@ -354,17 +354,6 @@ export default {
           });
       }
     },
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-    handleAvatarSuccess(res) {
-      this.imageUrl = res.data;
-      if (res.code == "0000") {
-        this.$message.success(res.msg);
-      } else {
-        this.$message.error(res.msg);
-      }
-    },
     //弹窗
     Popup() {
       this.delVisible = true;
