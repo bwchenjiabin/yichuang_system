@@ -51,11 +51,18 @@
                                     </div>
                                 </div>
                                 <div class="setContent">
-                                    <el-button
+                                    <!-- <el-button
                                         class="btn"
                                         type="primary"
                                         @click="$router.push('/designHome')"
+                                    >搭建店铺首页</el-button> -->
+
+                                    <el-button
+                                        class="btn"
+                                        type="primary"
+                                        @click="open"
                                     >搭建店铺首页</el-button>
+
                                     <p class="text">左图是您店铺主页当前的预览效果</p>
                                     <p class="text">主页是用户看到店铺的第一印象, 您可以点击搭建店铺主页选择组件自由组合，搭建个性化的店铺主页</p>
                                 </div>
@@ -88,6 +95,7 @@ import Header from "@/components/Header/Header.vue";
 import { componentDataList } from "@/components/customcomponent/componentList";
 import defaultList from "@/components/customcomponent/defaultList";
 import { loadDesignHomeData } from "api/userAjax";
+import { baseURL } from "common/config";
 import {
     Search,
     Swiper,
@@ -160,6 +168,9 @@ export default {
                 }
                 this.index = this.currentList.length;
             });
+        },
+        open(){
+            window.open(baseURL+"/dist/index.html#/designHome");
         }
     }
 };

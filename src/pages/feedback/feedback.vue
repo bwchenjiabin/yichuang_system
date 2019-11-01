@@ -14,7 +14,6 @@
           <h4>用户反馈</h4>
           <br />
           <br />
-
           <el-table
             :data="tableData"
             v-loading="loading"
@@ -27,6 +26,16 @@
             <el-table-column prop="feedbackHead" label="反馈标题" ></el-table-column>
             <el-table-column prop="feedbackBody" label="反馈内容"></el-table-column>
             <el-table-column prop="time" label="反馈时间"></el-table-column>
+            <el-table-column label="状态">
+              <template slot-scope="scope">
+                      <span>{{scope.row.ishandle==1?"以处理":"未处理"}}</span>
+                  </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" width="200">
+                  <template slot-scope="scope">
+                    <el-button type="text" size="small" @click="editvideo(scope.row.feedbackId)">处理</el-button>
+                  </template>
+                </el-table-column>
           </el-table>
           <el-pagination
             @size-change="handleSizeChange"
@@ -47,7 +56,7 @@
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
-import { feedback } from "api/userAjax";
+import { feedback,feedbackHandle } from "api/userAjax";
 
 export default {
   data() {
@@ -81,6 +90,11 @@ export default {
         // 初始化回到顶部
       reload() {
      $('body,html').animate({scrollTop:0},200);
+    },
+    editvideo(id) {
+      feedbackHandle({id:id}).then(res =>{
+        this.getdata();
+      })
     },
   },
   components: {

@@ -623,7 +623,6 @@ const vip = (accountId, memberName, memberPrice) => {
   })
 }
 
-
 // 店铺预览
 const preview = (accountId) => {
   return new Promise((resolve, reject) => {
@@ -808,13 +807,12 @@ const selectByType = (type) => {
   })
 }
 // 服务订购
-const service = (buyerId, pageNum, payType, orderStatus, orderType, orderNumber, payTime, payEndTime) => {
+const service = (buyerId, pageNum, payType, orderType, orderNumber, payTime, payEndTime) => {
   return new Promise((resolve, reject) => {
     ajax.get('/order/selectBySearchPay', {
       buyerId,
       pageNum,
       payType,
-      orderStatus,
       orderType,
       orderNumber,
       payTime,
@@ -1239,7 +1237,43 @@ const editaccount = data => {
 }
 
 
+//查询标签
+const queryTags = data => {
+  return new Promise((resolve,reject) => {
+    ajax.get('/account/getlable',data).then(res =>{
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 选择标签
+const ChoiceTags = data => {
+  return new Promise((resolve,reject) => {
+    ajax.get('account/editlable',data).then(res =>{
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+// 反馈处理
+const feedbackHandle = data => {
+  return new Promise((resolve,reject) => {
+    ajax.get('/feedback/handlefeedback',data).then(res =>{
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export {
+  feedbackHandle,
+  ChoiceTags,
+  queryTags,
   editaccount,
   getdomain,
   Cashwithdrawal,

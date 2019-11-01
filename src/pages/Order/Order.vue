@@ -54,17 +54,11 @@
                                             order: string
                                             style="width: 100%"
                                             :header-cell-style="{background:'#f5f5f5',color:'#000'}">
-                                                         
-                                            <!-- <el-table-column
-                                            type="selection"
-                                            width="55">
-                                            </el-table-column> -->
                                             <el-table-column
                                             label="商品"
                                             >
                                             <template slot-scope="scope" >
                                                 <i class="img-box"><img :src="'http://yckt.yichuangketang.com'+scope.row.lesson.img" alt=""></i>
-                                                 <span class="money">￥{{scope.row.lesson.lessonPriceFormer}}</span>
                                             </template>
                                             </el-table-column>
                                             <el-table-column
@@ -92,7 +86,7 @@
                                             </el-table-column>
                                             <el-table-column
                                             prop="consumption"
-                                            label="总价格"
+                                            label="价格"
                                             show-overflow-tooltip>
                                             <template slot-scope="scope" >
                                               ￥{{scope.row.lesson.lessonPriceNow}}

@@ -52,6 +52,7 @@ export default {
           localStorage.setItem('accountType',res.data.date.accountType)
           localStorage.setItem('expiretime',res.data.date.expiretime)
           localStorage.setItem('isExpire',res.data.date.isExpire)
+          localStorage.setItem('cashouttype',res.data.date.cashouttype)
             if (res.data.status == "success") {
                 this.$message.success('登录成功')
                   this.$router.push({

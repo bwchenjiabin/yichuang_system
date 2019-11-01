@@ -24,7 +24,7 @@
           <br />
            <el-upload
                   class="avatar-uploader"
-                  action="http://yckt.yichuangketang.com:8081/section/insertImg"
+                  :action="baseURL+'/section/insertImg'"
                   :show-file-list="false"
                   :auto-upload="false"
                   :on-change='changeUpload'
@@ -32,7 +32,7 @@
                 >
                   <img
                     v-if="imageUrl"
-                    :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
+                    :src="baseURL+this.imageUrl"
                     class="avatar"
                   />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -176,9 +176,8 @@
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
-import { classe } from "api/userAjax";
-import { addlesson } from "api/userAjax";
-import { uploadImg } from "api/userAjax";
+import { classe,uploadImg,addlesson } from "api/userAjax";
+import { baseURL } from "common/config";
 export default {
   data() {
     return {
@@ -226,6 +225,11 @@ export default {
       loading: false
     };
   },
+    computed: {
+        baseURL() {
+            return baseURL
+        }
+    },
   created() {
     this.getdata();
     this.Id = localStorage.getItem("ex2")

@@ -20,17 +20,17 @@
                 <i class="el-icon-s-shop"></i>
                 <span>店铺</span>
             </template>
-            <el-menu-item index="/preview">
+            <!-- <el-menu-item index="/preview">
                 <i></i>店铺预览
-            </el-menu-item>
-            <!-- <el-menu-item index="/Set">
-                <i></i>店铺设置
             </el-menu-item> -->
+            <el-menu-item index="/Set">
+                <i></i>店铺设置
+            </el-menu-item>
             <el-menu-item index="/showHome">
                 <i></i>店铺装修
             </el-menu-item>
             <el-menu-item index="/accountSeting">
-                <i></i>支付设置
+                <i></i>支付配置
             </el-menu-item>
         </el-submenu>
 

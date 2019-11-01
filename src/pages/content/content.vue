@@ -65,7 +65,7 @@
                 <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
-                      <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt />
+                      <img :src="baseURL+scope.row.img" alt />
                     </i>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
@@ -166,7 +166,7 @@
                <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
-                      <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt />
+                      <img :src="baseURL+scope.row.img" alt />
                     </i>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
@@ -267,7 +267,7 @@
                 <el-table-column label="课程封面" >
                   <template slot-scope="scope">
                     <i class="img-box">
-                      <img :src="'http://yckt.yichuangketang.com:8081'+scope.row.img" alt />
+                      <img :src="baseURL+scope.row.img" alt />
                     </i>
                     <span class="money">￥{{scope.row.lessonPriceNow}}</span>
                   </template>
@@ -357,14 +357,9 @@ import Header from "@/components/Header/Header.vue";
 import addImgText from "@/components/addImgText/addImgText.vue";
 import addvideo from "@/components/addvideo/addvideo.vue";
 import addaudio from "@/components/addaudio/addaudio.vue";
-import { ImgText } from "api/userAjax";
-import { audio } from "api/userAjax";
-import { video } from "api/userAjax";
-import { selectId } from "api/userAjax";
-import { UpperShelf } from "api/userAjax";
-import { lowerShelf } from "api/userAjax";
-import { dellesson } from "api/userAjax";
-import {checkclass} from 'api/userAjax';
+import { ImgText,audio,video,selectId,UpperShelf,lowerShelf,dellesson,checkclass } from "api/userAjax";
+
+import { baseURL } from "common/config";
 export default {
   data() {
     return {
@@ -463,9 +458,11 @@ export default {
     this.getvideo();
     this.getdata();
   },
-  mounted(){
-    
-  },
+computed: {
+        baseURL() {
+            return baseURL
+        }
+    },
   methods: {
     // 排序 
     sortByDate(){

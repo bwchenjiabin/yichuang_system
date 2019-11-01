@@ -28,7 +28,7 @@
                 style="width: 100%"
               >
                 <el-table-column prop="date" label="店铺信息" width="130"></el-table-column>
-                <el-table-column prop="name" label width="600"></el-table-column>
+                <el-table-column prop="name" label width="350"></el-table-column>
                 <el-table-column prop label>
                   <template slot-scope="scope">
                     <el-button

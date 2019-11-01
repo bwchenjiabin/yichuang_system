@@ -5,8 +5,7 @@
         class="el-menu-vertical-demo"
         :default-active="String(index)"
         active-text-color="#409Eff"
-        @select="handleOpen"
-      >
+        @select="handleOpen">
         <div v-for="(item,i) in listWithoutChild" :key="i">
           <el-menu-item :index="String(item.id)">
             <span slot="title">{{item.title}}</span>

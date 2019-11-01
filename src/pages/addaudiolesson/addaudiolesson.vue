@@ -1,174 +1,219 @@
 <template>
-    <el-scrollbar style="height:100%">
-      <div class="box">
-    <el-container>
-      <el-header  style="    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 20px -10px #000;">
-        <Header></Header>
-      </el-header>
+  <el-scrollbar style="height:100%">
+    <div class="box">
       <el-container>
-        <el-aside width="200px">
-          <sidebar></sidebar>
-        </el-aside>
-        <el-main>
-          <router-link to="/content">
-            <span class="course" style="cursor: pointer;">我的课程</span>
-          </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-          <span class="imgText">新增课程</span>
-          <div class="title">
-            <i class="icon"></i>
-            <span>课程信息</span>
-            <br />
-            <br />
-            <br />
-            <el-input placeholder="请输入章节标题" v-model="input" clearable class="inp2"></el-input>
-            <el-button type="primary" class="btn1" @click="chapters()">添加章</el-button>
-          </div>
-          <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content">
-            <div class="cont-title">
-              <span class="chapter">第{{index1+1}}章</span>
-              <span class="chapter_name">{{item.name}}</span>
-              <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button>
-              <i class="el-icon-delete icona" @click="delchapters(item.id)"></i>
-              <i class="el-icon-edit-outline icona" @click="editmodify(item.id)"></i>
+        <el-header
+          style="    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px -10px #000;"
+        >
+          <Header></Header>
+        </el-header>
+        <el-container>
+          <el-aside width="200px">
+            <sidebar></sidebar>
+          </el-aside>
+          <el-main>
+            <router-link to="/content">
+              <span class="course" style="cursor: pointer;">我的课程</span>
+            </router-link>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
+            <span class="imgText">新增课程</span>
+            <div class="title">
+              <i class="icon"></i>
+              <span>课程信息</span>
+              <br />
+              <br />
+              <br />
+              <el-input placeholder="请输入章节标题" v-model="input" clearable class="inp2"></el-input>
+              <el-button type="primary" class="btn1" @click="chapters()">添加章</el-button>
             </div>
-            <div class="table" v-for="(node,index2) in item.sections" :key="index2">
-              <ul>
-                <li>
-                  {{index1+1}}-{{index2+1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  {{node.name}}
-                  <div class="icons">
-                    <i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;
-                    <i class="el-icon-delete" @click="delsections(node.id)"></i>
-                  </div>
-                </li>
-              </ul>
+            <div v-for="(item,index1) in courseDetail.chapters" :key="index1" class="content">
+              <div class="cont-title">
+                <span class="chapter">第{{index1+1}}章</span>
+                <span class="chapter_name">{{item.name}}</span>
+                <el-button plain class="btn" @click="Popup(item.id);">+添加节</el-button>
+                <i class="el-icon-delete icona" @click="delchapters(item.id)"></i>
+                <i class="el-icon-edit-outline icona" @click="editmodify(item.id)"></i>
+              </div>
+              <div class="table" v-for="(node,index2) in item.sections" :key="index2">
+                <ul>
+                  <li>
+                    {{index1+1}}-{{index2+1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{node.name}}
+                    <div class="icons">
+                      <i class="el-icon-edit-outline" @click="Popupp(node.id),aa(item.id)"></i>&nbsp;&nbsp;&nbsp;
+                      <i class="el-icon-delete" @click="delsections(node.id)"></i>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-        </el-main>
+          </el-main>
+        </el-container>
       </el-container>
-    </el-container>
-    <!-- 新增音频弹窗 -->
-    
-    <el-dialog title :visible.sync="delVisible" width="600px" center style="z-index: 999" :close-on-click-modal="false">
-      <div class="del-dialog-cnt">
-        <span class="namea">标题</span>
-        <el-input placeholder="请输入标题" v-model="input1" clearable maxlength="30"></el-input>
-        <span class="number">{{this.input1.length}}/30</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <el-checkbox
-          v-model="checked"
-          @change="changes"
-          value="0"
-          @click="this.value=(this.value==0)?1:0"
-        >是否试听</el-checkbox>
-        <br />
-        <br />
-        <br />
-        <span class="upload_span">音频上传:</span>
-        &nbsp;&nbsp;&nbsp;
-        <el-upload
-          class="upload-demo"
-          ref="upload"
-          :action="imageUrl"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-          :file-list="fileList"
-          :data="{
+      <!-- 新增音频弹窗 -->
+
+      <el-dialog
+        title
+        :visible.sync="delVisible"
+        width="600px"
+        center
+        style="z-index: 999"
+        :close-on-click-modal="false"
+      >
+        <div class="del-dialog-cnt">
+          <span class="namea">标题</span>
+          <el-input placeholder="请输入标题" v-model="input1" clearable maxlength="30"></el-input>
+          <span class="number">{{this.input1.length}}/30</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-checkbox
+            v-model="checked"
+            @change="changes"
+            value="0"
+            @click="this.value=(this.value==0)?1:0"
+          >是否试听</el-checkbox>
+          <br />
+          <br />
+          <br />
+          <span class="upload_span">音频上传:</span>
+          &nbsp;&nbsp;&nbsp;
+          <el-upload
+            class="upload-demo"
+            ref="upload"
+            :action="imageUrl"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :file-list="fileList"
+            :data="{
             accountId:this.accountId
           }"
-          :limit="1"
-          accept=".mp3, .wav, .ogg"
-          :auto-upload="true"
-        >
-          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-        </el-upload>
-        <br />
-        <br />
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitUpload()">保 存</el-button>
-      </span>
-    </el-dialog>
+            :limit="1"
+            accept=".mp3, .wav, .ogg"
+            :auto-upload="true"
+          >
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          </el-upload>
+          <br />
+          <br />
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitUpload()">保 存</el-button>
+        </span>
+      </el-dialog>
 
-    <!-- 编辑音频弹窗 -->
-    <el-dialog title :visible.sync="delVisiblee" width="600px" center style="z-index: 999" :close-on-click-modal="false">
-      <div class="del-dialog-cnt">
-        <span class="namea">标题</span>
-        <el-input placeholder="请输入标题" v-model="input2" clearable maxlength="30"></el-input>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-         &nbsp;&nbsp;
-        <span class="number">{{this.input2.length}}/30</span>
-        <el-checkbox v-model="checked1" @change="changes1" value="0"  @click="this.value=(this.value==0)?1:0"  >是否试听</el-checkbox>
-        <br />
-        <br />
-        <br />
-        <span class="upload_span">音频上传:</span>
-        &nbsp;&nbsp;&nbsp;
-        <el-upload
-          class="upload-demo"
-          ref="upload1"
-          :action="imageUrl1"
-          :on-success="handleAvatarSuccesss"
-          :before-upload="beforeAvatarUpload1"
-          :file-list="fileList1"
-          :data="{
+      <!-- 编辑音频弹窗 -->
+      <el-dialog
+        title
+        :visible.sync="delVisiblee"
+        width="600px"
+        center
+        style="z-index: 999"
+        :close-on-click-modal="false"
+      >
+        <div class="del-dialog-cnt">
+          <span class="namea">标题</span>
+          <el-input placeholder="请输入标题" v-model="input2" clearable maxlength="30"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;
+          <span
+            class="number"
+          >{{this.input2.length}}/30</span>
+          <el-checkbox
+            v-model="checked1"
+            @change="changes1"
+            value="0"
+            @click="this.value=(this.value==0)?1:0"
+          >是否试听</el-checkbox>
+          <br />
+          <br />
+          <br />
+          <span class="upload_span">音频上传:</span>
+          &nbsp;&nbsp;&nbsp;
+          <el-upload
+            class="upload-demo"
+            ref="upload1"
+            :action="imageUrl1"
+            :on-success="handleAvatarSuccesss"
+            :before-upload="beforeAvatarUpload1"
+            :file-list="fileList1"
+            :data="{
            accountId:this.accountId
           }"
-          :limit="1"
-          accept=".mp3, .wav, .ogg"
-          :auto-upload="true"
-        >
-        
-          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-        </el-upload>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitUpload1()">保 存</el-button>
-      </span>
-    </el-dialog>
-        <!-- 编辑章名称弹窗 -->
-    <el-dialog title :visible.sync="editmodifys" width="600px" center style="z-index: 999" :close-on-click-modal="false">
-      <div class="del-dialog-cnt">
-        <div class="edit-title">
-          修改章名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-input placeholder="请输入新的章名称" v-model="input3" clearable maxlength="20"></el-input>
-          <el-button type="primary" @click="editmodif()" style="margin-left:20px;">保 存</el-button>
+            :limit="1"
+            accept=".mp3, .wav, .ogg"
+            :auto-upload="true"
+          >
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          </el-upload>
         </div>
-      </div>
-    </el-dialog>
-     <!-- 删除章提示 -->
-      <el-dialog title="提示" :visible.sync="Deletez" width="300px" center style="z-index: 999" :close-on-click-modal="false">                      
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitUpload1()">保 存</el-button>
+        </span>
+      </el-dialog>
+      <!-- 编辑章名称弹窗 -->
+      <el-dialog
+        title
+        :visible.sync="editmodifys"
+        width="600px"
+        center
+        style="z-index: 999"
+        :close-on-click-modal="false"
+      >
+        <div class="del-dialog-cnt">
+          <div class="edit-title">
+            修改章名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-input placeholder="请输入新的章名称" v-model="input3" clearable maxlength="20"></el-input>
+            <el-button type="primary" @click="editmodif()" style="margin-left:20px;">保 存</el-button>
+          </div>
+        </div>
+      </el-dialog>
+      <!-- 删除章提示 -->
+      <el-dialog
+        title="提示"
+        :visible.sync="Deletez"
+        width="300px"
+        center
+        style="z-index: 999"
+        :close-on-click-modal="false"
+      >
         <div class="del-dialog-cnt" style="text-align: center;">确定要删除该章吗？</div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="Deletez = false">取 消</el-button>
-          <el-button type="primary" @click="handleClicks()" >确 定</el-button>
-      </span>
-    </el-dialog>
-         <!-- 删除节提示 -->
-      <el-dialog title="提示" :visible.sync="Deletej" width="300px" center style="z-index: 999" :close-on-click-modal="false">                      
+          <el-button type="primary" @click="handleClicks()">确 定</el-button>
+        </span>
+      </el-dialog>
+      <!-- 删除节提示 -->
+      <el-dialog
+        title="提示"
+        :visible.sync="Deletej"
+        width="300px"
+        center
+        style="z-index: 999"
+        :close-on-click-modal="false"
+      >
         <div class="del-dialog-cnt" style="text-align: center;">确定要删除该节吗？</div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="Deletej = false">取 消</el-button>
-          <el-button type="primary" @click="handleClicksj()" >确 定</el-button>
-      </span>
-    </el-dialog>
-  </div>
-    </el-scrollbar>
+          <el-button type="primary" @click="handleClicksj()">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+  </el-scrollbar>
 </template>
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
-import { ceshi } from "api/userAjax";
-import { chapter } from "api/userAjax";
-import { chaptsectioner } from "api/userAjax";
-import { section } from "api/userAjax";
-import { editsection } from "api/userAjax";
-import { editvideosection } from "api/userAjax";
-import { delsection } from "api/userAjax";
-import { delchapter } from "api/userAjax";
-import { querychapter } from "api/userAjax";
-import { fileupload } from "api/userAjax";
+import {
+  ceshi,
+  chapter,
+  chaptsectioner,
+  section,
+  editsection,
+  editvideosection,
+  delsection,
+  delchapter,
+  querychapter,
+  fileupload
+} from "api/userAjax";
+import { baseURL } from "common/config";
 export default {
   data() {
     return {
@@ -187,24 +232,26 @@ export default {
       checkedss1: false, // 是否试读
       fileList1: [],
       fileList2: [],
-      audiourl:'',
-      audiourl1:'',
-      accountId:'',
+      audiourl: "",
+      audiourl1: "",
+      accountId: "",
       input3: "", // 修改章标题
-      chapterids:'', // 获取章id
-      editmodifys:false,  //修改章弹窗
+      chapterids: "", // 获取章id
+      editmodifys: false, //修改章弹窗
       delsectionID: "", //删除jieid
       delchapterID: "", //删除章id
-      imageUrl: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", // 上传地址
-      imageUrl1: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", //修改地址
+      imageUrl:
+        baseURL+"/section/insertAudioOrVedio", // 上传地址
+      imageUrl1:
+        baseURL+"/section/insertAudioOrVedio", //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID
       chapterId: "", //章ID
-      Deletez:false,   //删除章
-      Deletej:false,   //删除节
+      Deletez: false, //删除章
+      Deletej: false, //删除节
       Id: "",
-      time:'',
-      time1:'',
+      time: "",
+      time1: "",
       date: [],
       date1: [],
       date2: [],
@@ -231,6 +278,11 @@ export default {
       }
     };
   },
+  computed: {
+    baseURL() {
+      return baseURL;
+    }
+  },
   created() {
     this.accountId = localStorage.getItem("ex2");
     this.getParams();
@@ -246,7 +298,7 @@ export default {
         this.checkedss = 0;
       }
     },
-        //是否试听取值
+    //是否试听取值
     changes1(val) {
       this.checked1 = val;
       if (this.checked1 == true) {
@@ -266,10 +318,10 @@ export default {
     //删除节
     delsections(val) {
       this.delsectionID = val;
-      this.Deletej = true;    
+      this.Deletej = true;
     },
-    handleClicksj(){
- delsection(this.delsectionID).then(res => {
+    handleClicksj() {
+      delsection(this.delsectionID).then(res => {
         this.$message.success(res.data);
         this.Deletej = false;
         this.getdata();
@@ -280,50 +332,63 @@ export default {
       this.delchapterID = val;
       this.Deletez = true;
     },
-    handleClicks(){
+    handleClicks() {
       delchapter(this.delchapterID).then(res => {
         this.Deletez = false;
         this.$message.success(res.data);
         this.getdata();
-      })
+      });
     },
     //修改
     submitUpload1() {
-       fileupload(this.chapterId,this.input2,this.checkedss1,this.time1,this.audiourl1,this.sectionid).then(res => {
+      fileupload(
+        this.chapterId,
+        this.input2,
+        this.checkedss1,
+        this.time1,
+        this.audiourl1,
+        this.sectionid
+      ).then(res => {
         this.$message.success(res.data.msg);
         this.delVisiblee = false;
         this.input2 = "";
         this.checkedss1 = false;
         this.fileList1 = [];
         this.getdata();
-      })
+      });
     },
     //新增
     submitUpload() {
-        fileupload(this.chapterid,this.input1,this.checkedss,this.time,this.audiourl).then(res => {
+      fileupload(
+        this.chapterid,
+        this.input1,
+        this.checkedss,
+        this.time,
+        this.audiourl
+      ).then(res => {
         this.$message.success(res.data.msg);
         this.delVisible = false;
         this.input1 = "";
         this.checkedss = false;
         this.fileList = [];
         this.getdata();
-      })
+      });
     },
     //文件上传成功
     handleAvatarSuccess(res, file) {
       this.audiourl = res.data;
       if (res.code == "0000") {
-      this.$message.success(res.msg);
-      }else{
-      this.$message.error(res.msg)
+        this.$message.success(res.msg);
+      } else {
+        this.$message.error(res.msg);
       }
     },
     handleAvatarSuccesss(res, file) {
       this.audiourl1 = res.data;
       if (res.code == "0000") {
-      this.$message.success(res.msg);
-      }else{
-      this.$message.error(res.msg)
+        this.$message.success(res.msg);
+      } else {
+        this.$message.error(res.msg);
       }
     },
     //测试
@@ -343,17 +408,22 @@ export default {
           this.$message.error(err);
         });
     },
-      // 修改章名称
+    // 修改章名称
     editmodify(val) {
-      this.chapterids = val
+      this.chapterids = val;
       this.editmodifys = true;
-      querychapter(this.chapterids).then(res =>{
-        this.input3 = res.data.name
-      })
+      querychapter(this.chapterids).then(res => {
+        this.input3 = res.data.name;
+      });
     },
     // 确认修改章名称
-    editmodif(){
-            chapter(localStorage.getItem("ex2"),this.Id, this.input3,this.chapterids)
+    editmodif() {
+      chapter(
+        localStorage.getItem("ex2"),
+        this.Id,
+        this.input3,
+        this.chapterids
+      )
         .then(res => {
           this.editmodifys = false;
           this.$message.success(res.data);
@@ -377,71 +447,71 @@ export default {
       this.delVisiblee = true;
       editsection(this.sectionid).then(res => {
         this.input2 = res.data.name;
-        this.checkedss1 = res.data.extend2
+        this.checkedss1 = res.data.extend2;
         // this.fileList = res.data.url
         if (this.checkedss1 == 1) {
           this.checked1 = true;
-        }else{
+        } else {
           this.checked1 = false;
         }
       });
     },
     beforeAvatarUpload(file) {
-                this.getTimes(file);
-            },
-             getTimes(file) {
-                var content = file;
-                //获取录音时长
-                var url = URL.createObjectURL(content);
-                //经测试，发现audio也可获取视频的时长
-                var audioElement = new Audio(url);
-                audioElement.addEventListener("loadedmetadata", (_event) => {
-                    this.audioDuration = parseInt(audioElement.duration);
-                    var minute = parseInt(this.audioDuration / 60);
-                    var times = parseInt(this.audioDuration / 3600);
-                    var sec = (this.audioDuration % 60) + "";
-                    var isM0 = ":";
-                    if (minute == 0) {
-                    minute = "00";
-                    } else if (minute < 10) {
-                    minute = "0" + minute;
-                    }
-                     if (times == 0) {
-                    times = "00";
-                    } else if (times < 10) {
-                    times = "0" + times;
-                    }
-                    if (sec.length == 1) {
-                    sec = "0" + sec;
-                    }
-                    this.time = times + isM0 + minute + isM0 + sec
-                });
-            },
-      beforeAvatarUpload1(file) {
-                this.getTimes1(file);
-            },
-             getTimes1(file) {
-                var content = file;
-                //获取录音时长
-                var url = URL.createObjectURL(content);
-                //经测试，发现audio也可获取视频的时长
-                var audioElement = new Audio(url);
-                audioElement.addEventListener("loadedmetadata", (_event) => {
-                    this.audioDuration = parseInt(audioElement.duration);
-                    var minute = parseInt(this.audioDuration / 60);
-                    var sec = (this.audioDuration % 60) + "";
-                    var isM0 = ":";
-                    if (minute == 0) {
-                    minute = "00";
-                    } else if (minute < 10) {
-                    minute = "0" + minute;
-                    }
-                    if (sec.length == 1) {
-                    sec = "0" + sec;
-                    }
-                    this.time1 = minute + isM0 + sec
-                });
-            },
+      this.getTimes(file);
+    },
+    getTimes(file) {
+      var content = file;
+      //获取录音时长
+      var url = URL.createObjectURL(content);
+      //经测试，发现audio也可获取视频的时长
+      var audioElement = new Audio(url);
+      audioElement.addEventListener("loadedmetadata", _event => {
+        this.audioDuration = parseInt(audioElement.duration);
+        var minute = parseInt(this.audioDuration / 60);
+        var times = parseInt(this.audioDuration / 3600);
+        var sec = (this.audioDuration % 60) + "";
+        var isM0 = ":";
+        if (minute == 0) {
+          minute = "00";
+        } else if (minute < 10) {
+          minute = "0" + minute;
+        }
+        if (times == 0) {
+          times = "00";
+        } else if (times < 10) {
+          times = "0" + times;
+        }
+        if (sec.length == 1) {
+          sec = "0" + sec;
+        }
+        this.time = times + isM0 + minute + isM0 + sec;
+      });
+    },
+    beforeAvatarUpload1(file) {
+      this.getTimes1(file);
+    },
+    getTimes1(file) {
+      var content = file;
+      //获取录音时长
+      var url = URL.createObjectURL(content);
+      //经测试，发现audio也可获取视频的时长
+      var audioElement = new Audio(url);
+      audioElement.addEventListener("loadedmetadata", _event => {
+        this.audioDuration = parseInt(audioElement.duration);
+        var minute = parseInt(this.audioDuration / 60);
+        var sec = (this.audioDuration % 60) + "";
+        var isM0 = ":";
+        if (minute == 0) {
+          minute = "00";
+        } else if (minute < 10) {
+          minute = "0" + minute;
+        }
+        if (sec.length == 1) {
+          sec = "0" + sec;
+        }
+        this.time1 = minute + isM0 + sec;
+      });
+    }
   },
   components: {
     sidebar,
@@ -453,17 +523,17 @@ export default {
 .box {
   background: #f5f5f5;
 }
-.upload_span{
+.upload_span {
   float: left;
 }
 .title {
   padding: 20px;
 }
-.upload-demo{
+.upload-demo {
   display: flex;
   align-items: center;
   /* width: 150px; */
-  display: inline-block
+  display: inline-block;
 }
 .cont li {
   width: 300px;

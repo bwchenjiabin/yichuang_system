@@ -49,7 +49,7 @@
                 </div>
                 <el-tag slot="reference" style="cursor:pointer">{{title}}</el-tag>
               </el-popover>
-              <el-tag effect="plain" style="cursor:pointer">平台代收</el-tag>
+              <el-tag effect="plain" style="cursor:pointer">{{cashouttype}}</el-tag>
             </div>
             <div class="overview">
               <p>数据概览</p>
@@ -94,7 +94,9 @@
                     <h3>{{this.number.platformBalance}}</h3>
                     <br />
                     <br />
-                    <router-link to="/account"><el-button plain>提 现</el-button></router-link>
+                    <router-link to="/account">
+                      <el-button plain>提 现</el-button>
+                    </router-link>
                   </div>
                 </li>
               </ul>
@@ -104,90 +106,83 @@
               <p>{{Notice.dicValue}}</p>
               <span>{{Notice.createtime}}</span>
             </div>
-            <div class="overviews">
-              <p>推荐功能</p>
-              <ul class="conts">
-                <li v-for="(item,index) in list" :key="index">
-                  <router-link :to="item.url">
-                    <i>
-                      <img :src="item.img" alt />
-                    </i>
-                    <span>{{item.name}}</span>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-            <div class="activitys">
-              <div class="img_box img_one">
+            <div class="overviewss">
+              <div class="overviews">
+                <p style="margin-bottom:20px;">推荐功能</p>
+                <ul class="conts">
+                  <li v-for="(item,index) in list" :key="index">
+                    <router-link :to="item.url">
+                      <i>
+                        <img :src="item.img" alt />
+                      </i>
+                      <span>{{item.name}}</span>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+              <div class="img_box">
                 <img src="static/img/home_img1.png" alt />
+              </div>
+            </div>
+            <div class="overviewss">
+              <div class="problem">
+                <p style="margin-bottom:20px;">常见问题</p>
+                <ul>
+                  <router-link :to="{path:'/problem',query:{id:1}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp; 壹创介绍
+                    </li>
+                  </router-link>
+                  <router-link :to="{path:'/problem',query:{id:2}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp;发布规范
+                    </li>
+                  </router-link>
+                  <router-link :to="{path:'/problem',query:{id:7}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp;如何创建直播
+                    </li>
+                  </router-link>
+                </ul>
+                <ul>
+                  <router-link :to="{path:'/problem',query:{id:8}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp;PPT直播操作流程
+                    </li>
+                  </router-link>
+                  <router-link :to="{path:'/problem',query:{id:6}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp;店铺装修使用说明
+                    </li>
+                  </router-link>
+                  <router-link :to="{path:'/problem',query:{id:10}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp;如何使用课程
+                    </li>
+                  </router-link>
+                </ul>
+                <ul>
+                  <router-link :to="{path:'/problem',query:{id:15}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp; 如何配置业务域名文件
+                    </li>
+                  </router-link>
+                  <router-link :to="{path:'/problem',query:{id:16}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp;如何配置业务域名
+                    </li>
+                  </router-link>
+                  
+                  <router-link :to="{path:'/problem',query:{id:18}}">
+                    <li>
+                      <span class="round"></span>&nbsp;&nbsp;&nbsp;获取微信商户 API 密钥
+                    </li>
+                  </router-link>
+                </ul>
               </div>
               <div class="img_box">
                 <img src="static/img/home_img2.png" alt />
               </div>
-            </div>
-            <div class="problem">
-              <p>常见问题</p>
-              <ul>
-                <router-link :to="{path:'/problem',query:{id:1}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp; 壹创介绍
-                  </li>
-                </router-link>
-                <router-link :to="{path:'/problem',query:{id:2}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp;发布规范
-                  </li>
-                </router-link>
-                <router-link :to="{path:'/problem',query:{id:7}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp;如何创建直播
-                  </li>
-                </router-link>
-                <router-link :to="{path:'/problem',query:{id:8}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp;PPT直播操作流程
-                  </li>
-                </router-link>
-              </ul>
-              <ul>
-                <router-link :to="{path:'/problem',query:{id:1}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp; 壹创介绍
-                  </li>
-                </router-link>
-                <router-link :to="{path:'/problem',query:{id:2}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp;发布规范
-                  </li>
-                </router-link>
-                <router-link :to="{path:'/problem',query:{id:6}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp;店铺装修使用说明
-                  </li>
-                </router-link>
-                <router-link :to="{path:'/problem',query:{id:10}}">
-                  <li>
-                    <span class="round"></span>&nbsp;&nbsp;&nbsp;如何使用课程
-                  </li>
-                </router-link>
-              </ul>
-            </div>
-            <div class="activity">
-              <p>近期活动</p>
-              <ul>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;为什么很多时候轮播图更换不了
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
-                <li>
-                  <span class="round"></span>&nbsp;&nbsp;&nbsp;如何发布小程序
-                </li>
-              </ul>
             </div>
           </el-main>
           <router-view></router-view>
@@ -215,6 +210,7 @@ export default {
       visibles: false,
       endtime: "",
       Id: 5,
+      cashouttype: "",
       list: [
         {
           name: "订单流水",
@@ -251,11 +247,11 @@ export default {
     this.getNotice();
     this.phone = localStorage.getItem("phone");
     this.title = localStorage.getItem("accountType");
+    this.cashouttype = localStorage.getItem("cashouttype");
   },
   methods: {
     getdata() {
       Home(localStorage.getItem("ex2")).then(res => {
-        console.log(res)
         this.number = res.data;
       });
     },
@@ -302,12 +298,12 @@ h3 {
 .conts {
   display: flex;
   flex-wrap: wrap;
-  padding-left: 70px;
+  padding-left: 30px;
   margin-top: 30px;
 }
 .conts li {
-  padding: 5px 0px 5px 0px;
-  flex: 0 0 17%;
+  padding: 5px 65px;
+  margin-right: 1px;
   height: 50px;
   font-size: 13px;
   line-height: 50px;
@@ -354,7 +350,6 @@ h3 {
   box-sizing: border-box;
   text-align: center;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
   position: relative;
 }
@@ -390,10 +385,13 @@ h3 {
 .overviews {
   padding-bottom: 45px;
   float: left;
-  width: 72%;
-  margin-top: 30px;
+  flex: 3;
   background: #fff;
   box-sizing: border-box;
+}
+.overviewss {
+  display: flex;
+  margin-top: 30px;
 }
 .overviews p {
   font-size: 16px;
@@ -403,15 +401,15 @@ h3 {
   padding: 20px 0 0 30px;
 }
 .problem {
+  flex: 3;
   float: left;
-  margin-top: 30px;
+  /* margin-top: 30px; */
   background: #fff;
-  width: 45%;
+  /* width: 72%; */
   padding-bottom: 20px;
 }
 .activity ul li {
-  padding: 10px 10px 10px 90px;
-  width: 100%;
+  padding: 10px 10px 10px 70px;
   display: block;
   font-size: 13px;
   cursor: pointer;
@@ -420,14 +418,15 @@ h3 {
   display: inline-block;
 }
 .problem ul {
-  width: 35%;
+  width: 25%;
   display: inline-block;
 }
-.problem ul a{
-  color:  rgba(51, 51, 51, 1)
+.problem ul a {
+  display: block;
+  color: rgba(51, 51, 51, 1);
 }
 .problem ul li {
-  padding: 10px 10px 10px 90px;
+  padding: 10px 10px 10px 30px;
   width: 100%;
   display: inline-block;
   font-size: 13px;
@@ -452,12 +451,13 @@ h3 {
   margin-top: 30px;
   margin-right: 2%;
   width: 24%;
-  height: 220px;
+  height: 438px;
   float: right;
 }
 .img_box {
-  height: 90%;
+  margin-left: 20px;
   cursor: pointer;
+  flex: 1;
 }
 .img_one {
   padding-bottom: 6%;

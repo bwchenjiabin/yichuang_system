@@ -74,7 +74,7 @@
                 <div class="warrant_foot">
                     <el-checkbox v-model="checked" style="display:block;margin:auto;text-align:center" @change="change">我已完成上述配置</el-checkbox><br>
                     <div class="warran_button">
-                        <router-link to="/warrant"><el-button plain >上一步</el-button></router-link>
+                        <router-link to="/accountSeting"><el-button plain >上一步</el-button></router-link>
                         <el-button type="primary" @click="judge" :disabled="disabled">下一步</el-button>
                     </div>
                 </div>

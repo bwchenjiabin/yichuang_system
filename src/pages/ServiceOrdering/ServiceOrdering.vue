@@ -16,7 +16,7 @@
                                   <div class="search-inner">
                                       <span class="search" style="margin-right: 32px;">搜索:&nbsp;</span><el-input placeholder="搜索订单" v-model="input" clearable class="search-inp"></el-input>
                                   </div>
-                                    <span class="search" style="margin-left: 20px;">订单状态:</span>
+                                    <!-- <span class="search" style="margin-left: 20px;">订单状态:</span>
                                     <el-select v-model="value" clearable placeholder="全部状态" class="vip" @change="changes">
                                         <el-option
                                           v-for="item in options"
@@ -25,7 +25,7 @@
                                           :value="item.value">
                                         </el-option>
                                     </el-select>                                                   
-                                    <br><br>
+                                    <br><br> -->
                                          <span class="search">商品类型:</span>
                                     <el-select v-model="value1" clearable placeholder="全部状态" class="vip" @change="changes1">
                                         <el-option
@@ -34,7 +34,7 @@
                                           :label="item.label"
                                           :value="item.value">
                                         </el-option>
-                                    </el-select>
+                                    </el-select><br><br>
                                     <span class="search">交易时间:</span>
                                     <el-date-picker
                                     v-model="value2"
@@ -234,7 +234,7 @@ import {orderStatus} from 'api/userAjax';
     },
       // 展示
       getdata () {
-        service(localStorage.getItem('ex2'),this.currentPage,this.change2,this.change,this.change1,this.input,this.value2,this.value3).then(res => {
+        service(localStorage.getItem('ex2'),this.currentPage,this.change2,this.change1,this.input,this.value2,this.value3).then(res => {
            this.list = res.data.data.data;
            this.ordersize = res.data.data.total
            this.loading = false;
@@ -248,7 +248,7 @@ import {orderStatus} from 'api/userAjax';
     },
     // 订单搜索
       orderSearchs () {
-        service(localStorage.getItem('ex2'),this.currentPage,this.change2,this.change,this.change1,this.input,this.value2,this.value3).then(res => {
+        service(localStorage.getItem('ex2'),this.currentPage,this.change2,this.change1,this.input,this.value2,this.value3).then(res => {
             this.list = res.data.data.data;
            this.ordersize = res.data.data.total
       })

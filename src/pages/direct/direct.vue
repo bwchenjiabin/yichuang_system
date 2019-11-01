@@ -35,7 +35,7 @@
                 <br />
                 <el-upload
                   class="avatar-uploader"
-                  action="http://yckt.yichuangketang.com:8081/section/insertImg"
+                  :action="baseURL+'/section/insertImg'"
                   :show-file-list="false"
                   :auto-upload="false"
                   :on-change="changeUpload"
@@ -43,7 +43,7 @@
                 >
                   <img
                     v-if="imageUrl"
-                    :src="'http://yckt.yichuangketang.com:8081'+this.imageUrl"
+                    :src="baseURL+this.imageUrl"
                     class="avatar"
                   />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -85,7 +85,7 @@
                   <br />
                   <el-upload
                     class="upload-demo"
-                    action="http://yckt.yichuangketang.com:8081/file/uploadppt"
+                    :action="baseURL+'/file/uploadppt'"
                     :data="{accountId: this.Id}"
                     :before-remove="beforeRemove"
                     :on-success="handleAvatarSucces"
@@ -119,44 +119,40 @@
                 <br />
                 <div class="shuru">
                   <div style="display:inline-block" class="hxj">
-                  <span>
-                    现价
-                    <span class="bt">
-                      <br />(必填)
+                    <span>
+                      现价
+                      <span class="bt">
+                        <br />(必填)
+                      </span>
                     </span>
-                  </span>
-                </div>
-                <span
-                  class="money"
-                >￥</span>
-                <el-input
-                  placeholder="0.01-50000"
-                  v-model="input3"
-                  :disabled="disabled"
-                  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
-                ></el-input>
+                  </div>
+                  <span class="money">￥</span>
+                  <el-input
+                    placeholder="0.01-50000"
+                    v-model="input3"
+                    :disabled="disabled"
+                    onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+                  ></el-input>
                 </div>
                 <br />
                 <br />
                 <br />
                 <div class="shuru">
                   <div style="display:inline-block" class="hxj">
-                  <span style="line-height:42px; display: block;height: 100%;">
-                    原价
-                    <span class="bt"></span>
-                  </span>
+                    <span style="line-height:42px; display: block;height: 100%;">
+                      原价
+                      <span class="bt"></span>
+                    </span>
+                  </div>
+                  <span class="money">￥</span>
+                  <el-input
+                    placeholder="0.01-50000"
+                    v-model="input4"
+                    :disabled="disabled"
+                    onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+                  ></el-input>
                 </div>
-                <span
-                  class="money"
-                >￥</span>
-                <el-input
-                  placeholder="0.01-50000"
-                  v-model="input4"
-                  :disabled="disabled"
-                  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
-                ></el-input>
-                </div>
-                
+
                 <br />
                 <br />
                 <el-button type="submit" @click="adddata()">保存</el-button>
@@ -178,7 +174,7 @@
           <div class="del-dialog-cnt" style="height:500px;overflow:auto;">
             <span v-text="Tips" v-show="Tipss" class="tipse"></span>
             <div class="img-box" v-for="(item,index) in PPTlist" :key="index">
-              <img :src="'http://yckt.yichuangketang.com:8081'+item.imgpath" alt />
+              <img :src="baseURL+item.imgpath" alt />
             </div>
           </div>
         </el-scrollbar>
@@ -222,12 +218,15 @@
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
-import { classe } from "api/userAjax";
-import { addlive } from "api/userAjax";
-import { user } from "api/userAjax";
-import { ssuser } from "api/userAjax";
-import { serchppt } from "api/userAjax";
-import { uploadImg } from "api/userAjax";
+import {
+  classe,
+  addlive,
+  user,
+  ssuser,
+  serchppt,
+  uploadImg
+} from "api/userAjax";
+import { baseURL } from "common/config";
 export default {
   data() {
     return {
@@ -327,6 +326,11 @@ export default {
       // 防止重复提交
       loading: false
     };
+  },
+  computed: {
+    baseURL() {
+      return baseURL;
+    }
   },
   created() {
     this.getParams();
@@ -445,7 +449,7 @@ export default {
       }
     },
     handleAvatarSucces(res) {
-      console.log(this.fileList)
+      console.log(this.fileList);
       this.PPTUrl = res.data;
       if (res.code == "0000") {
         this.$message.success("上传成功");
@@ -494,8 +498,8 @@ export default {
 .hxj {
   height: 42px;
 }
-.shuru{
-  height:50px;
+.shuru {
+  height: 50px;
   width: 50%;
   display: flex;
   align-items: center;

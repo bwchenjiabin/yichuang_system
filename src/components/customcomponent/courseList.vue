@@ -7,7 +7,7 @@
         <div class="content">
             <div class="item1" v-for="item in detailList" :key="item.id">
                 <div class="left_img fl">
-                    <img :src="baseURL + item.img" alt />
+                    <img :src=" + item.img" alt />
                     <div class="courType" v-if="item.lessonType == 1">图文</div>
                     <div class="courType" v-if="item.lessonType == 2">音频</div>
                     <div class="courType" v-if="item.lessonType == 3">视频</div>

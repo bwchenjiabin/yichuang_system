@@ -146,16 +146,8 @@
     <script>
 import sidebar from "@/components/sidebar/sidebar.vue";
 import Header from "@/components/Header/Header.vue";
-import { ceshi } from "api/userAjax";
-import { chapter } from "api/userAjax";
-import { chaptsectioner } from "api/userAjax";
-import { section } from "api/userAjax";
-import { editsection } from "api/userAjax";
-import { editvideosection } from 'api/userAjax';
-import { delsection } from 'api/userAjax';
-import { delchapter } from "api/userAjax";
-import { querychapter } from "api/userAjax";
-import { fileupload } from "api/userAjax";
+import { ceshi,chapter,chaptsectioner,section,editsection,editvideosection,delsection,delchapter,querychapter,fileupload } from "api/userAjax";
+import { baseURL } from "common/config";
 
 export default {
   data() {
@@ -185,8 +177,8 @@ export default {
       videoname:'',
       delsectionID: "", //删除jieid
       delchapterID:'',  //删除章id
-      imageUrl: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", // 上传地址
-      imageUrl1: "http://yckt.yichuangketang.com:8081/section/insertAudioOrVedio", //修改地址
+      imageUrl: baseURL+"/section/insertAudioOrVedio", // 上传地址
+      imageUrl1: baseURL+"/section/insertAudioOrVedio", //修改地址
       sectionid: "", //节ID
       chapterid: "", //章ID
       chapterId: "", //章ID
